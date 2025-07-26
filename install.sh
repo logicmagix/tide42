@@ -136,21 +136,33 @@ if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
+# === Resolve the script's directory (move this earlier) ===
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # === Copy nvim config ===
 echo "Checking for existing Neovim config..."
-if [ -f ~/.config/nvim/init.vim ] || [ -f ~/.config/nvim/init.lua ]; then
-  echo "[tide42] Existing config found. Backing up..."
-  [ -f ~/.config/nvim/init.vim ] && cp ~/.config/nvim/init.vim ~/.config/nvim/init.vim.bak
-  [ -f ~/.config/nvim/init.lua ] && cp ~/.config/nvim/init.lua ~/.config/nvim/init.lua.bak
+
+INIT_VIM="$HOME/.config/nvim/init.vim"
+INIT_LUA="$HOME/.config/nvim/init.lua"
+
+if [ -f "$INIT_VIM" ]; then
+  echo "[tide42] Found existing init.vim. Backing up..."
+  cp "$INIT_VIM" "$INIT_VIM.bak.$(date +%s)"
   if [ "$1" != "--force" ]; then
-    echo "[tide42] Use --force to overwrite, or edit ~/.config/nvim/init.vim manually."
-    echo "[tide42] Tide42 config available at $SCRIPT_DIR/init.vim."
+    echo "[tide42] Use --force to overwrite, or edit your config manually."
+    echo "[tide42] Tide42 config is located at: $SCRIPT_DIR/init.vim"
     exit 0
   fi
 fi
+
+if [ -f "$INIT_LUA" ]; then
+  echo "[tide42] Found init.lua — backing up just in case..."
+  cp "$INIT_LUA" "$INIT_LUA.bak.$(date +%s)"
+fi
+
 echo "Copying Neovim config..."
-mkdir -p ~/.config/nvim
-cp ./init.vim ~/.config/nvim/init.vim
+mkdir -p "$HOME/.config/nvim"
+cp "$SCRIPT_DIR/init.vim" "$INIT_VIM"
 
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
