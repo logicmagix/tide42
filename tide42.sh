@@ -276,17 +276,19 @@ tmux bind-key -n C-a resize-pane -R 999 \; select-pane -t 1
 tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
 tmux bind-key -n C-s resize-pane -x 50%
 
-# === Resize left pane to maximize it (pane 0) ===
-tmux resize-pane -t "$SESSION_NAME":0.0 -R 999
-sleep 0.1
+# === Sartup UI ===
+sleep 0.1  # Allow layout to stabilize
+tmux resize-pane -t "$SESSION_NAME":0.0 -R 9999
+tmux select-pane -t "$SESSION_NAME":0.1
 
-# === Open file in left pane 0 if filename provided ===
+# === Open file in pane 0 ===
 if [ -n "$FILENAME" ]; then
   tmux send-keys -t "$SESSION_NAME":0.0 "nvim \"$FILENAME\"" C-m
 else
   tmux send-keys -t "$SESSION_NAME":0.0 'nvim' C-m
 fi
 
+# === Preload right pane pne 1 with nvim if desired ===
 tmux send-keys -t "$SESSION_NAME":0.1 'nvim' C-m
 
 # === Attach to the session ===
