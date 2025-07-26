@@ -26,11 +26,17 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 06.11.25
 
 ⚠️ **PLEASE Back Up Your Configs!** ⚠️  
-Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be hanlded by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
+Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
+
+07.26.25
+- Added zsh logic for initialization of the terminal buffer. 
+- The default shell is bash however users can comment the initialization buffer for bash starting at line 153 and ending at line 191 to switch to zsh if desired.
+
+- Changed default ui to maximize the file buffer and minimize all other buffers for a cleaner entry. All buffer manipulation hotkeys remain the same.
 
 06.09.25
--Tide42 tested and working on 32bit systems and on the newest nvim version 0.11.2
--Added autocmd for default colorscheme. Check lines 96 and 154 of init.vim to customize your own palette and theme like habamax, elflord, peachpuff, etc.
+- Tide42 tested and working on 32bit systems and on the newest nvim version 0.11.2
+- Added autocmd for default colorscheme. Check lines 96 and 154 of init.vim to customize your own palette and theme like habamax, elflord, peachpuff, etc.
 
 06.03.25
 - Default input layout reformatted with latest push.. feedback requested or alternately change it to your liking in init.vim.

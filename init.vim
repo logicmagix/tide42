@@ -149,25 +149,46 @@ tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
 
-" Initialization
+
+ Initialization bash
 autocmd! VimEnter *
 autocmd VimEnter * colorscheme default
 autocmd VimEnter * NERDTree
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :W<CR>
-autocmd VimEnter * vertical resize 18
+autocmd VimEnter * vertical resize 1
 autocmd VimEnter * wincmd l
 autocmd VimEnter * topleft split
 autocmd VimEnter * terminal ipython
-autocmd VimEnter * resize 26
+autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
 autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
 autocmd VimEnter * belowright vs
-autocmd VimEnter * vertical resize 45
+autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
-autocmd VimEnter * resize 12
+autocmd VimEnter * resize 2
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
+ 
+" Initialization zsh 
+"set shell=/usr/bin/zsh
+"autocmd! VimEnter *
+"autocmd VimEnter * colorscheme default
+"autocmd VimEnter * NERDTree
+"autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :W<CR>
+"autocmd VimEnter * vertical resize 1
+"autocmd VimEnter * wincmd l
+"autocmd VimEnter * topleft split
+"autocmd VimEnter * terminal ipython
+"autocmd VimEnter * resize 3
+"autocmd VimEnter * belowright split
+"autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i; terminal zsh -i -cjk'
+"autocmd VimEnter * belowright vs
+"autocmd VimEnter * vertical resize
+"autocmd VimEnter * terminal
+"autocmd VimEnter * resize 2
+"autocmd VimEnter * wincmd j
+"autocmd VimEnter * wincmd l
 
 " Command :Q to force quit all Vim buffers and kill the tmux session
 function! ForceQuitAndKillTmux() abort
@@ -673,3 +694,4 @@ augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 highlight ColorColumn ctermbg=239 guibg=#4e4e4e
+
