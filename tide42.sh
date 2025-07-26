@@ -203,15 +203,30 @@ fi
 
 # === Write default tmux.conf only if no color flag provided ===
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
-  log "No color flag provided, applying default 256-color scheme..."
-  [ -s "$TMUX_CONF" ] && cp "$TMUX_CONF" "$TMUX_CONF.bak"
-  cat <<EOF > "$TMUX_CONF"
+  if [ -f "$TMUX_CONF" ]; then
+    if grep -q "# tide42_overwrite_ok" "$TMUX_CONF"; then
+      log "Tide42 marker found. Overwriting tmux.conf"
+      cp "$TMUX_CONF" "$TMUX_CONF.bak"
+      cat <<EOF > "$TMUX_CONF"
 # tide42: Default 256-color scheme
+# tide42_overwrite_ok
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
 EOF
-  log "Applied default 256-color config."
+    else
+      log "Custom tmux.conf detected. Skipping overwrite."
+    fi
+  else
+    log "No tmux.conf found. Writing default tide42 config."
+    cat <<EOF > "$TMUX_CONF"
+# tide42: Default 256-color scheme
+# tide42_overwrite_ok
+set -g default-terminal "tmux-256color"
+set -sa terminal-overrides ",*:Tc"
+set -g mouse on
+EOF
+  fi
 fi
 
 # === Check for existing session ===
@@ -254,20 +269,25 @@ fi
 tmux new-session -d -s "$SESSION_NAME"
 tmux split-window -h
 
-# Open file in left pane (pane 0) if filename provided, otherwise open nvim
+# === Set keybindings ===
+tmux unbind C-b
+tmux set-option -g prefix C-q
+tmux bind-key -n C-a resize-pane -R 999 \; select-pane -t 1
+tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
+tmux bind-key -n C-s resize-pane -x 50%
+
+# === Resize left pane to maximize it (pane 0) ===
+tmux resize-pane -t "$SESSION_NAME":0.0 -R 999
+sleep 0.1
+
+# === Open file in left pane 0 if filename provided ===
 if [ -n "$FILENAME" ]; then
   tmux send-keys -t "$SESSION_NAME":0.0 "nvim \"$FILENAME\"" C-m
 else
   tmux send-keys -t "$SESSION_NAME":0.0 'nvim' C-m
 fi
+
 tmux send-keys -t "$SESSION_NAME":0.1 'nvim' C-m
 
-# === Keybindings ===
-tmux unbind C-b
-tmux set-option -g prefix C-q
-tmux bind-key C-q send-prefix
-tmux bind-key -n C-a resize-pane -R 999 \; select-pane -t 1
-tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
-tmux bind-key -n C-s resize-pane -x 50%
-
+# === Attach to the session ===
 tmux attach-session -t "$SESSION_NAME"

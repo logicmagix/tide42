@@ -150,7 +150,7 @@ command! Hs split
 command! Q call ForceQuitAndKillTmux()
 
 
- Initialization bash
+" Initialization bash
 autocmd! VimEnter *
 autocmd VimEnter * colorscheme default
 autocmd VimEnter * NERDTree
