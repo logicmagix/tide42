@@ -145,24 +145,11 @@ echo "Checking for existing Neovim config..."
 INIT_VIM="$HOME/.config/nvim/init.vim"
 INIT_LUA="$HOME/.config/nvim/init.lua"
 
-if [ -f "$INIT_VIM" ]; then
-  echo "[tide42] Found existing init.vim. Backing up..."
-  cp "$INIT_VIM" "$INIT_VIM.bak.$(date +%s)"
-  if [ "$1" != "--force" ]; then
-    echo "[tide42] Use --force to overwrite, or edit your config manually."
-    echo "[tide42] Tide42 config is located at: $SCRIPT_DIR/init.vim"
-    exit 0
-  fi
-fi
-
-if [ -f "$INIT_LUA" ]; then
-  echo "[tide42] Found init.lua — backing up just in case..."
-  cp "$INIT_LUA" "$INIT_LUA.bak.$(date +%s)"
-fi
-
-echo "Copying Neovim config..."
+echo "[tide42] Installing Neovim config..."
+echo "[tide42] Warning: This will overwrite your init.vim."
 mkdir -p "$HOME/.config/nvim"
-cp "$SCRIPT_DIR/init.vim" "$INIT_VIM"
+cp -f "$SCRIPT_DIR/init.vim" "$HOME/.config/nvim/init.vim"
+
 
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
