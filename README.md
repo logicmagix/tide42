@@ -183,7 +183,7 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 ##
 `\v` = Currently selected buffer
 ##
-`\b` = Back to default settings
+`\b` = Display all buffers
 ##
 
 
