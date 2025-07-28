@@ -129,8 +129,8 @@ If your repo is on main:
 Ctrl|\
 ====  =
 qw  | wer        iop
-asd | sfg          l
-    |zxcvb        nm
+asd | sfgh         l
+zx  |zxcvb        nm
 </code></pre>
 
 Tmux based command: Ctrl-q + d (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
