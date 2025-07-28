@@ -277,7 +277,7 @@ tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
 tmux bind-key -n C-s resize-pane -x 50%
 
 # === Sartup UI ===
-sleep 1.0  # Allow layout to stabilize
+sleep 0.1  # Allow layout to stabilize
 tmux resize-pane -t "$SESSION_NAME":0.0 -R 20
 tmux select-pane -t "$SESSION_NAME":0.0
 
