@@ -28,6 +28,9 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ⚠️ **PLEASE Back Up Your Configs!** ⚠️  
 Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
 
+07.28.25
+-  Added new bindings for buffer manipulation and tweaked default ui layout"
+
 07.26.25
 - Added zsh logic for initialization of the terminal buffer. 
 - The default shell is bash however users can comment the initialization buffer for bash starting at line 153 and ending at line 191 to switch to zsh if desired.
@@ -105,7 +108,6 @@ If your repo is on main:
 
 
 ## Coming Soon!
-- Cleaner init.vim with more detailed commentary to help you modify the script yourself.
 - Opening second file in right tmux buffer if session is detached with a loaded file in the left (default).
 
 ## Flags
@@ -166,6 +168,10 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 `Ctrl+f` = Push left buffer 60%
 ##
 `Ctrl+g` = Push left buffer 75%
+##
+`Ctrl+z` = Push right buffer 60%
+##
+`Ctrl+x` = Push right buffer 75%
 ##
 `Ctrl+q`  + <-, -> = Switch between tmux buffers (selected buffer matches tmux bar color on the bottom)
 

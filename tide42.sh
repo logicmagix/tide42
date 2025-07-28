@@ -277,6 +277,8 @@ tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
 tmux bind-key -n C-s resize-pane -x 50%
 tmux bind-key -n C-f resize-pane -x 60%
 tmux bind-key -n C-g resize-pane -x 75%
+tmux bind-key -n C-z resize-pane -x 25%
+tmux bind-key -n C-x resize-pane -x 30%
 
 # === Sartup UI ===
 #sleep 0.1  # Allow layout to stabilize
