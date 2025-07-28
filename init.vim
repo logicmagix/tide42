@@ -133,6 +133,7 @@ nnoremap <silent> <leader>b :ResetWindowsDefault<CR>
 nnoremap <silent> <leader>z :ResetWindowsMaxEditor<CR>
 nnoremap <silent> <leader>v :EnlargedWindow<CR>
 nnoremap <leader>i :vertical resize <C-r>=input('Resize to: ')<CR><CR>
+nnoremap <leader>h ggVG
 xnoremap <silent> <leader>p :<C-u>call SendToIPython()<CR>
 xnoremap <silent> <leader>l :<C-u>call SendToTermiC()<CR>
 nnoremap <silent> <leader>n :RestartIPython<CR>

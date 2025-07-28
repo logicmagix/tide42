@@ -29,7 +29,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
 
 07.28.25
--  Added new bindings for buffer manipulation and tweaked default ui layout"
+-  Added new bindings Ctrl + f, g, z, x buffer manipulation and tweaked default ui layout.
+- Added new binding \h to select all text \h
 
 07.26.25
 - Added zsh logic for initialization of the terminal buffer. 
