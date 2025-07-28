@@ -163,6 +163,10 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 ##
 `Ctrl+d` = Maximize right tmux buffer
 ##
+`Ctrl+f` = Push left buffer 60%
+##
+`Ctrl+g` = Push left buffer 75%
+##
 `Ctrl+q`  + <-, -> = Switch between tmux buffers (selected buffer matches tmux bar color on the bottom)
 
 
@@ -174,7 +178,7 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 
 ## NeoVim buffer presets
 ##
-`\z` = Maximize edit buffer (lower)
+`\z` = Maximize edit buffer or open Nerdtree on startup (lower)
 `\s` = Maximize and enter TermiC buffer (left)
 ##
 `\x` = Maximize and enter Terminal buffer(right)
