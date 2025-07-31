@@ -466,7 +466,7 @@ function! s:ResetWindowSizes(maximize_editor) abort
     wincmd j
     wincmd l
   endif
-  echom "SET SIZE | " . (a:maximize_editor ? "Focus : (File Editor)" : "Reset Default Configuration") . ""
+  echom "SET SIZE | " . (a:maximize_editor ? "Focus : (Text Editor)" : "Reset Default Configuration") . ""
 endfunction
 
 " Focus IPython buffer
