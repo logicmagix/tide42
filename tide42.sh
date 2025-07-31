@@ -282,7 +282,7 @@ tmux bind-key -n C-x resize-pane -x 30%
 
 # === Sartup UI ===
 #sleep 0.1  # Allow layout to stabilize
-tmux resize-pane -t "$SESSION_NAME":0.0 -R 20
+tmux resize-pane -t "$SESSION_NAME":0.0 -R 45
 tmux select-pane -t "$SESSION_NAME":0.0
 
 # === Open file in pane 0 ===
