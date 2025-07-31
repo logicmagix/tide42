@@ -1,4 +1,9 @@
 # Changelog
+
+## [1.2.1] - 2025-07-30
+### Added
+- Reformatted default UI and added new hotkeys for buffer manipulation.
+
 ## [1.2.1] - 2025-06-03
 ### Added
 - RestartIpython function impemented for improved robustness of the REPL workflow for GUI-driven Python tasks.
