@@ -57,8 +57,8 @@ EOF
 " slate sorbet torte unokai
 " vim (used to set transparency, respects default terminal emulator settings)
 " wildcharm zaibatsu zellner
-let g:default_colorscheme = "default"
-colorscheme desert "replace with your preferred default"
+let g:default_colorscheme = "default" 
+colorscheme desert "<---.replace with your preferred default"
 let g:using_vim_scheme = 0
 set termguicolors
 set mouse=nvi
