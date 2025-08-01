@@ -131,7 +131,7 @@ If your repo is on main:
 <pre><code>
 Ctrl|\
 ====  =
-qw    | wery          iop
+qw    | wery         iop
 asdfg | sfgh         l
 zx    | zxcvb        nm
 </code></pre>
