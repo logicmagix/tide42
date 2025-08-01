@@ -28,6 +28,9 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ⚠️ **PLEASE Back Up Your Configs!** ⚠️  
 Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
 
+08.01.25
+- Added new functionality for toggling default and alternate colorschemesw. Alternate default is colorscheme "vim" which allows for toggling transparency if set properly in the terminal emulator. Hotkey binding is \y. Make sure transparency is set to on in emulators like gnome-terminal. If you do not use transparency you can also select a different alternate colorscheme and switch between the two with \y. 
+
 07.28.25
 -  Added new bindings Ctrl + f, g, z, x buffer manipulation and tweaked default ui layout.
 - Added new binding \h to select all text \h
@@ -128,7 +131,7 @@ If your repo is on main:
 <pre><code>
 Ctrl|\
 ====  =
-qw    | wer          iop
+qw    | wery          iop
 asdfg | sfgh         l
 zx    | zxcvb        nm
 </code></pre>
@@ -147,6 +150,8 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 `\e` = Locate file within current directory
 ## Ripgrep
 `\r` = ripgrep within file
+## Toggle Colorscheme
+`\r` = toggle between default and alternate colorscheme
 ## Quick vertical resize within horizontal nvim buffer
 `\i` = vertical resize <NUMBER>
 ## AI
