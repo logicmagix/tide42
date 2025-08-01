@@ -236,6 +236,18 @@ EOF
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
+
+# Unfocused pane border
+set -g pane-border-style fg=grey
+
+# Focused (active) pane border
+set -g pane-active-border-style fg=brightred
+
+# Optional: make the borders bold
+set -g pane-border-format "#{pane_index} "
+set -g pane-border-style "fg=grey,bg=default,dim"
+set -g pane-active-border-style "fg=brightred,bold"
+
 EOF
   fi
 fi
