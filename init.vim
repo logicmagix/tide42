@@ -33,16 +33,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vfunction! ToggleScheme()
-  if g:using_vim_scheme
-    execute 'colorscheme ' . g:default_colorscheme
-    let g:using_vim_scheme = 0
-  else
-    let g:default_colorscheme = g:colors_name
-    colorscheme vim
-    let g:using_vim_scheme = 1
-  endif
-endfunctionim'
+Plug 'junegunn/fzf.v
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
