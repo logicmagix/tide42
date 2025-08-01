@@ -19,6 +19,8 @@
 
 " Disable swapfile globally
 set noswapfile
+
+" Re-enable it for normal files (but never for NERDTree)
 autocmd BufWinEnter * if &filetype !=# 'nerdtree' | setlocal swapfile | endif
 
 syntax on
@@ -31,7 +33,16 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vfunction! ToggleScheme()
+  if g:using_vim_scheme
+    execute 'colorscheme ' . g:default_colorscheme
+    let g:using_vim_scheme = 0
+  else
+    let g:default_colorscheme = g:colors_name
+    colorscheme vim
+    let g:using_vim_scheme = 1
+  endif
+endfunctionim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
@@ -49,13 +60,8 @@ require("chatgpt").setup({
 EOF
 
 " General settings for window management
-" Default options:
-"blue darkblue delek desert elflord evening habamax
-"industry koehler lunaperche morning murphy pablo peachpuff
-"quiet retrobox ron shine slate sorbet torte unokai 
-"vim (default alternate to enable transparency) wildcharm 
-"wildcharm zaibatsu zellner
-let g:default_colorscheme = "default"  " <-- replace with your preferred default"
+let g:default_colorscheme = "default"  " 
+colorscheme default "<-- replace with your preferred default"
 let g:using_vim_scheme = 0
 set termguicolors
 set mouse=nvi
@@ -173,8 +179,6 @@ autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
 autocmd VimEnter * resize 1
-"UI suggestion for two line zsh configuration
-"autocmd VimEnter * resize 2
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
@@ -199,17 +203,16 @@ autocmd VimEnter * wincmd l
 "autocmd VimEnter * wincmd l
 
 
-"Toggle Transparency
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
     let g:using_vim_scheme = 0
   else
+    let g:default_colorscheme = g:colors_name
     colorscheme vim
     let g:using_vim_scheme = 1
   endif
 endfunction
-
 
 " Command :Q to force quit all Vim buffers and kill the tmux session
 function! ForceQuitAndKillTmux() abort
