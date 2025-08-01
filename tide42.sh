@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 # tide42 - a terminal IDE powered by tmux and nvim
 # Copyright (C) 2025 Pavle Dzakula
 #
@@ -18,17 +19,15 @@
 # Credits
 # This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
-
 set -e
+
 echo "[tide86] Running..."
 
 VERSION_PATH="$(dirname "$0")/VERSION"
 TIDE_VERSION="unknown"
-
 if [ -f "$VERSION_PATH" ]; then
   TIDE_VERSION="$(cat "$VERSION_PATH")"
 fi
-
 GIT_BRANCH=$(git -C "$(dirname "$0")" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 TIDE_VERSION="$TIDE_VERSION ($GIT_BRANCH)"
 
@@ -39,6 +38,19 @@ COLOR_FLAG_PROVIDED=false
 UPDATE_PROCESSED=false
 SESSION_NAME="tide42"
 TMUX_CONF="$HOME/.tmux.conf"
+
+# Define pane border settings in tmux.conf
+PANE_BORDER_CONFIG=$(cat <<EOF
+# Unfocused pane border
+set -g pane-border-style fg=grey
+# Focused (active) pane border
+set -g pane-active-border-style fg=brightred
+# Optional: make the borders bold
+set -g pane-border-format "#{pane_index} "
+set -g pane-border-style "fg=grey,bg=default,dim"
+set -g pane-active-border-style "fg=brightred,bold"
+EOF
+)
 
 log() {
   $IS_QUIET || echo "[tide42] $@"
@@ -53,7 +65,7 @@ while [ $# -gt 0 ]; do
       log "Source directory: $SCRIPT_DIR"
       exit 0
       ;;
-      --lite)
+    --lite)
       shift
       log "[tide42] Launching in lite mode (no tmux)..."
       exec nvim "$@"
@@ -68,70 +80,58 @@ while [ $# -gt 0 ]; do
       [ -s "$TMUX_CONF" ] && cp "$TMUX_CONF" "$TMUX_CONF.bak"
       cat <<EOF > "$TMUX_CONF"
 # tide42: 88-color config
+# tide42_overwrite_ok
 set -g default-terminal "xterm-88color"
 set -sa terminal-overrides ",xterm-88color*:colors=88"
 set -g mouse on
+$PANE_BORDER_CONFIG
 EOF
-      log "Applied 88-color config."
+      log "Applied 88-color config with pane border settings."
       ;;
     --update)
       UPDATE_PROCESSED=true
       log "Checking for updates from GitHub..."
-
       SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
       SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
       cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; exit 1; }
-
       if [ ! -d .git ]; then
         log "Error: This directory is not a Git repository."
         exit 1
       fi
-
       CURRENT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached")
       [ "$CURRENT_BRANCH" = "detached" ] && {
         log "Error: You are in a detached HEAD state. Cannot auto-update."
         exit 1
       }
-
       log "Current branch: $CURRENT_BRANCH"
-  
       git fetch origin "$CURRENT_BRANCH" --prune || {
         log "Error: Failed to fetch updates from origin."
         exit 1
       }
-
       LOCAL_HASH=$(git rev-parse HEAD)
       REMOTE_HASH=$(git rev-parse "origin/$CURRENT_BRANCH")
       VERSION_FILE="$SCRIPT_DIR/VERSION"
       VERSION_NUMBER="unknown"
       [ -f "$VERSION_FILE" ] && VERSION_NUMBER=$(<"$VERSION_FILE")
-
       if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
         SHORT_HASH=$(git rev-parse --short HEAD)
         log "Already on the latest version: v$VERSION_NUMBER ($CURRENT_BRANCH@$SHORT_HASH)"
         exit 0
       fi
-
       log "Updating from $LOCAL_HASH to $REMOTE_HASH (v$VERSION_NUMBER)"
       log "Discarding local changes and syncing to latest commit..."
-
       git reset --hard "origin/$CURRENT_BRANCH" || {
         log "Error: Failed to reset to latest version."
         exit 1
       }
-
       log "Update complete."
-
       # === Re-run install script if present ===
       INSTALL_SCRIPT="$SCRIPT_DIR/install.sh"
       if [ -f "$INSTALL_SCRIPT" ]; then
         log "Running installer to apply updates..."
         chmod +x "$INSTALL_SCRIPT"
-    
-        # Try running installer with --quiet first
         if ! "$INSTALL_SCRIPT" --quiet; then
           log "Warning: Installer failed, likely due to existing Neovim config."
-          # Check if Neovim config exists to determine if --force is needed
           if [ -f "$HOME/.config/nvim/init.vim" ] || [ -f "$HOME/.config/nvim/init.lua" ]; then
             log "Neovim config found. Retrying installer with --force..."
             "$INSTALL_SCRIPT" --quiet --force && log "Installer ran successfully with --force." || {
@@ -148,10 +148,8 @@ EOF
       else
         log "No installer found. Skipping install step."
       fi
-
       exit 0
       ;;
-
     --version)
       log "tide42 version $TIDE_VERSION"
       exit 0
@@ -160,14 +158,14 @@ EOF
       echo "Usage: tide42 [--color | --low-color] [--update] [--quiet] [--version] [filename]"
       echo ""
       echo "Options:"
-      echo "  --whereami         Display git installation directory"
-      echo "  --lite             Launch without tmux for quick editing or low-resource systems"
-      echo "  --low-color, -lc   Enable 88-color mode (warning: Home/End keys may not work)"
-      echo "  --quiet,  -q       Suppress log output"
-      echo "  --update           Pull latest Git changes to clean repo and reinstall"
-      echo "  --version          Show current version"
-      echo "  --help,   -h       Show this help message"
-      echo "  [filename]         Open specified file in Neovim"
+      echo " --whereami Display git installation directory"
+      echo " --lite Launch without tmux for quick editing or low-resource systems"
+      echo " --low-color, -lc Enable 88-color mode (warning: Home/End keys may not work)"
+      echo " --quiet, -q Suppress log output"
+      echo " --update Pull latest Git changes to clean repo and reinstall"
+      echo " --version Show current version"
+      echo " --help, -h Show this help message"
+      echo " [filename] Open specified file in Neovim"
       exit 0
       ;;
     *)
@@ -213,8 +211,15 @@ if [ "$COLOR_FLAG_PROVIDED" = false ]; then
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
+$PANE_BORDER_CONFIG
 EOF
     else
+      # If no Tide42 marker, append pane border settings if not already present
+      if ! grep -q "pane-border-style" "$TMUX_CONF"; then
+        log "Appending pane border settings to existing tmux.conf"
+        cp "$TMUX_CONF" "$TMUX_CONF.bak"
+        echo "$PANE_BORDER_CONFIG" >> "$TMUX_CONF"
+      fi
       log "Launching Tide42"
     fi
   else
@@ -225,6 +230,7 @@ EOF
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
+$PANE_BORDER_CONFIG
 EOF
   fi
 fi
@@ -280,8 +286,7 @@ tmux bind-key -n C-g resize-pane -x 75%
 tmux bind-key -n C-z resize-pane -x 25%
 tmux bind-key -n C-x resize-pane -x 30%
 
-# === Sartup UI ===
-#sleep 0.1  # Allow layout to stabilize
+# === Startup UI ===
 tmux resize-pane -t "$SESSION_NAME":0.0 -R 45
 tmux select-pane -t "$SESSION_NAME":0.0
 
