@@ -211,7 +211,6 @@ if [ "$COLOR_FLAG_PROVIDED" = false ]; then
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
-$PANE_BORDER_CONFIG
 EOF
     else
       # If no Tide42 marker, append pane border settings if not already present
@@ -230,7 +229,22 @@ EOF
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
+<<<<<<< HEAD
 $PANE_BORDER_CONFIG
+=======
+
+# Unfocused pane border
+set -g pane-border-style fg=grey
+
+# Focused (active) pane border
+set -g pane-active-border-style fg=brightred
+
+# Optional: make the borders bold
+set -g pane-border-format "#{pane_index} "
+set -g pane-border-style "fg=grey,bg=default,dim"
+set -g pane-active-border-style "fg=brightred,bold"
+
+>>>>>>> origin/stable
 EOF
   fi
 fi
