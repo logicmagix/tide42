@@ -60,6 +60,12 @@ require("chatgpt").setup({
 EOF
 
 " General settings for window management
+" Default nvim colorschemes include:
+" blue darkblue default delek desert elflord evening habamax industry
+" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
+" slate sorbet torte unokai
+" vim (used to set transparency, respects default terminal emulator settings)
+" wildcharm zaibatsu zellner
 let g:default_colorscheme = "default"  " 
 colorscheme default "<-- replace with your preferred default"
 let g:using_vim_scheme = 0
