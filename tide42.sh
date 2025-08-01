@@ -42,12 +42,12 @@ TMUX_CONF="$HOME/.tmux.conf"
 # Define pane border settings in tmux.conf
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
-set -g pane-border-style fg=grey
+set -g pane-border-style fg=black
 # Focused (active) pane border
 set -g pane-active-border-style fg=brightred
 # Optional: make the borders bold
 set -g pane-border-format "#{pane_index} "
-set -g pane-border-style "fg=grey,bg=default,dim"
+set -g pane-border-style "fg=black,bg=default,dim"
 set -g pane-active-border-style "fg=brightred,bold"
 EOF
 )
@@ -229,22 +229,19 @@ EOF
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
-<<<<<<< HEAD
 $PANE_BORDER_CONFIG
-=======
 
 # Unfocused pane border
-set -g pane-border-style fg=grey
+set -g pane-border-style fg=black
 
 # Focused (active) pane border
 set -g pane-active-border-style fg=brightred
 
 # Optional: make the borders bold
 set -g pane-border-format "#{pane_index} "
-set -g pane-border-style "fg=grey,bg=default,dim"
+set -g pane-border-style "fg=black,bg=default,dim"
 set -g pane-active-border-style "fg=brightred,bold"
 
->>>>>>> origin/stable
 EOF
   fi
 fi
