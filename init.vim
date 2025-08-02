@@ -17,10 +17,6 @@
 
 "This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
-" Disable swapfile globally
-set noswapfile
-autocmd BufWinEnter * if &filetype !=# 'nerdtree' | setlocal swapfile | endif
-
 syntax on
 filetype plugin indent on
 
@@ -151,7 +147,6 @@ tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
 
-
 " Initialization bash
 autocmd! VimEnter *
 autocmd VimEnter * NERDTree
@@ -170,7 +165,6 @@ autocmd VimEnter * resize 1
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
- 
 " Initialization zsh 
 "set shell=/usr/bin/zsh
 "autocmd! VimEnter *
@@ -189,7 +183,6 @@ autocmd VimEnter * wincmd l
 "autocmd VimEnter * resize 2
 "autocmd VimEnter * wincmd j
 "autocmd VimEnter * wincmd l
-
 
 function! ToggleScheme()
   if g:using_vim_scheme
@@ -220,12 +213,10 @@ function! ForceQuitAndKillTmux() abort
   endtry
 endfunction
 
-
 " Guard to prevent repeated calls
 let s:is_running = 0
 let s:last_run = 0
 let s:debounce_ms = 500  " Only allow one run every 500ms
-
 
 " Send to IPython
 function! SendToIPython() abort
@@ -700,10 +691,8 @@ function! Grid(...) abort
     echo "GRID | Grid On " . dr . ", cols every " . dc
 endfunction
 
-
 " Grid styling
 augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 highlight ColorColumn ctermbg=239 guibg=#4e4e4e
-

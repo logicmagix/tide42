@@ -43,12 +43,9 @@ TMUX_CONF="$HOME/.tmux.conf"
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
-# Focused (active) pane border
 set -g pane-active-border-style fg=brightred
-# Optional: make the borders bold
 set -g pane-border-format "#{pane_index} "
 set -g pane-border-style "fg=black,bg=default,dim"
-set -g pane-active-border-style "fg=brightred,bold"
 EOF
 )
 
