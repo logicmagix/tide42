@@ -21,7 +21,7 @@
 
 set -e
 
-echo "[tide86] Running..."
+echo "[tide42] Running..."
 
 VERSION_PATH="$(dirname "$0")/VERSION"
 TIDE_VERSION="unknown"
@@ -285,7 +285,7 @@ tmux bind-key -n C-c resize-pane -x 60%
 tmux bind-key -n C-v resize-pane -x 75%
 
 # === Startup UI ===
-tmux resize-pane -t "$SESSION_NAME":0.0 -R 45
+tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
 tmux select-pane -t "$SESSION_NAME":0.0
 
 # === Open file in pane 0 ===
