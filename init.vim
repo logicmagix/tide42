@@ -91,14 +91,7 @@ highlight clear CursorLine
 highlight CursorLine cterm=underline gui=underline
 highlight clear CursorColumn
 highlight CursorColumn ctermbg=230 guibg=#4e4e4e
-augroup CustomHighlights
-  autocmd!
-  autocmd ColorScheme,VimEnter * highlight clear Visual | highlight Visual ctermbg=230 guibg=#4e4e4e
-  autocmd ColorScheme,VimEnter * highlight clear Search | highlight Search ctermbg=230 guibg=#4e4e4e ctermfg=230 guifg=#4e4e4e
-  autocmd ColorScheme,VimEnter * highlight clear MatchParen | highlight MatchParen ctermbg=230 guibg=#4e4e4e
-augroup END
 highlight Visual ctermbg=230 guibg=#4e4e4e
-highlight Search ctermbg=230 guibg=#4e4e4e ctermfg=230 guifg=#4e4e4e
 highlight MatchParen ctermbg=230 guibg=#4e4e4e
 " Colors:
 " Light Brown: ctermbg=95 guibg=#875f5f
