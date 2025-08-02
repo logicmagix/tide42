@@ -19,8 +19,6 @@
 
 " Disable swapfile globally
 set noswapfile
-
-" Re-enable it for normal files (but never for NERDTree)
 autocmd BufWinEnter * if &filetype !=# 'nerdtree' | setlocal swapfile | endif
 
 syntax on
