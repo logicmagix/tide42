@@ -64,7 +64,7 @@ let NERDTreeShowHidden=1
 
 " Visual settings
 set cursorline
-set cursorcolumn
+"set cursorcolumn
 set number
 set relativenumber
 augroup WindowLineNumbers
@@ -80,15 +80,12 @@ set listchars=tab:>-,eol:$,trail:.,extends:>,precedes:<,space:‧
 " Custom highlights
 augroup CursorHighlights
   autocmd!
-  autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
-  autocmd ColorScheme,VimEnter * highlight clear CursorColumn | highlight CursorColumn ctermbg=230 guibg=#4e4e4e
+   autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
+"   autocmd ColorScheme,VimEnter * highlight clear CursorColumn | highlight CursorColumn ctermbg=230 guibg=#4e4e4e
 augroup END
-highlight clear CursorLine
-highlight CursorLine cterm=underline gui=underline
-highlight clear CursorColumn
-highlight CursorColumn ctermbg=230 guibg=#4e4e4e
+"highlight CursorColumn ctermbg=230 guibg=#4e4e4e
 highlight Visual ctermbg=110 guibg=#87afd7
-highlight MatchParen ctermbg=230 guibg=#4e4e4e
+"highlight MatchParen ctermbg=230 guibg=#4e4e4e
 " Colors:
 " Light Brown: ctermbg=95 guibg=#875f5f
 " Brown: ctermbg=94 guibg=#875f00
