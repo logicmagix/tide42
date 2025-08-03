@@ -87,7 +87,7 @@ highlight clear CursorLine
 highlight CursorLine cterm=underline gui=underline
 highlight clear CursorColumn
 highlight CursorColumn ctermbg=230 guibg=#4e4e4e
-highlight Visual ctermbg=230 guibg=#4e4e4e
+highlight Visual ctermbg=110 guibg=#87afd7
 highlight MatchParen ctermbg=230 guibg=#4e4e4e
 " Colors:
 " Light Brown: ctermbg=95 guibg=#875f5f
@@ -147,7 +147,13 @@ tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
 
-" Initialization bash
+"Initialization
+"Detect Shell
+let shell_path = $SHELL
+let shell_name = fnamemodify(shell_path, ':t')
+
+"Initialization
+autocmd VimEnter * echom "Detected shell: " . shell_name
 autocmd! VimEnter *
 autocmd VimEnter * NERDTree
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :W<CR>
@@ -157,33 +163,32 @@ autocmd VimEnter * topleft split
 autocmd VimEnter * terminal ipython
 autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
-autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+
+" Shell-specific terminal command
+if shell_name == 'zsh'
+    set shell=/usr/bin/zsh
+    autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
+    let terminal_resize = 2
+elseif shell_name == 'bash'
+    set shell=/bin/bash
+    autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+    let terminal_resize = 1
+else
+    set shell=/usr/bin/bash
+    autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+    let terminal_resize = 1
+    autocmd VimEnter * echom "Unknown shell detected, falling back to bash"
+endif
+
+" Finalize initialization
 autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
-autocmd VimEnter * resize 1
+execute 'autocmd VimEnter * resize ' . terminal_resize
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
-" Initialization zsh 
-"set shell=/usr/bin/zsh
-"autocmd! VimEnter *
-"autocmd VimEnter * NERDTree
-"autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :W<CR>
-"autocmd VimEnter * vertical resize 1
-"autocmd VimEnter * wincmd l
-"autocmd VimEnter * topleft split
-"autocmd VimEnter * terminal ipython
-"autocmd VimEnter * resize 3
-"autocmd VimEnter * belowright split
-"autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i; terminal zsh -i -cjk'
-"autocmd VimEnter * belowright vs
-"autocmd VimEnter * vertical resize
-"autocmd VimEnter * terminal
-"autocmd VimEnter * resize 2
-"autocmd VimEnter * wincmd j
-"autocmd VimEnter * wincmd l
-
+"Toggle vim colorscheme (terminal default)
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
