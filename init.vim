@@ -61,6 +61,14 @@ set winminheight=1
 set shell=/bin/bash
 let g:NERDTreeWinSize=10
 let NERDTreeShowHidden=1
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeQuitOnOpen = 0
+let NERDTreeRespectWildIgnore = 1
+let NERDTreeDirArrows = 1
+let NERDTreeShowLineNumbers = 0
+let NERDTreeLimitedSyntax = 1
 
 " Visual settings
 set cursorline
@@ -85,7 +93,7 @@ augroup CursorHighlights
 augroup END
 "highlight CursorColumn ctermbg=230 guibg=#4e4e4e
 highlight Visual ctermbg=110 guibg=#87afd7
-"highlight MatchParen ctermbg=230 guibg=#4e4e4e
+highlight MatchParen ctermbg=100 guibg=#878700
 " Colors:
 " Light Brown: ctermbg=95 guibg=#875f5f
 " Brown: ctermbg=94 guibg=#875f00
