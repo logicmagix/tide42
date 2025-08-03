@@ -16,7 +16,6 @@
 " Credits
 
 "This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
-
 syntax on
 filetype plugin indent on
 
@@ -53,6 +52,7 @@ EOF
 " wildcharm zaibatsu zellner
 let g:default_colorscheme = "default" 
 colorscheme default "<---.replace with your preferred default"
+set noswapfile
 let g:using_vim_scheme = 0
 set termguicolors
 set mouse=nvi
