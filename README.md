@@ -20,13 +20,18 @@ Tide42, formerly XTide86, is inspired in part by *The Hitchhiker’s Guide to th
 This project reflects that same spirit: a terminal IDE that encourages curiosity, simplicity, and discovery—*you ask the questions*. Tide42 is meant to be your solution, leaving the questions in your hands. 
 
 # Tide42 NEWS:
-06
+
 
 -NOTICE FOR EXISTING USERS!! New --update logic is now fully functional and tested across multiple systems. You can either git restore . and git pull origin stable in your repo or re clone, chmod+x install.sh and ./install.sh; Use --update going forward.
-06.11.25
+
 
 ⚠️ **PLEASE Back Up Your Configs!** ⚠️  
 Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
+
+# Tide42 NEWS:
+
+08.03.25
+- Updated initialization blocks to automatically detect the shell and set to either zsh or bash. Additional shell option suggestions are welcome. New highlight deffault color is light blue for better clarity and can be changed with suggested values within the highlights section.   
 
 08.01.25
 - Added new functionality for toggling default and alternate colorschemesw. Alternate default is colorscheme "vim" which allows for toggling transparency if set properly in the terminal emulator. Hotkey binding is \y. Make sure transparency is set to on in emulators like gnome-terminal. If you do not use transparency you can also select a different alternate colorscheme and switch between the two with \y. 
@@ -36,9 +41,6 @@ Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`
 - Added new binding \h to select all text \h
 
 07.26.25
-- Added zsh logic for initialization of the terminal buffer. 
-- The default shell is bash however users can comment the initialization buffer for bash starting at line 153 and ending at line 191 to switch to zsh if desired.
-
 - Changed default ui to maximize the file buffer and minimize all other buffers for a cleaner entry. All buffer manipulation hotkeys remain the same.
 
 06.09.25
