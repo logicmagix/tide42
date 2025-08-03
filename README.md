@@ -30,6 +30,7 @@ Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`
 
 08.03.25
 - Default colorscheme has been changed from default to retrbox. This allows for better readability if using from a tty or using ssh. This can easily be changed in init.vim and preconfigured colorschemes are listed in the comments for users.
+- All tmux panel hotkeys have been changed to Ctrl + Alt (eg. Ctrl + Alt + a, s, d, z, etc)to avoid nvim conflicts.
 
 08.03.25
 - Updated initialization blocks to automatically detect the shell and set to either zsh or bash. Additional shell option suggestions are welcome. New highlight deffault color is light blue for better clarity and can be changed with suggested values within the highlights section.   
@@ -132,11 +133,11 @@ If your repo is on main:
 ## Keyboard hotkey layout quick reference:
 
 <pre><code>
-Ctrl|\
-====  =
-qw    | wery         iop
-asdfg | sfgh         l
-zx    | zxcvb        nm
+Ctrl/Ctrl+Alt|\
+================
+qw           | wery         iop
+asdfg        | sfgh         l
+zx           | zxcvb        nm
 </code></pre>
 
 Tmux based command: Ctrl-q + d (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
@@ -168,19 +169,19 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 
 ## Tmux buffer controls (work in insert or command mode)
 ##
-`Ctrl+a` = Maximize left tmux buffer
+`Ctrl+Alt+a` = Maximize left tmux buffer
 ##
-`Ctrl+s` = Split tmux buffers
+`Ctrl+Alt+s` = Split tmux buffers
 ##
-`Ctrl+d` = Maximize right tmux buffer
+`Ctrl+Alt+d` = Maximize right tmux buffer
 ##
-`Ctrl+f` = Push left buffer 60%
+`Ctrl+Alt+z` = Push active buffer 25%
 ##
-`Ctrl+g` = Push left buffer 75%
+`Ctrl+Alt+x` = Push active buffer 30%
 ##
-`Ctrl+z` = Push right buffer 60%
+`Ctrl+Alt+c` = Push active buffer 60%
 ##
-`Ctrl+x` = Push right buffer 75%
+`Ctrl+Alt+v` = Push active buffer 75%
 ##
 `Ctrl+q`  + <-, -> = Switch between tmux buffers (selected buffer matches tmux bar color on the bottom)
 

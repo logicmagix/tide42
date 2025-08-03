@@ -276,13 +276,13 @@ tmux split-window -h
 # === Set keybindings ===
 tmux unbind C-b
 tmux set-option -g prefix C-q
-tmux bind-key -n C-a resize-pane -R 999 \; select-pane -t 1
-tmux bind-key -n C-d resize-pane -L 999 \; select-pane -t 0
-tmux bind-key -n C-s resize-pane -x 50%
-tmux bind-key -n C-z resize-pane -x 25%
-tmux bind-key -n C-x resize-pane -x 30%
-tmux bind-key -n C-c resize-pane -x 60%
-tmux bind-key -n C-v resize-pane -x 75%
+tmux bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
+tmux bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+tmux bind-key -n C-M-s resize-pane -x 50%
+tmux bind-key -n C-M-z resize-pane -x 25%
+tmux bind-key -n C-M-x resize-pane -x 30%
+tmux bind-key -n C-M-c resize-pane -x 60%
+tmux bind-key -n C-M-v resize-pane -x 75%
 
 # === Startup UI ===
 tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
