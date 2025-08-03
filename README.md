@@ -19,8 +19,6 @@ Tide42, formerly XTide86, is inspired in part by *The Hitchhiker’s Guide to th
 
 This project reflects that same spirit: a terminal IDE that encourages curiosity, simplicity, and discovery—*you ask the questions*. Tide42 is meant to be your solution, leaving the questions in your hands. 
 
-# Tide42 NEWS:
-
 
 -NOTICE FOR EXISTING USERS!! New --update logic is now fully functional and tested across multiple systems. You can either git restore . and git pull origin stable in your repo or re clone, chmod+x install.sh and ./install.sh; Use --update going forward.
 
@@ -29,6 +27,9 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`init.lua`. Back up first! Run mv init.lua or init.vim to save configs to `~/.config/nvim/backup/*.bak`. This should now be handled by the installer but the best way is to do it manually before running the installer to be sure. Don’t lose your hard work!
 
 # Tide42 NEWS:
+
+08.03.25
+- Default colorscheme has been changed from default to retrbox. This allows for better readability if using from a tty or using ssh. This can easily be changed in init.vim and preconfigured colorschemes are listed in the comments for users.
 
 08.03.25
 - Updated initialization blocks to automatically detect the shell and set to either zsh or bash. Additional shell option suggestions are welcome. New highlight deffault color is light blue for better clarity and can be changed with suggested values within the highlights section.   
