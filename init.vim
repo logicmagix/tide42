@@ -51,7 +51,7 @@ EOF
 " vim (used to set transparency, respects default terminal emulator settings)
 " wildcharm zaibatsu zellner
 let g:default_colorscheme = "default" 
-colorscheme default "<---.replace with your preferred default"
+colorscheme retrobox "<---.replace with your preferred default"
 set noswapfile
 let g:using_vim_scheme = 0
 set termguicolors
