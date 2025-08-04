@@ -276,6 +276,11 @@ tmux split-window -h
 # === Set keybindings ===
 tmux unbind C-b
 tmux set-option -g prefix C-q
+tmux bind-key h select-pane -L
+tmux bind-key j select-pane -D
+tmux bind-key k select-pane -U
+tmux bind-key l select-pane -R
+tmux set-window-option -g mode-keys vi
 tmux bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
 tmux bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
 tmux bind-key -n C-M-s resize-pane -x 50%
