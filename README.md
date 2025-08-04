@@ -29,11 +29,13 @@ Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`
 # Tide42 NEWS:
 
 08.04.25
-- Added vim navigation to tide42.sh tmux keybindings sections. Alternate tmux panels with Ctrl+Q + hjkl. 
+- Added vim navigation to tide42.sh tmux keybindings sections. Alternate tmux buffers with Ctrl+Q + hjkl.
+- Use hold Ctrl + q and arrow keys to resize tmux buffer.
+
 
 08.03.25
 - Default colorscheme has been changed from default to retrbox. This allows for better readability if using from a tty or using ssh. This can easily be changed in init.vim and preconfigured colorschemes are listed in the comments for users.
-- All tmux panel hotkeys have been changed to Ctrl + Alt (eg. Ctrl + Alt + a, s, d, z, etc)to avoid nvim conflicts.
+- All tmux buffer hotkeys have been changed to Ctrl + Alt (eg. Ctrl + Alt + a, s, d, z, etc)to avoid nvim conflicts.
 
 08.03.25
 - Updated initialization blocks to automatically detect the shell and set to either zsh or bash. Additional shell option suggestions are welcome. New highlight deffault color is light blue for better clarity and can be changed with suggested values within the highlights section.   
@@ -226,6 +228,7 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 - NERDTree may be refreshed with Shift+r after performing operations in the terminal buffer.
 - All NeoVim commands can also be used in any other buffer eg. /Documents to find and jump to ~/Documents directory.
 - Quickly enter focused and expanded file editor mode with Ctrl + Alt + A/D (make sure you are in the correct tmux buffer), \i + <Enter>
+- Fine tune tmux buffer size with hold Ctrl + q + arrow keys.
 - Open/close NERDTree with \z and \i + <Enter>
 - Switch between tty sessions and retain tide42 session through tmux. Handy if connecting through SSH.
 - If you're running tide42 inside a tmux or custom terminal session, you might run into issues when trying to save root-owned files from within Neovim:
