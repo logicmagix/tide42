@@ -219,12 +219,13 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 ##
 - If you would like to map tide42 to a keyboard shortcut the best method is to use this command and substitute your terminal name: <gnome-terminal> -- bash -c "/usr/local/bin/tide42; exec bash"
 - ggVG to select all when in nvim command mode followed by  \p or \l for efficient transfer of text into IPython or TermiC
-- Once in insert mode in any ``nvim`` buffer, the recommended way of entering command mode is `jk` all other buffers will require `Esc`
+- Once in insert mode in any ``nvim`` buffer, the recommended way of entering command mode is `jk`
 - NERDTree may be refreshed with Shift+r after performing operations in the terminal buffer.
-- All NeoVim commands can also be used in any other buffer. 
-- Quickly enter focused and expanded file editor mode with Ctrl A/D (make sure you are in the correct tmux buffer), \z, \i <1000>
+- All NeoVim commands can also be used in any other buffer eg. /Documents to find and jump to ~/Documents directory.
+- Quickly enter focused and expanded file editor mode with Ctrl + Alt + A/D (make sure you are in the correct tmux buffer), \i + <Enter>
+- Open/close NERDTree with \z and \i + <Enter>
 - Switch between tty sessions and retain tide42 session through tmux. Handy if connecting through SSH.
--If you're running tide42 inside a tmux or custom terminal session, you might run into issues when trying to save root-owned files from within Neovim:
+- If you're running tide42 inside a tmux or custom terminal session, you might run into issues when trying to save root-owned files from within Neovim:
 Using commands like :w !sudo tee % in NeoVim may silently fail to prompt for a password and kick you out after 3 attempts.
 Solutions:
 Use a GUI editor instead within a tide42 terminal buffer to avoid leaving your session:
