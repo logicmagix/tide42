@@ -132,7 +132,8 @@ nnoremap <silent> <leader>c :MaximizeIPythonBuffer<CR>
 nnoremap <silent> <leader>b :ResetWindowsDefault<CR>
 nnoremap <silent> <leader>z :ResetWindowsMaxEditor<CR>
 nnoremap <silent> <leader>v :EnlargedWindow<CR>
-nnoremap <leader>i :vertical resize <C-r>=input('Resize to: ')<CR><CR>
+nnoremap <expr> <leader>i ":vertical resize " . input('Resize to: ') . "<CR>"
+nnoremap <expr> <leader>u ":resize " . input('Resize to: ') . "<CR>"
 nnoremap <leader>h ggVG
 xnoremap <silent> <leader>p :<C-u>call SendToIPython()<CR>
 xnoremap <silent> <leader>l :<C-u>call SendToTermiC()<CR>
@@ -533,6 +534,7 @@ function! MaximizeIPythonBuffer() abort
   endtry
 endfunction
 
+"Maximize terminal buffer
 function! s:MaximizeTerminalBuffer(direction = 'left') abort
   silent! try
     let l:initial_win = winnr()

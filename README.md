@@ -135,9 +135,9 @@ If your repo is on main:
 <pre><code>
 Ctrl/Ctrl+Alt|\
 ================
-qw           | wery         iop
-asdfg        | sfgh         l
-zx           | zxcvb        nm
+qw           | weryuiop
+asdfg        | sfghl
+zx           | zxcvbnm
 </code></pre>
 
 Tmux based command: Ctrl-q + d (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
@@ -147,7 +147,7 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 ## Manually select vim buffer within seelcted tmux buffer
 `Ctrl+w` + <-, ^, ->, v = Selects vim buffer within current tmux buffer
 ## Restart IPython
-`\n\ = Restart IPython buffer if process exits.
+`\n` = Restart IPython buffer if process exits.
 ## Fuzzy Finder
 `\w` = fzf selects vim buffer from menu within current tmux buffer (fuzzy finder, vim plugin)
 ## Telescope
@@ -158,6 +158,8 @@ Nvim based command:Q = Force-quit the program (reset for new session)
 `\r` = toggle between default and alternate colorscheme
 ## Quick vertical resize within horizontal nvim buffer
 `\i` = vertical resize <NUMBER>
+## Quick horizontal resize
+`\u` = resize <NUMBER>
 ## AI
 `\o` = optional OpenAI ChatGPT implementation with API key (stored in a global variable)
 ## Send to IPython
