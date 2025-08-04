@@ -28,6 +28,9 @@ Tide42 installs `init.vim` to `~/.config/nvim`, which may overwrite `init.vim`/`
 
 # Tide42 NEWS:
 
+08.04.25
+- Added vim navigation to tide42.sh tmux keybindings sections. Alternate tmux panels with Ctrl+Q + hjkl. 
+
 08.03.25
 - Default colorscheme has been changed from default to retrbox. This allows for better readability if using from a tty or using ssh. This can easily be changed in init.vim and preconfigured colorschemes are listed in the comments for users.
 - All tmux panel hotkeys have been changed to Ctrl + Alt (eg. Ctrl + Alt + a, s, d, z, etc)to avoid nvim conflicts.
