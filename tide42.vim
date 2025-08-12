@@ -70,8 +70,8 @@ let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeQuitOnOpen = 0
 let NERDTreeRespectWildIgnore = 1
 let NERDTreeDirArrows = 1
-let NERDTreeShowLineNumbers = 0
-let NERDTreeLimitedSyntax = 1
+let NERDTreeShowLineNumbers = 1
+let NERDTreeLimitedSyntax = 0
 
 " Visual settings
 set cursorline
@@ -144,7 +144,7 @@ let shell_name = fnamemodify(shell_path, ':t')
 
 autocmd VimEnter * echom "Detected shell: " . shell_name
 autocmd! VimEnter *
-autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree $HOME
 autocmd VimEnter * vertical resize 1
 autocmd VimEnter * wincmd l
 autocmd VimEnter * topleft split

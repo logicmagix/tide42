@@ -27,7 +27,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - NOTICE FOR EXISTING USERS!! New --update logic is now fully functional and tested across multiple systems. You can either git restore . and git pull origin stable in your repo or re clone, chmod+x install.sh and ./install.sh; Use --update going forward.
 
 08.12.25
-- Tide42 now writes a tide42.vim file to ~/config/tide42 avoiding overwriting any exisiting user neovim configuration. Safely install tide42 and keep your custom nvim configs active. Added XDG_CONFIG_HOME support in install.sh and tide42.sh with fallback to ~/.config/tide42. Users can now install Tide42 and keep nvim configurations intact. 
+- Tide42 now writes a tide42.vim file to ~/config/tide42 avoiding overwriting any exisiting user neovim configuration. Safely install tide42 and keep your custom nvim configs active. Added XDG_CONFIG_HOME support in install.sh and tide42.sh with fallback to ~/.config/tide42. Users can now install Tide42 and keep nvim configurations intact.
+- NERDTree starts in $HOME regardless of which directory tide42 is launched from. Cannot navigate higher than $HOME by default. Use sudoedit in the terminal buffer to edit as sudo. 
 
 08.04.25
 - Added vim navigation to tide42.sh tmux keybindings sections. Alternate tmux buffers with Ctrl+Q + hjkl.
@@ -69,11 +70,6 @@ If your repo is on main:
 - chmod +x install.sh
 - ./install.com
 - All alias logic is handled by install.sh so that --update remains functional. Simply run xtide86 --update from anywhere and use either xtide86 or tide42 to launch.
-- Added global `set noswapfile` to prevent swap creation on startup
-- Re-enabled swapfile only for non-NERDTree buffers via BufWinEnter autocmd
-- Eliminated rare `.swp` file generation in terminal sessions
-- Optional: silently delete swapfiles via SwapExists to suppress flash warnings
-- If you have not already done so, please run git pull within your repo directory, or simply re clone to update to the new stable release 1.2.0. Going forward, the method of updating will be to simply use the flag --update
 
 **Version:** `v1.2.0`
 >**New in v1.2.0:** - Functionality to yank text from any buffer (IPython, TermiC, Terminal) and append to file editor for easy notes.
@@ -125,7 +121,7 @@ If your repo is on main:
 - Opening second file in right tmux buffer if session is detached with a loaded file in the left (default).
 
 ## Flags
-- Enable 88 color support (256 is default) with --low-color or -lcUpdate tide42 (anywhere):--update
+- Enable 88 color support (256 is default) with --low-color or -lc 
 - Check version: --version
 - Silence log: --quiet
 - Help: --help
