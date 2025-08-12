@@ -190,14 +190,14 @@ else
   export TERM="xterm-256color"
   export COLORTERM=truecolor
   unset NVIM_NO_COLOR
-  log "Using default 256-color mode."
+  log "Setting default to 256 colors."
 fi
 
 # === Write default tmux.conf only if no color flag provided ===
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
   if [ -f "$TMUX_CONF" ]; then
     if grep -q "# tide42_overwrite_ok" "$TMUX_CONF"; then
-      log "Tide42 marker found. Overwriting tmux.conf"
+      log "Tide42 marker found. Copying and backing up tmux.conf"
       cp "$TMUX_CONF" "$TMUX_CONF.bak"
       cat <<EOF > "$TMUX_CONF"
 # tide42: Default 256-color scheme

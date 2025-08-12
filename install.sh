@@ -140,7 +140,7 @@ TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 echo "Checking for existing tide42 Neovim config..."
 echo "[tide42] Installing Neovim config to $TIDE_CONF_DIR (isolated from default nvim)..."
 mkdir -p "$TIDE_CONF_DIR"
-cp -f "$SCRIPT_DIR/init.vim" "$TIDE_CONF_FILE"
+cp -f "$SCRIPT_DIR/tide42.vim" "$TIDE_CONF_FILE"
 
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -296,5 +296,5 @@ fi
 echo "Installing Neovim plugins for tide42..."
 NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
-echo "[tide42] Love it? Hate it? Share feedback: github.com/logicmagix/tide42/discussions"
+echo "[tide42] Share feedback: github.com/logicmagix/tide42/discussions"
 echo "[tide42] Bugs or ideas? Post on r/neovim or DM @logicmagix on X."

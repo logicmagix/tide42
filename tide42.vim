@@ -1,4 +1,3 @@
-
 " tide42 (formerly xtide86) - a terminal IDE powered by tmux and nvim
 " Copyright (C) 2025 Pavle Dzakula
 "
@@ -9,31 +8,33 @@
 "
 " This program is distributed in the hope that it will be useful,
 " but WITHOUT ANY WARRANTY; without even the implied warranty of
-" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the# GNU General Public License for more details.
+" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+" GNU General Public License for more details.
 "
 " You should have received a copy of the GNU General Public License
 " along with this program. If not, see <https://www.gnu.org/licenses/>.
 " Credits
+" This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
-"This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
+let mapleader = "\"
 syntax on
 filetype plugin indent on
 
 " Plugin management with vim-plug
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.v'
+Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'jackMort/ChatGPT.nvim'
 call plug#end()
 
-" Configure ChatGPT.nvim
+" Configure ChatGPT.nvim and Telescope
 lua << EOF
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",
@@ -41,17 +42,21 @@ require("chatgpt").setup({
     model = "gpt-4",
   }
 })
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = "move_selection_next",
+        ["<C-k>"] = "move_selection_previous",
+      },
+    },
+  },
+}
 EOF
 
 " General settings for window management
-" Default nvim colorschemes include:
-" blue darkblue default delek desert elflord evening habamax industry
-" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
-" slate sorbet torte unokai
-" vim (used to set transparency, respects default terminal emulator settings)
-" wildcharm zaibatsu zellner
-let g:default_colorscheme = "default" 
-colorscheme retrobox "<---.replace with your preferred default"
+let g:default_colorscheme = "default"
+colorscheme retrobox
 set noswapfile
 let g:using_vim_scheme = 0
 set termguicolors
@@ -71,7 +76,6 @@ let NERDTreeLimitedSyntax = 1
 
 " Visual settings
 set cursorline
-"set cursorcolumn
 set number
 set relativenumber
 augroup WindowLineNumbers
@@ -81,33 +85,14 @@ augroup WindowLineNumbers
 augroup END
 set list
 set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
-" Medieval Set:
-"set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,
 
 " Custom highlights
 augroup CursorHighlights
   autocmd!
-   autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
-"   autocmd ColorScheme,VimEnter * highlight clear CursorColumn | highlight CursorColumn ctermbg=230 guibg=#4e4e4e
+  autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
 augroup END
-"highlight CursorColumn ctermbg=230 guibg=#4e4e4e
 highlight Visual ctermbg=110 guibg=#87afd7
 highlight MatchParen ctermbg=100 guibg=#878700
-" Colors:
-" Light Brown: ctermbg=95 guibg=#875f5f
-" Brown: ctermbg=94 guibg=#875f00
-" Olive Green: ctermbg=100 guibg=#878700
-" Lime Green: ctermbg=154 guibg=#afff00
-" Neon Green: ctermbg=118 guibg=#87ff00
-" Neon Pink: ctermbg=198 guibg=#ff0087
-" Purple: ctermbg=56 guibg=#5f00d7
-" Cyan: ctermbg=48 guibg=#00ff87
-" Dark Teal: ctermbg=23 guibg=#005f5f
-" Orange: ctermbg=208 guibg=#ff8700
-" Deep Red: ctermbg=124 guibg=#af0000
-" Soft Blue: ctermbg=110 guibg=#87afd7
-" Gray: ctermbg=230 guibg=#4e4e4e
-
 
 " Key mappings and commands
 if !exists(':MaximizeTerminalBuffer')
@@ -141,27 +126,26 @@ nnoremap <silent> <leader>n :RestartIPython<CR>
 vnoremap <silent> <leader>m :<C-u>call AppendToEditor()<CR>
 nnoremap <silent> <leader>o :ChatGPT<CR>
 tnoremap <Esc> <C-\><C-n>
-nnoremap <leader>g :call Grid(5, 10)<CR>  " Lift 5x10 gate
-nnoremap <leader>f :call Grid(10, 10)<CR> " Lift 10x10 gate
-nnoremap <leader>w :W<CR>
-nnoremap <leader>r :Rg<CR>
+nnoremap <leader>g :call Grid(5, 10)<CR>
+nnoremap <leader>f :call Grid(10, 10)<CR>
+nnoremap <leader>w :Telescope buffers<CR>
+nnoremap <leader>e :Telescope find_files<CR>
+nnoremap <leader>r :Telescope live_grep<CR>
 nnoremap <leader>y :call ToggleScheme()<CR>
-nnoremap <leader>e :Files<CR>
 inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
+autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
-"Initialization
-"Detect Shell
+" Initialization
+" Detect Shell
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
 
-"Initialization
 autocmd VimEnter * echom "Detected shell: " . shell_name
 autocmd! VimEnter *
 autocmd VimEnter * NERDTree
-autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :W<CR>
 autocmd VimEnter * vertical resize 1
 autocmd VimEnter * wincmd l
 autocmd VimEnter * topleft split
@@ -193,7 +177,7 @@ execute 'autocmd VimEnter * resize ' . terminal_resize
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
-"Toggle vim colorscheme (terminal default)
+" Toggle vim colorscheme
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
@@ -226,7 +210,7 @@ endfunction
 " Guard to prevent repeated calls
 let s:is_running = 0
 let s:last_run = 0
-let s:debounce_ms = 500  " Only allow one run every 500ms
+let s:debounce_ms = 500
 
 " Send to IPython
 function! SendToIPython() abort
@@ -357,7 +341,6 @@ function! SendToTermiC() abort
       echom "Error: TermiC terminal window not found"
     endif
   finally
-    " Ensure visual mode is exited
     if mode() =~# '[vV]'
       execute "normal! \<Esc>"
     endif
@@ -366,7 +349,6 @@ endfunction
 
 " Append any buffer selection to editor buffer
 function! AppendToEditor() abort
-  " Initialize debounce variables
   if !exists('s:last_run')
     let s:last_run = 0
     let s:debounce_ms = 100
@@ -447,11 +429,11 @@ function! s:ResetWindowSizes(maximize_editor) abort
   if term_win > 0
     execute term_win . 'wincmd w'
     if !a:maximize_editor
-      vertical resize 33  
-      resize 12          
+      vertical resize 33
+      resize 12
     else
-      vertical resize 1   " Minimize width when maximizing editor
-      resize 1           " Minimize height when maximizing editor
+      vertical resize 1
+      resize 1
     endif
   endif
   if edit_win > 0
@@ -461,10 +443,10 @@ function! s:ResetWindowSizes(maximize_editor) abort
     let edit_win = winnr()
   endif
   if a:maximize_editor
-    wincmd _  " Maximize height
-    wincmd |  " Maximize width
+    wincmd _
+    wincmd |
   else
-    vertical resize 89  " Default editor width
+    vertical resize 89
   endif
   wincmd j
   wincmd l
@@ -484,9 +466,7 @@ endfunction
 " Focus IPython buffer
 function! MaximizeIPythonBuffer() abort
   silent! try
-    " Save initial window
     let l:initial_win = winnr()
-    " Find all terminal windows
     let l:terminal_wins = []
     let l:ipython_win = 0
     let l:nerdtree_win = 0
@@ -515,7 +495,7 @@ function! MaximizeIPythonBuffer() abort
     for w in range(1, winnr('$'))
       if w != l:ipython_win
         execute w . 'wincmd w'
-        silent! resize 1 " Minimize to smallest possible height
+        silent! resize 1
       endif
     endfor
     execute l:ipython_win . 'wincmd w'
@@ -534,7 +514,7 @@ function! MaximizeIPythonBuffer() abort
   endtry
 endfunction
 
-"Maximize terminal buffer
+" Maximize terminal buffer
 function! s:MaximizeTerminalBuffer(direction = 'left') abort
   silent! try
     let l:initial_win = winnr()
@@ -622,6 +602,7 @@ function! s:MaximizeTerminalBuffer(direction = 'left') abort
     endif
   endtry
 endfunction
+
 function! s:EnlargeWindow() abort
   wincmd _
   echom "SET SIZE | Focus: (Currently Selected Buffer)"
@@ -655,14 +636,12 @@ function! s:RestartIPython() abort
   execute current_win . 'wincmd w'
 endfunction
 
-" Grid: Draw 10x10 or 5X10 grid
+" Grid: Draw 10x10 or 5x10 grid
 function! Grid(...) abort
     if exists('b:grid_row_grp') || exists('b:grid_prev_cc')
         call matchdelete(b:grid_row_grp)
         let &colorcolumn = b:grid_prev_cc
         unlet b:grid_row_grp b:grid_prev_cc
-"       echo "PORTCULLIS | Gates have been raised"
-        return
         echo "GRID | Grid Off"
         return
     endif
@@ -698,7 +677,6 @@ function! Grid(...) abort
     let b:grid_row_grp = matchadd('ColorColumn', pat)
     let b:grid_prev_cc = &colorcolumn
     let &colorcolumn = join(cols, ',')
-"   echo "PORTCULLIS | Gates have been lowered: rows every " . dr . ", cols every " . dc
     echo "GRID | Grid On " . dr . ", cols every " . dc
 endfunction
 
