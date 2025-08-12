@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # tide42 - a terminal IDE powered by tmux and nvim
 # Copyright (C) 2025 Pavle Dzakula
 #
@@ -19,10 +18,9 @@
 # Credits
 # This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
+# === Initialize ===
 set -e
-
 echo "[tide42] Running..."
-
 VERSION_PATH="$(dirname "$0")/VERSION"
 TIDE_VERSION="unknown"
 if [ -f "$VERSION_PATH" ]; then
@@ -30,7 +28,6 @@ if [ -f "$VERSION_PATH" ]; then
 fi
 GIT_BRANCH=$(git -C "$(dirname "$0")" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 TIDE_VERSION="$TIDE_VERSION ($GIT_BRANCH)"
-
 IS_LOW_COLOR=false
 IS_QUIET=false
 FILENAME=""
@@ -38,8 +35,10 @@ COLOR_FLAG_PROVIDED=false
 UPDATE_PROCESSED=false
 SESSION_NAME="tide42"
 TMUX_CONF="$HOME/.tmux.conf"
+TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
+TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 
-# Define pane border settings in tmux.conf
+# === Define pane border settings in tmux.conf ===
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
@@ -48,11 +47,9 @@ set -g pane-border-format "#{pane_index} "
 set -g pane-border-style "fg=black,bg=default,dim"
 EOF
 )
-
 log() {
   $IS_QUIET || echo "[tide42] $@"
 }
-
 while [ $# -gt 0 ]; do
   case "$1" in
     --whereami)
@@ -65,7 +62,7 @@ while [ $# -gt 0 ]; do
     --lite)
       shift
       log "[tide42] Launching in lite mode (no tmux)..."
-      exec nvim "$@"
+      exec NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" "$@"
       ;;
     --quiet|-q)
       IS_QUIET=true
@@ -228,7 +225,6 @@ set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
 $PANE_BORDER_CONFIG
-
 EOF
   fi
 fi
@@ -244,7 +240,7 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   if [ -n "$FILENAME" ]; then
     if tmux list-panes -t "$SESSION_NAME":0.0 >/dev/null 2>&1; then
       tmux select-pane -t "$SESSION_NAME":0.0
-      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "nvim \"$FILENAME\"" C-m
+      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
       log "Opened $FILENAME in left pane of existing session."
     else
       log "Warning: Left pane not available. Attaching without opening $FILENAME."
@@ -295,13 +291,13 @@ tmux select-pane -t "$SESSION_NAME":0.0
 
 # === Open file in pane 0 ===
 if [ -n "$FILENAME" ]; then
-  tmux send-keys -t "$SESSION_NAME":0.0 "nvim \"$FILENAME\"" C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
 else
-  tmux send-keys -t "$SESSION_NAME":0.0 'nvim' C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 fi
 
-# === Preload right pane pne 1 with nvim if desired ===
-tmux send-keys -t "$SESSION_NAME":0.1 'nvim' C-m
+# === Preload right pane 1 with nvim if desired ===
+tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 
 # === Attach to the session ===
 tmux attach-session -t "$SESSION_NAME"

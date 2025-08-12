@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 set -e
-
 echo "[+] Installed tide42 and legacy xtide86 wrappers to $BIN_DIR"
 
 # === Legacy xtide86 alias ===
@@ -10,19 +9,17 @@ cat <<EOF | sudo tee /usr/local/bin/xtide86 > /dev/null
 echo "[XTide86] XTide86 has been renamed to Tide42."
 exec tide42 "\$@"
 EOF
-
 sudo chmod +x /usr/local/bin/xtide86
 
 # === Detect OS and Package Manager ===
 detect_os_and_pkg() {
   OS=$(uname -s)
-
   case "$OS" in
     Darwin)
       PKG_MANAGER="brew"
       INSTALL_CMD="brew install"
       INSTALL_PATH="/usr/local/bin/tide42"
-      [ -d "/opt/homebrew/bin" ] && INSTALL_PATH="/opt/homebrew/bin/tide42"  # Apple Silicon support
+      [ -d "/opt/homebrew/bin" ] && INSTALL_PATH="/opt/homebrew/bin/tide42" # Apple Silicon support
       ;;
     Linux)
       if [ -f "/etc/arch-release" ]; then
@@ -45,12 +42,10 @@ detect_os_and_pkg() {
       INSTALL_PATH="/usr/local/bin/tide42"
       ;;
   esac
-
   echo "[tide42] Detected OS: $OS"
   echo "[tide42] Using package manager: $PKG_MANAGER"
   echo "[tide42] Install path: $INSTALL_PATH"
 }
-
 update_package_manager() {
   case "$PKG_MANAGER" in
     apt)
@@ -78,11 +73,11 @@ update_package_manager
 # === Install system packages ===
 echo "[tide42] Installing tide42 dependencies..."
 
-# Define packages (map different names if needed)
+# === Define packages ===
 declare -A PKG_NAMES=(
   ["tmux"]="tmux"
-  ["ncurses"]="ncurses-term"  # apt-specific, adjust below for others
-  ["neovim"]="neovim"         # pacman uses 'neovim', brew uses 'neovim'
+  ["ncurses"]="ncurses-term" # apt-specific, adjust below for others
+  ["neovim"]="neovim" # pacman uses 'neovim', brew uses 'neovim'
   ["python3"]="python3"
   ["python3-pip"]="python3-pip"
   ["ipython"]="python3-ipython"
@@ -91,7 +86,7 @@ declare -A PKG_NAMES=(
   ["fonts-powerline"]="fonts-powerline"
 )
 
-# Adjust package names for specific package managers
+# === Adjust package names for specific package managers ===
 case "$PKG_MANAGER" in
   pacman)
     PKG_NAMES["ncurses"]="ncurses"
@@ -113,7 +108,7 @@ for pkg in "${!PKG_NAMES[@]}"; do
   PKG_LIST="${PKG_LIST} ${PKG_NAMES[$pkg]}"
 done
 
-# Install packages using the appropriate command
+# === Install packages ===
 if [ "$PKG_MANAGER" = "unknown" ]; then
   echo "[tide42] Unknown package manager. Please install the following packages manually:"
   for pkg in "${!PKG_NAMES[@]}"; do
@@ -127,29 +122,25 @@ else
     exit 1
   }
 fi
-  
 
-# === Install vim-plug ===
-if [ ! -f ~/.local/share/nvim/site/autoload/plug.vim ]; then
-  echo "Installing vim-plug for Neovim..."
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+# === Install vim-plug for tide42 isolated setup ===
+if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
+  echo "Installing vim-plug for tide42's Neovim..."
+  mkdir -p ~/.local/share/tide42/site/autoload
+  curl -fLo ~/.local/share/tide42/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-# === Resolve the script's directory (move this earlier) ===
+# === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# === Copy nvim config ===
-echo "Checking for existing Neovim config..."
-
-INIT_VIM="$HOME/.config/nvim/init.vim"
-INIT_LUA="$HOME/.config/nvim/init.lua"
-
-echo "[tide42] Installing Neovim config..."
-echo "[tide42] Warning: This will overwrite your init.vim."
-mkdir -p "$HOME/.config/nvim"
-cp -f "$SCRIPT_DIR/init.vim" "$HOME/.config/nvim/init.vim"
-
+# === Copy nvim config to isolated tide42 dir ===
+TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
+TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
+echo "Checking for existing tide42 Neovim config..."
+echo "[tide42] Installing Neovim config to $TIDE_CONF_DIR (isolated from default nvim)..."
+mkdir -p "$TIDE_CONF_DIR"
+cp -f "$SCRIPT_DIR/init.vim" "$TIDE_CONF_FILE"
 
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -174,16 +165,13 @@ fi
 
 # === Copy tide42.sh to /usr/local/bin ===
 echo "Creating wrapper script at /usr/local/bin/tide42..."
-
 cat <<EOF | sudo tee /usr/local/bin/tide42 > /dev/null
 #!/usr/bin/env bash
 SCRIPT_DIR="$SCRIPT_DIR"
 bash "\$SCRIPT_DIR/tide42.sh" "\$@"
 EOF
-
 sudo chmod +x /usr/local/bin/tide42
 echo "Wrapper script created."
-
 echo "tide42.sh installed to /usr/local/bin/tide42."
 
 # === Copy termic.sh to /usr/local/bin ===
@@ -211,7 +199,6 @@ fi
 # === Ensure IPython is available ===
 ensure_ipython() {
   echo "[tide42] Ensuring IPython is available..."
-
   # Check if ipython or ipython3 is already available
   if command -v ipython &> /dev/null; then
     echo "[tide42] 'ipython' is available."
@@ -226,7 +213,6 @@ ensure_ipython() {
       echo "[tide42] Warning: Failed to create 'ipython' symlink."
     fi
   fi
-
   # No ipython or ipython3 found, try installing
   if command -v conda &> /dev/null; then
     echo "[tide42] Conda detected. Installing IPython via conda..."
@@ -244,7 +230,6 @@ ensure_ipython() {
       echo "[tide42] Warning: apt install failed. You may need to install IPython manually."
     fi
   fi
-
   # Final check for ipython
   if ! command -v ipython &> /dev/null && ! command -v ipython3 &> /dev/null; then
     echo "[tide42] Warning: No 'ipython' or 'ipython3' detected. tide42 may not function properly."
@@ -257,11 +242,9 @@ ensure_ipython() {
   fi
 }
 
-
 # === Install man page ===
 MANPAGE_SOURCE="$SCRIPT_DIR/tide42.1"
 MANPAGE_TARGET="/usr/share/man/man1/tide42.1.gz"
-
 if [ -f "$MANPAGE_SOURCE" ]; then
     echo "[tide42] Compressing man page..."
     if gzip -f -c "$MANPAGE_SOURCE" > tide42.1.gz; then
@@ -276,12 +259,11 @@ else
     echo "[tide42] Warning: tide42.1 not found. Skipping man page install."
 fi
 
-# Desktop launcher
+# === Desktop launcher ===
 GLOBAL_INSTALL=false
 if [ "$1" == "--global" ]; then
   GLOBAL_INSTALL=true
 fi
-
 if [ "$GLOBAL_INSTALL" = true ]; then
   echo "Installing system-wide .desktop launcher..."
   sudo cp ./tide42.desktop /usr/share/applications/
@@ -289,14 +271,11 @@ if [ "$GLOBAL_INSTALL" = true ]; then
   sudo update-desktop-database /usr/share/applications || true
 else
   echo "Installing user-local .desktop launcher..."
-
   if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
     echo "[tide42] GUI detected, installing launcher..."
-
     if [ -f "$HOME/.local/share/applications" ]; then
       rm -f "$HOME/.local/share/applications"
     fi
-
     mkdir -p "$HOME/.local/share/applications"
     cp ./tide42.desktop "$HOME/.local/share/applications/"
     mkdir -p "$HOME/.local/share/icons/hicolor/64x64/apps/"
@@ -306,8 +285,6 @@ else
     echo "[tide42] No GUI detected — skipping .desktop launcher install."
   fi
 fi
-
-
 if [ ! -f "$HOME/.tmux.conf" ]; then
   cat <<EOF > "$HOME/.tmux.conf"
 set -g default-terminal "tmux-256color"
@@ -315,11 +292,9 @@ set -as terminal-overrides ',*:Tc'
 EOF
 fi
 
-# === Install Neovim plugins ===
-echo "Installing Neovim plugins..."
-nvim +PlugInstall +qall
-
-
+# === Install Neovim plugins with isolated setup ===
+echo "Installing Neovim plugins for tide42..."
+NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
 echo "[tide42] Love it? Hate it? Share feedback: github.com/logicmagix/tide42/discussions"
 echo "[tide42] Bugs or ideas? Post on r/neovim or DM @logicmagix on X."
