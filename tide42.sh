@@ -62,7 +62,7 @@ while [ $# -gt 0 ]; do
     --lite)
       shift
       log "[tide42] Launching in lite mode (no tmux)..."
-      exec NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" "$@"
+      exec env NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" "$@"
       ;;
     --quiet|-q)
       IS_QUIET=true
