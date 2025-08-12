@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-
 set -e
 echo "[+] Installed tide42 and legacy xtide86 wrappers to $BIN_DIR"
-
 # === Legacy xtide86 alias ===
 cat <<EOF | sudo tee /usr/local/bin/xtide86 > /dev/null
 #!/usr/bin/env bash
@@ -10,7 +8,6 @@ echo "[XTide86] XTide86 has been renamed to Tide42."
 exec tide42 "\$@"
 EOF
 sudo chmod +x /usr/local/bin/xtide86
-
 # === Detect OS and Package Manager ===
 detect_os_and_pkg() {
   OS=$(uname -s)
@@ -65,64 +62,62 @@ update_package_manager() {
       ;;
   esac
 }
-
 # === Run OS detection and update ===
 detect_os_and_pkg
 update_package_manager
-
 # === Install system packages ===
 echo "[tide42] Installing tide42 dependencies..."
-
 # === Define packages ===
 declare -A PKG_NAMES=(
   ["tmux"]="tmux"
-  ["ncurses"]="ncurses-term" # apt-specific, adjust below for others
-  ["neovim"]="neovim" # pacman uses 'neovim', brew uses 'neovim'
+  ["ncurses"]="ncurses-term"
+  ["neovim"]="neovim"
   ["python3"]="python3"
   ["python3-pip"]="python3-pip"
   ["ipython"]="python3-ipython"
   ["curl"]="curl"
   ["git"]="git"
   ["fonts-powerline"]="fonts-powerline"
+  ["ripgrep"]="ripgrep"
 )
-
-# === Adjust package names for specific package managers ===
+# Adjust package names for specific package managers
 case "$PKG_MANAGER" in
   pacman)
     PKG_NAMES["ncurses"]="ncurses"
     PKG_NAMES["python3-pip"]="python-pip"
     PKG_NAMES["ipython"]="ipython"
     PKG_NAMES["fonts-powerline"]="powerline-fonts"
+    PKG_NAMES["ripgrep"]="ripgrep"
     ;;
   brew)
     PKG_NAMES["ncurses"]="ncurses"
     PKG_NAMES["python3-pip"]="python-pip"
     PKG_NAMES["ipython"]="ipython"
     PKG_NAMES["fonts-powerline"]="powerline-fonts"
+    PKG_NAMES["ripgrep"]="ripgrep"
     ;;
 esac
-
 # Build package list for installation
 PKG_LIST=""
 for pkg in "${!PKG_NAMES[@]}"; do
   PKG_LIST="${PKG_LIST} ${PKG_NAMES[$pkg]}"
 done
-
-# === Install packages ===
+# Install packages using the appropriate command
 if [ "$PKG_MANAGER" = "unknown" ]; then
   echo "[tide42] Unknown package manager. Please install the following packages manually:"
   for pkg in "${!PKG_NAMES[@]}"; do
     echo "- ${PKG_NAMES[$pkg]}"
   done
+  echo "For ripgrep, visit: https://github.com/BurntSushi/ripgrep#installation"
   exit 1
 else
   echo "[tide42] Installing packages: $PKG_LIST"
   $INSTALL_CMD $PKG_LIST || {
     echo "[tide42] Failed to install packages. Please check the package manager and try again."
+    echo "For ripgrep, ensure it is installed: https://github.com/BurntSushi/ripgrep#installation"
     exit 1
   }
 fi
-
 # === Install vim-plug for tide42 isolated setup ===
 if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
   echo "Installing vim-plug for tide42's Neovim..."
@@ -130,24 +125,23 @@ if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
   curl -fLo ~/.local/share/tide42/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
-
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # === Copy nvim config to isolated tide42 dir ===
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 echo "Checking for existing tide42 Neovim config..."
 echo "[tide42] Installing Neovim config to $TIDE_CONF_DIR (isolated from default nvim)..."
+if [ ! -f "$SCRIPT_DIR/tide42.vim" ]; then
+  echo "Error: tide42.vim not found in $SCRIPT_DIR. Please ensure the file exists."
+  exit 1
+fi
 mkdir -p "$TIDE_CONF_DIR"
 cp -f "$SCRIPT_DIR/tide42.vim" "$TIDE_CONF_FILE"
-
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 # === Copy tide42.sh and termic.sh to system path ===
 echo "Installing tide42 and TermiC launch scripts..."
-
 # === Check if files exist ===
 for script in "$SCRIPT_DIR/tide42.sh" "$SCRIPT_DIR/termic.sh"; do
   if [ ! -f "$script" ]; then
@@ -155,14 +149,12 @@ for script in "$SCRIPT_DIR/tide42.sh" "$SCRIPT_DIR/termic.sh"; do
     exit 1
   fi
 done
-
 # === Set executable permissions locally (temporary for copying) ===
 echo "Setting temporary executable permissions for tide42.sh and termic.sh..."
 if ! chmod +x "$SCRIPT_DIR/tide42.sh" "$SCRIPT_DIR/termic.sh"; then
   echo "Error: Failed to set executable permissions on scripts."
   exit 1
 fi
-
 # === Copy tide42.sh to /usr/local/bin ===
 echo "Creating wrapper script at /usr/local/bin/tide42..."
 cat <<EOF | sudo tee /usr/local/bin/tide42 > /dev/null
@@ -173,7 +165,6 @@ EOF
 sudo chmod +x /usr/local/bin/tide42
 echo "Wrapper script created."
 echo "tide42.sh installed to /usr/local/bin/tide42."
-
 # === Copy termic.sh to /usr/local/bin ===
 echo "Copying termic.sh to /usr/local/bin/..."
 if ! sudo cp -f "$SCRIPT_DIR/termic.sh" /usr/local/bin/termic; then
@@ -181,25 +172,21 @@ if ! sudo cp -f "$SCRIPT_DIR/termic.sh" /usr/local/bin/termic; then
   exit 1
 fi
 echo "termic.sh installed to /usr/local/bin/termic."
-
 # === Ensure destination files are executable ===
 echo "Ensuring installed scripts are executable..."
 if ! sudo chmod 755 /usr/local/bin/tide42 /usr/local/bin/termic; then
   echo "Error: Failed to set executable permissions on installed scripts."
   exit 1
 fi
-
 # === Try apt install for system-wide fallback ===
 if ! command -v ipython3 &> /dev/null; then
   echo "Attempting to install ipython3 via apt..."
   sudo apt update
   sudo apt install -y python3-ipython || echo "Warning: apt install failed. You may need to install IPython manually."
 fi
-
 # === Ensure IPython is available ===
 ensure_ipython() {
   echo "[tide42] Ensuring IPython is available..."
-  # Check if ipython or ipython3 is already available
   if command -v ipython &> /dev/null; then
     echo "[tide42] 'ipython' is available."
     return 0
@@ -213,7 +200,6 @@ ensure_ipython() {
       echo "[tide42] Warning: Failed to create 'ipython' symlink."
     fi
   fi
-  # No ipython or ipython3 found, try installing
   if command -v conda &> /dev/null; then
     echo "[tide42] Conda detected. Installing IPython via conda..."
     if conda install -y ipython; then
@@ -230,7 +216,6 @@ ensure_ipython() {
       echo "[tide42] Warning: apt install failed. You may need to install IPython manually."
     fi
   fi
-  # Final check for ipython
   if ! command -v ipython &> /dev/null && ! command -v ipython3 &> /dev/null; then
     echo "[tide42] Warning: No 'ipython' or 'ipython3' detected. tide42 may not function properly."
   elif command -v ipython3 &> /dev/null && ! command -v ipython &> /dev/null; then
@@ -241,7 +226,6 @@ ensure_ipython() {
     fi
   fi
 }
-
 # === Install man page ===
 MANPAGE_SOURCE="$SCRIPT_DIR/tide42.1"
 MANPAGE_TARGET="/usr/share/man/man1/tide42.1.gz"
@@ -258,7 +242,6 @@ if [ -f "$MANPAGE_SOURCE" ]; then
 else
     echo "[tide42] Warning: tide42.1 not found. Skipping man page install."
 fi
-
 # === Desktop launcher ===
 GLOBAL_INSTALL=false
 if [ "$1" == "--global" ]; then
@@ -291,10 +274,9 @@ set -g default-terminal "tmux-256color"
 set -as terminal-overrides ',*:Tc'
 EOF
 fi
-
 # === Install Neovim plugins with isolated setup ===
 echo "Installing Neovim plugins for tide42..."
 NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
-echo "[tide42] Share feedback: github.com/logicmagix/tide42/discussions"
+echo "[tide42] Love it? Hate it? Share feedback: github.com/logicmagix/tide42/discussions"
 echo "[tide42] Bugs or ideas? Post on r/neovim or DM @logicmagix on X."
