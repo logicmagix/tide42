@@ -16,7 +16,6 @@
 " Credits
 " This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
-let mapleader = "\"
 syntax on
 filetype plugin indent on
 
