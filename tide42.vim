@@ -11,10 +11,38 @@
 "=======================================================
 " tide42 (formerly xtide86) — see LICENSE for details
 
-" ── PLUGINS ────────────────────────────────────────────────────────
+" ── GENERAL ───────────────────────────────────────────────────
+
+" Default nvim colorschemes include:
+" blue darkblue default delek desert elflord evening habamax industry
+" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
+" slate sorbet torte unokai
+" vim (used to set transparency, respects default terminal emulator settings)
+" wildcharm zaibatsu zellner
 
 syntax on
 filetype plugin indent on
+let g:default_colorscheme = "default"
+colorscheme retrobox "<---.replace with your preferred default"
+set noswapfile
+let g:using_vim_scheme = 0
+set termguicolors
+set mouse=nvi
+set laststatus=2
+set winminheight=1
+set shell=/bin/bash
+let g:NERDTreeWinSize=10
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let NERDTreeAutoDeleteBuffer = 1
+let NERDTreeQuitOnOpen = 0
+let NERDTreeRespectWildIgnore = 1
+let NERDTreeDirArrows = 1
+let NERDTreeShowLineNumbers = 1
+let NERDTreeLimitedSyntax = 0
+
+" ── PLUGINS ────────────────────────────────────────────────────────
+
 call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
@@ -47,34 +75,7 @@ require('telescope').setup{
   },
 }
 EOF
-
-" ── GENERAL ───────────────────────────────────────────────────
-" Default nvim colorschemes include:
-" blue darkblue default delek desert elflord evening habamax industry
-" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
-" slate sorbet torte unokai
-" vim (used to set transparency, respects default terminal emulator settings)
-" wildcharm zaibatsu zellner
-let g:default_colorscheme = "default"
-colorscheme retrobox "<---.replace with your preferred default"
-set noswapfile
-let g:using_vim_scheme = 0
-set termguicolors
-set mouse=nvi
-set laststatus=2
-set winminheight=1
-set shell=/bin/bash
-let g:NERDTreeWinSize=10
-let NERDTreeShowHidden=1
-let NERDTreeMinimalUI = 1
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeQuitOnOpen = 0
-let NERDTreeRespectWildIgnore = 1
-let NERDTreeDirArrows = 1
-let NERDTreeShowLineNumbers = 1
-let NERDTreeLimitedSyntax = 0
-
-                                             
+                                         
 " ── UI & COLORS ───────────────────────────────────────────────────
 
 set cursorline
@@ -87,9 +88,10 @@ augroup WindowLineNumbers
 augroup END
 set list
 " Without space marker
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,                                    " Medieval Set:
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,                                    
 " With space marker
-"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                    " Medieval Set:
+"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                    
+" Medieval Set:
 "set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,                                    
 
 augroup CursorHighlights
