@@ -213,13 +213,13 @@ Instructions:
 ## Requirements
 
 - ``tmux``
-- ``neovim`` 0.9.0+ (tested on 0.9.5)
+- ``neovim`` 0.9.0+ (tested on 0.9.5 and 0.12)
 - ``vim-plug`` curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
 - ``TermiC`` wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"  (live C/C++ shell)
 - ``Anaconda3`` with ``IPython`` (preferred, but may work with base ``IPython``)
 - ``bash``
-- Works on ARM. Tested on a Raspberry Pi5 and nvim 0.9.5 had to be built from source. Check your distro and dependencies on ARM. 
+- Works on ARM. Tested on a Raspberry Pi5. Nvim 0.9.5 and 0.12 had to be built from source. Check your distro and dependencies on ARM. 
 
 ## Installation
 
