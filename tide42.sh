@@ -125,17 +125,7 @@ EOF
         log "Running installer to apply updates..."
         chmod +x "$INSTALL_SCRIPT"
         if ! "$INSTALL_SCRIPT" --quiet; then
-          log "Warning: Installer failed, likely due to existing Neovim config."
-          if [ -f "$HOME/.config/nvim/init.vim" ] || [ -f "$HOME/.config/nvim/init.lua" ]; then
-            log "Neovim config found. Retrying installer with --force..."
-            "$INSTALL_SCRIPT" --quiet --force && log "Installer ran successfully with --force." || {
-              log "Warning: Installer failed even with --force. Update completed, but manual installation may be needed."
-              log "Try running '$INSTALL_SCRIPT --force' manually to resolve."
-            }
-          else
-            log "No Neovim config found, but installer failed. Update completed, but manual installation may be needed."
-            log "Try running '$INSTALL_SCRIPT' manually to diagnose."
-          fi
+          log "Warning: Installer failed."
         else
           log "Installer ran successfully."
         fi
