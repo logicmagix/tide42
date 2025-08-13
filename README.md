@@ -289,11 +289,8 @@ Pull requests, stars, and forks welcome
 ### Tide42 running bash X11
 ![Bash](Screenshots/Screenshot0.png)
 
-### Tide42 on Wayland
-![Wayland](Screenshots/Screenshot1.png)
-
-### Integrated Ipython usage example
-![Ipython](Screenshots/Screenshot2.png)
+### Tide42 on Wayland/Integrated Ipython usage example
+![Wayland/Ipython](Screenshots/Screenshot1.png)
 
 ### Termic C/C++ Live Shell usage example
 ![TermiC cpp](Screenshots/Screenshot3.png)
