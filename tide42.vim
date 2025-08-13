@@ -19,7 +19,14 @@
 syntax on
 filetype plugin indent on
 
-" Plugin management with vim-plug
+██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗    ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗███╗   ███╗███████╗███╗   ██╗████████╗
+██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║    ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
+██████╔╝██║     ██║   ██║██║  ███╗██║██╔██╗ ██║    ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   
+██╔═══╝ ██║     ██║   ██║██║   ██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   
+██║     ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║    ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   
+╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
+                                                                                                                                               
+
 call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
@@ -53,7 +60,15 @@ require('telescope').setup{
 }
 EOF
 
-" General settings for window management
+
+ ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     
+██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗██║     
+██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║██║     
+██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║██║     
+╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
+ ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+                                                           
+
 let g:default_colorscheme = "default"
 colorscheme retrobox
 set noswapfile
@@ -73,7 +88,15 @@ let NERDTreeDirArrows = 1
 let NERDTreeShowLineNumbers = 1
 let NERDTreeLimitedSyntax = 0
 
-" Visual settings
+
+██╗   ██╗██╗███████╗██╗   ██╗ █████╗ ██╗     
+██║   ██║██║██╔════╝██║   ██║██╔══██╗██║     
+██║   ██║██║███████╗██║   ██║███████║██║     
+╚██╗ ██╔╝██║╚════██║██║   ██║██╔══██║██║     
+ ╚████╔╝ ██║███████║╚██████╔╝██║  ██║███████╗
+  ╚═══╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+                                             
+
 set cursorline
 set number
 set relativenumber
@@ -85,7 +108,15 @@ augroup END
 set list
 set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
 
-" Custom highlights
+
+██╗  ██╗██╗ ██████╗ ██╗  ██╗██╗     ██╗ ██████╗ ██╗  ██╗████████╗███████╗
+██║  ██║██║██╔════╝ ██║  ██║██║     ██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
+███████║██║██║  ███╗███████║██║     ██║██║  ███╗███████║   ██║   ███████╗
+██╔══██║██║██║   ██║██╔══██║██║     ██║██║   ██║██╔══██║   ██║   ╚════██║
+██║  ██║██║╚██████╔╝██║  ██║███████╗██║╚██████╔╝██║  ██║   ██║   ███████║
+╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+                                                                         
+
 augroup CursorHighlights
   autocmd!
   autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
@@ -93,7 +124,15 @@ augroup END
 highlight Visual ctermbg=110 guibg=#87afd7
 highlight MatchParen ctermbg=100 guibg=#878700
 
-" Key mappings and commands
+
+██╗  ██╗██╗ ██████╗ ██╗  ██╗██╗     ██╗ ██████╗ ██╗  ██╗████████╗███████╗
+██║  ██║██║██╔════╝ ██║  ██║██║     ██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
+███████║██║██║  ███╗███████║██║     ██║██║  ███╗███████║   ██║   ███████╗
+██╔══██║██║██║   ██║██╔══██║██║     ██║██║   ██║██╔══██║   ██║   ╚════██║
+██║  ██║██║╚██████╔╝██║  ██║███████╗██║╚██████╔╝██║  ██║   ██║   ███████║
+╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+                                                                         
+
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
 endif
@@ -137,8 +176,16 @@ command! Hs split
 command! Q call ForceQuitAndKillTmux()
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
-" Initialization
-" Detect Shell
+
+
+██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗     ██╗███████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║     ██║╚══███╔╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+██║██╔██╗ ██║██║   ██║   ██║███████║██║     ██║  ███╔╝ ███████║   ██║   ██║██║   ██║██╔██╗ ██║
+██║██║╚██╗██║██║   ██║   ██║██╔══██║██║     ██║ ███╔╝  ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+██║██║ ╚████║██║   ██║   ██║██║  ██║███████╗██║███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+                                                                                              
+
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
 
@@ -168,7 +215,6 @@ else
     autocmd VimEnter * echom "Unknown shell detected, falling back to bash"
 endif
 
-" Finalize initialization
 autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
@@ -176,7 +222,16 @@ execute 'autocmd VimEnter * resize ' . terminal_resize
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
-" Toggle vim colorscheme
+
+███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+█████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+                                                                          
+
+" Toggle vim colorschemedd
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
@@ -684,3 +739,4 @@ augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 highlight ColorColumn ctermbg=239 guibg=#4e4e4e
+
