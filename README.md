@@ -290,7 +290,7 @@ Pull requests, stars, and forks welcome
 ![Bash](Screenshots/Screenshot0.png)
 
 ### Tide42 on Wayland/Integrated Ipython usage example
-![Wayland/Ipython](Screenshots/Screenshot1.png)
+![Wayland/Ipython](Screenshots/Screenshot2.png)
 
 ### Termic C/C++ Live Shell usage example
 ![TermiC cpp](Screenshots/Screenshot3.png)
