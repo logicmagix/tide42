@@ -283,8 +283,8 @@ Pull requests, stars, and forks welcome
 
 ### 	
 
-### Tide42 autodetects zsh or bash
-![Zsh](Screenshots/Screenshot.png)
+### Tide42 and Nvim now have seperate configurations.
+![Config](Screenshots/Screenshot.png)
 
 ### Tide42 running bash X11
 ![Bash](Screenshots/Screenshot0.png)
