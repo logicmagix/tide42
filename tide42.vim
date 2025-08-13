@@ -86,7 +86,11 @@ augroup WindowLineNumbers
     autocmd BufWinEnter,WinEnter * if &buftype ==# 'terminal' | setlocal norelativenumber | else | setlocal relativenumber | endif
 augroup END
 set list
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                                                         
+" Without space marker
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:                                    " Medieval Set:
+" With space marker
+"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                    " Medieval Set:
+"set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,                                    
 
 augroup CursorHighlights
   autocmd!
