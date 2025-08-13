@@ -38,7 +38,7 @@ zx           | zxcvbnm
                            ██║   ██║██████╔╝███████╗     ██║███████╗
                            ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
                           Terminal Integrated Developer Environment 
-                                           -42-                     
+                                             -42-                     
 
 </code></pre>
 <pre><code>
