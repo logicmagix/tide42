@@ -87,7 +87,7 @@ augroup WindowLineNumbers
 augroup END
 set list
 " Without space marker
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:                                    " Medieval Set:
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,                                    " Medieval Set:
 " With space marker
 "set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                    " Medieval Set:
 "set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,                                    
