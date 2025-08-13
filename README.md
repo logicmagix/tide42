@@ -310,6 +310,9 @@ Pull requests, stars, and forks welcome
 ### Study and Reference
 ![Reference](Screenshots/Screenshot8.png)
 
+### Tide42 works well in a minimal tty environment.
+![TTY](Screenshots/Screenshot9.png)
+
 ## Built With
 
 tide42 uses and integrates the following open-source tools:
