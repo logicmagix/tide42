@@ -12,6 +12,7 @@
 - Renamed Neovim config to ~/.config/tide42/tide42.vim for clarity and isolation.
 - Added XDG_CONFIG_HOME support with fallback to ~/.config/tide42 in both scripts.
 - Updated install.sh to copy init.vim as tide42.vim and install plugins in ~/.local/share/tide42.
+- Added --check-version flag
 
 
 ## [1.2.1] - 2025-07-30

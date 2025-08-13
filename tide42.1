@@ -34,9 +34,12 @@ Enable 88-color mode (limited compatibility; some keybindings like Home/End may 
 Suppress verbose logging messages during initialization.
 
 .TP
+.BR \-\-check-update
+Check for updates without writing new files.
+
+.TP
 .BR \-\-update
 Self-update tide42 from the GitHub repository. Requires a clean working directory.
-
 
 .TP
 .BR \-\-version
@@ -66,6 +69,10 @@ Hotkey support for maximizing panes, launching fuzzy finders, resizing windows, 
 
 .SH KEYBINDINGS
 Keybindings within tide42 use Vim and Tmux conventions.
+.IP "Ctrl + q + d"
+Exit and save tmux session
+.IP "Ctrl + ww"
+Cycle vim buffers
 .IP "Ctrl + a"
 Maximize left buffer
 .IP "Ctrl + s"
@@ -96,10 +103,6 @@ Ripgrep search
 Toggle Colorscheme
 .IP "\e e"
 Telescope file finder
-.IP "Ctrl + q + d"
-Exit and save tmux session
-.IP "Ctrl + ww"
-Cycle vim buffers
 .IP "\e m"
 Paste to nvim file editor from any buffer
 .IP "\e h"
