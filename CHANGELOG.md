@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.2] - 2025-08-12
+###
+- Updated Telescope setup in tide42.vim to force horizontal layout with preview on the right.
+- Set preview_cutoff=10 to show previews in narrow windows.
+- Configured prompt_position="top", preview_width=0.5, width=0.9, height=0.8 for consistent UI across systems.
+- Ensured plugin path uses ~/.local/share/tide42/plugged for isolated setup.
+- Fixed <leader>w, <leader>e, <leader>r to use Telescope commands (:Telescope buffers, find_files, live_grep).
+- Fixed --lite mode by using env NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" for reliable execution.
+- Added Neovim version check (>=0.9) for NVIM_APPNAME support in tide42.sh.
+- Renamed Neovim config to ~/.config/tide42/tide42.vim for clarity and isolation.
+- Added XDG_CONFIG_HOME support with fallback to ~/.config/tide42 in both scripts.
+- Updated install.sh to copy init.vim as tide42.vim and install plugins in ~/.local/share/tide42.
+
+
 ## [1.2.1] - 2025-07-30
 ### Added
 - Reformatted default UI and added new hotkeys for buffer manipulation.

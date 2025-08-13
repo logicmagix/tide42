@@ -13,6 +13,9 @@ This script is licensed under GPLv3 and included with permission.
 ## Terminal IDE 42:
 An ultra-efficient Neovim based IDE for Python and C/C++ prototyping.
 
+## Latest Version 
+1.2.2
+
 ### Why the name?
 
 Tide42, formerly XTide86, is inspired in part by *The Hitchhiker’s Guide to the Galaxy*, where "42" is famously revealed as the Answer to the Ultimate Question of Life, the Universe, and Everything. 
@@ -54,7 +57,7 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - Changed default ui to maximize the file buffer and minimize all other buffers for a cleaner entry. All buffer manipulation hotkeys remain the same.
 
 06.09.25
-- Tide42 tested and working on 32bit systems and on the newest nvim version 0.11.2
+- Tide42 tested and working on 32bit systems and on the newest nvim version 0.12
 - Added autocmd for default colorscheme. Check lines 96 and 154 of init.vim to customize your own palette and theme like habamax, elflord, peachpuff, etc.
 
 06.03.25

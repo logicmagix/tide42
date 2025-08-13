@@ -1,7 +1,7 @@
 [Desktop Entry]
-Version=1.2.1
+Version=1.2.2
 Type=Application
-Name=tide42
+Name=Tide42
 GenericName=Terminal IDE
 Comment=A custom tmux + nvim IDE with IPython and TermiC support
 Exec=tide42
