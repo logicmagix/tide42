@@ -283,35 +283,35 @@ Pull requests, stars, and forks welcome
 
 ### 	
 
-### tide42 default color scheme
-![16 Color](Screenshots/Screenshot.png)
+### Tide42 autodetects zsh or bash
+![Zsh](Screenshots/Screenshot.png)
 
-### tide42 now supports 256 colors in tmux
-![256 Color](Screenshots/Screenshot0.png)
+### Tide42 running bash X11
+![Bash](Screenshots/Screenshot0.png)
 
-### Full Interface
-![tide42 Full Interface](Screenshots/Screenshot1.png)
+### Tide42 on Wayland
+![Wayland](Screenshots/Screenshot1.png)
 
-### Ipython
-![Python Mode](Screenshots/Screenshot2.png)
+### Integrated Ipython usage example
+![Ipython](Screenshots/Screenshot2.png)
 
-### C/C++ Live Shell Mode
-![C++ Mode](Screenshots/Screenshot3.png)
+### Termic C/C++ Live Shell usage example
+![TermiC cpp](Screenshots/Screenshot3.png)
 
-### System Monitoring in tide42
-![System](Screenshots/Screenshot4.png)
+### AI prompt in Tide42 (requires API key)
+![OpenAI](Screenshots/Screenshot4.png)
 
-### Study and reference
-![Reference](Screenshots/Screenshot5.png)
+### Search open buffers
+![Buffers](Screenshots/Screenshot5.png)
 
-### Expanded NVim Focus
-![Reference](Screenshots/Screenshot6.png)
+### Search files
+![Files](Screenshots/Screenshot6.png)
 
-### Efficient workflow
-![Workflow](Screenshots/Screenshot7.png)
+### Ripgrep search
+![Ripgrep](Screenshots/Screenshot7.png)
 
-### OpenAI Integration shown in default color palette -Optional 
-![ChatGPT](Screenshots/Screenshot8.png)
+### Study and Reference
+![Reference](Screenshots/Screenshot8.png)
 
 ## Built With
 
