@@ -1,32 +1,20 @@
-" tide42 (formerly xtide86) - a terminal IDE powered by tmux and nvim
-" Copyright (C) 2025 Pavle Dzakula
-"
-" This program is free software: you can redistribute it and/or modify
-" it under the terms of the GNU General Public License as published by
-" the Free Software Foundation, either version 3 of the License, or
-" (at your option) any later version.
-"
-" This program is distributed in the hope that it will be useful,
-" but WITHOUT ANY WARRANTY; without even the implied warranty of
-" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-" GNU General Public License for more details.
-"
-" You should have received a copy of the GNU General Public License
-" along with this program. If not, see <https://www.gnu.org/licenses/>.
-" Credits
-" This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
+
+"████████╗██╗██████╗ ███████╗██╗  ██╗██████╗ 
+"╚══██╔══╝██║██╔══██╗██╔════╝██║  ██║╚════██╗
+"   ██║   ██║██║  ██║█████╗  ███████║ █████╔╝
+"   ██║   ██║██║  ██║██╔══╝  ╚════██║██╔═══╝ 
+"   ██║   ██║██████╔╝███████╗     ██║███████╗
+"   ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
+"  Terminal Integrated Developer Environment 
+"                   -42-                     
+"                                            
+"=======================================================
+" tide42 (formerly xtide86) — see LICENSE for details
+
+" ── PLUGINS ────────────────────────────────────────────────────────
 
 syntax on
 filetype plugin indent on
-
-██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗    ███╗   ███╗ █████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗███╗   ███╗███████╗███╗   ██╗████████╗
-██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║    ████╗ ████║██╔══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝████╗ ████║██╔════╝████╗  ██║╚══██╔══╝
-██████╔╝██║     ██║   ██║██║  ███╗██║██╔██╗ ██║    ██╔████╔██║███████║██╔██╗ ██║███████║██║  ███╗█████╗  ██╔████╔██║█████╗  ██╔██╗ ██║   ██║   
-██╔═══╝ ██║     ██║   ██║██║   ██║██║██║╚██╗██║    ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║   ██║   
-██║     ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║    ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██║╚██████╔╝███████╗██║ ╚═╝ ██║███████╗██║ ╚████║   ██║   
-╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝   ╚═╝   
-                                                                                                                                               
-
 call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
@@ -60,14 +48,7 @@ require('telescope').setup{
 }
 EOF
 
-
- ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗     
-██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗██║     
-██║  ███╗█████╗  ██╔██╗ ██║█████╗  ██████╔╝███████║██║     
-██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║██║     
-╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
- ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
-                                                           
+" ── GENERAL ───────────────────────────────────────────────────
 
 let g:default_colorscheme = "default"
 colorscheme retrobox
@@ -88,14 +69,8 @@ let NERDTreeDirArrows = 1
 let NERDTreeShowLineNumbers = 1
 let NERDTreeLimitedSyntax = 0
 
-
-██╗   ██╗██╗███████╗██╗   ██╗ █████╗ ██╗     
-██║   ██║██║██╔════╝██║   ██║██╔══██╗██║     
-██║   ██║██║███████╗██║   ██║███████║██║     
-╚██╗ ██╔╝██║╚════██║██║   ██║██╔══██║██║     
- ╚████╔╝ ██║███████║╚██████╔╝██║  ██║███████╗
-  ╚═══╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
                                              
+" ── UI & COLORS ───────────────────────────────────────────────────
 
 set cursorline
 set number
@@ -106,16 +81,7 @@ augroup WindowLineNumbers
     autocmd BufWinEnter,WinEnter * if &buftype ==# 'terminal' | setlocal norelativenumber | else | setlocal relativenumber | endif
 augroup END
 set list
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
-
-
-██╗  ██╗██╗ ██████╗ ██╗  ██╗██╗     ██╗ ██████╗ ██╗  ██╗████████╗███████╗
-██║  ██║██║██╔════╝ ██║  ██║██║     ██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
-███████║██║██║  ███╗███████║██║     ██║██║  ███╗███████║   ██║   ███████╗
-██╔══██║██║██║   ██║██╔══██║██║     ██║██║   ██║██╔══██║   ██║   ╚════██║
-██║  ██║██║╚██████╔╝██║  ██║███████╗██║╚██████╔╝██║  ██║   ██║   ███████║
-╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
-                                                                         
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                                                         
 
 augroup CursorHighlights
   autocmd!
@@ -124,14 +90,7 @@ augroup END
 highlight Visual ctermbg=110 guibg=#87afd7
 highlight MatchParen ctermbg=100 guibg=#878700
 
-
-██╗  ██╗██╗ ██████╗ ██╗  ██╗██╗     ██╗ ██████╗ ██╗  ██╗████████╗███████╗
-██║  ██║██║██╔════╝ ██║  ██║██║     ██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
-███████║██║██║  ███╗███████║██║     ██║██║  ███╗███████║   ██║   ███████╗
-██╔══██║██║██║   ██║██╔══██║██║     ██║██║   ██║██╔══██║   ██║   ╚════██║
-██║  ██║██║╚██████╔╝██║  ██║███████╗██║╚██████╔╝██║  ██║   ██║   ███████║
-╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
-                                                                         
+" ── FUNCTION COMMANDS ───────────────────────────────────────────────────
 
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
@@ -148,6 +107,8 @@ endif
 if !exists(':ResetWindowsDefault')
   command! ResetWindowsDefault call s:ResetWindowSizes(0)
 endif
+
+" ── KEYMAPS ────────────────────────────────────────────────────────
 
 nnoremap <leader>s :call <SID>MaximizeTerminalBuffer('left')<CR>
 nnoremap <leader>x :call <SID>MaximizeTerminalBuffer('right')<CR>
@@ -176,15 +137,7 @@ command! Hs split
 command! Q call ForceQuitAndKillTmux()
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
-
-
-██╗███╗   ██╗██╗████████╗██╗ █████╗ ██╗     ██╗███████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
-██║████╗  ██║██║╚══██╔══╝██║██╔══██╗██║     ██║╚══███╔╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
-██║██╔██╗ ██║██║   ██║   ██║███████║██║     ██║  ███╔╝ ███████║   ██║   ██║██║   ██║██╔██╗ ██║
-██║██║╚██╗██║██║   ██║   ██║██╔══██║██║     ██║ ███╔╝  ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
-██║██║ ╚████║██║   ██║   ██║██║  ██║███████╗██║███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
-╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
-                                                                                              
+" ── AUTOCOMMANDS ───────────────────────────────────────────────────
 
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
@@ -199,7 +152,8 @@ autocmd VimEnter * terminal ipython
 autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
 
-" Shell-specific terminal command
+" ── DETECT SHELL ───────────────────────────────────────────────────
+
 if shell_name == 'zsh'
     set shell=/usr/bin/zsh
     autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
@@ -223,15 +177,26 @@ autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
 
-███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
-██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
-█████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
-██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
-██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
-╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
-                                                                          
+" ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────                                                                          
 
-" Toggle vim colorschemedd
+if !exists(':MaximizeTerminalBuffer')
+  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
+endif
+if !exists(':MaximizeIPythonBuffer')
+  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
+endif
+if !exists(':EnlargedWindow')
+  command! EnlargedWindow call s:EnlargeWindow()
+endif
+if !exists(':ResetWindowsMaxEditor')
+  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
+endif
+if !exists(':ResetWindowsDefault')
+  command! ResetWindowsDefault call s:ResetWindowSizes(0)
+endif
+
+" ── TOGGLE NVIM COLORSCHEMES ───────────────────────────────────────────────────
+
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
@@ -243,7 +208,8 @@ function! ToggleScheme()
   endif
 endfunction
 
-" Command :Q to force quit all Vim buffers and kill the tmux session
+" ── FORCE-QUIT ───────────────────────────────────────────────────
+
 function! ForceQuitAndKillTmux() abort
   try
     if empty($TMUX)
@@ -261,12 +227,14 @@ function! ForceQuitAndKillTmux() abort
   endtry
 endfunction
 
-" Guard to prevent repeated calls
+" ── PREVENT REPEAT CALLS ───────────────────────────────────────────────────
+
 let s:is_running = 0
 let s:last_run = 0
 let s:debounce_ms = 500
 
-" Send to IPython
+" ── SEND TO IPYTHON ───────────────────────────────────────────────────
+
 function! SendToIPython() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -327,7 +295,8 @@ function! SendToIPython() abort
   endtry
 endfunction
 
-" Send to TermiC
+" ── SEND TO TERMICS ───────────────────────────────────────────────────
+
 function! SendToTermiC() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -401,7 +370,8 @@ function! SendToTermiC() abort
   endtry
 endfunction
 
-" Append any buffer selection to editor buffer
+" ── APPEND TO EDITORS ───────────────────────────────────────────────────
+
 function! AppendToEditor() abort
   if !exists('s:last_run')
     let s:last_run = 0
@@ -449,6 +419,8 @@ function! AppendToEditor() abort
     echom "Error: " . v:exception
   endtry
 endfunction
+
+" ── FOCUS: FILE EDITOR ───────────────────────────────────────────────────
 
 function! s:ResetWindowSizes(maximize_editor) abort
   let current_win = winnr()
@@ -517,7 +489,8 @@ function! s:ResetWindowSizes(maximize_editor) abort
   echom "SET SIZE | " . (a:maximize_editor ? "Focus : (File Editor)" : "Reset Default Configuration") . ""
 endfunction
 
-" Focus IPython buffer
+" ── FOCUS: IPYTHONS ───────────────────────────────────────────────────
+
 function! MaximizeIPythonBuffer() abort
   silent! try
     let l:initial_win = winnr()
@@ -568,7 +541,8 @@ function! MaximizeIPythonBuffer() abort
   endtry
 endfunction
 
-" Maximize terminal buffer
+" ── MAX TERMINAL ───────────────────────────────────────────────────
+
 function! s:MaximizeTerminalBuffer(direction = 'left') abort
   silent! try
     let l:initial_win = winnr()
@@ -657,12 +631,15 @@ function! s:MaximizeTerminalBuffer(direction = 'left') abort
   endtry
 endfunction
 
+" ── MAX CURRENT ───────────────────────────────────────────────────
+
 function! s:EnlargeWindow() abort
   wincmd _
   echom "SET SIZE | Focus: (Currently Selected Buffer)"
 endfunction
 
-" Command to restart IPython terminal
+" ── RESTART IPYTHON ───────────────────────────────────────────────────
+
 command! RestartIPython call s:RestartIPython()
 function! s:RestartIPython() abort
   let current_win = winnr()
@@ -690,7 +667,8 @@ function! s:RestartIPython() abort
   execute current_win . 'wincmd w'
 endfunction
 
-" Grid: Draw 10x10 or 5x10 grid
+" ── GRID: 5x5 or 10x10 ───────────────────────────────────────────────────
+
 function! Grid(...) abort
     if exists('b:grid_row_grp') || exists('b:grid_prev_cc')
         call matchdelete(b:grid_row_grp)
@@ -734,7 +712,8 @@ function! Grid(...) abort
     echo "GRID | Grid On " . dr . ", cols every " . dc
 endfunction
 
-" Grid styling
+" ── GRID STYLING ───────────────────────────────────────────────────
+
 augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
