@@ -190,7 +190,7 @@ else
   export TERM="xterm-256color"
   export COLORTERM=truecolor
   unset NVIM_NO_COLOR
-  log "Setting default to 256 colors."
+  log "Setting default 256 colors."
 fi
 
 # === Write default tmux.conf only if no color flag provided ===
