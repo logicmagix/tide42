@@ -264,7 +264,7 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - Support session save (Ctrl+q+d) and reset with :Q
 
 # Without tmux?
-- Simply open nvim enjoy all the features without additional buffers and ctrl q + d, ctrl q + a, ctrl q + s, and ctrl q + d controls.
+- Nvim and Tide42 now have seperate configurations. To run Tide42 without tmux, use the flag --lite.
 
 # Customization
 - See init.vim for plugin configuration, UI tweaks, and terminal behavior.
