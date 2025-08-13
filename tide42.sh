@@ -82,6 +82,54 @@ $PANE_BORDER_CONFIG
 EOF
       log "Applied 88-color config with pane border settings."
       ;;
+    --check-update)
+      log "Checking for available updates…"
+
+      SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
+      SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+      cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; exit 1; }
+
+      if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        log "Error: This directory is not a Git repository."
+        exit 1
+      fi
+
+      CURRENT_BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "detached")"
+      if [ "$CURRENT_BRANCH" = "detached" ]; then
+        log "Error: You are in a detached HEAD state. Cannot check for updates."
+        exit 1
+      fi
+
+      # Prefer 'stable' if present
+      CHECK_BRANCH="$CURRENT_BRANCH"
+      if git ls-remote --heads origin stable >/dev/null 2>&1; then
+        CHECK_BRANCH="stable"
+      fi
+      log "Checking branch: $CHECK_BRANCH"
+
+      git fetch --tags --prune origin "$CHECK_BRANCH" || {
+        log "Error: Failed to fetch updates from origin."
+        exit 1
+      }
+
+      LOCAL_HASH="$(git rev-parse HEAD)"
+      REMOTE_HASH="$(git rev-parse "origin/$CHECK_BRANCH")"
+      VERSION_FILE="$SCRIPT_DIR/VERSION"
+      VERSION_NUMBER="unknown"
+      [ -f "$VERSION_FILE" ] && VERSION_NUMBER="$(<"$VERSION_FILE")"
+
+      if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
+        SHORT_HASH="$(git rev-parse --short HEAD)"
+        log "Already up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
+        exit 0
+      else
+        SHORT_LOCAL="$(git rev-parse --short HEAD)"
+        SHORT_REMOTE="$(git rev-parse --short "origin/$CHECK_BRANCH")"
+        REMOTE_VERSION="$(git show "origin/$CHECK_BRANCH":VERSION 2>/dev/null || echo "unknown")"
+        log "Update available: $VERSION_NUMBER ($CHECK_BRANCH@$SHORT_LOCAL) → $REMOTE_VERSION ($CHECK_BRANCH@$SHORT_REMOTE)"
+        exit 0
+      fi
+      ;;
     --update)
       UPDATE_PROCESSED=true
       log "Checking for updates from GitHub..."

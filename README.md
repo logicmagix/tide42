@@ -65,28 +65,13 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - If you are having issues with the ipython buffer closing when running instances of gui libraries like pygame, use the RestartIPython function with :RestartIPython or \n to create a new buffer. 
 - WARNING!! If making your own modifications to tide42 make sure to back then up before running --update as it will wipe and copy over any existing changes in your repo or installed files including init.vim
 
-If your repo is on main:
-- cd ~/PATH/TO/REPO
-- git fetch origin
-- git restore .
-- git checkout stable
-- git pull origin stable
-- chmod +x install.sh
-- ./install.com
-- All alias logic is handled by install.sh so that --update remains functional. Simply run xtide86 --update from anywhere and use either xtide86 or tide42 to launch.
-
-**Version:** `v1.2.0`
->**New in v1.2.0:** - Functionality to yank text from any buffer (IPython, TermiC, Terminal) and append to file editor for easy notes.
-> 
-> - Lite mode with --lite to open tide42 with no tmux session for quick edits or low resource systems.
-> - Improved color rendering in all panes and status bars
-> - Toggle between classic **Portcullis** and modern **GRID** visual themes or medieval listchars in init.vim
-> - Now supports opening new files editing files with tide42 followed by the filename
-> - Use flag --quiet or -q to suppress log output.
-> - Update tide42 from your anywhere with --update
-> - Added keybinding \s to expand and select TermiC or \x to perform the same action for the terminal buffer. 
-
-
+<pre><code>
+Ctrl/Ctrl+Alt|\
+================
+qw           | weryuiop
+asdfg        | sfghl
+zx           | zxcvbnm
+</code></pre>
 <pre><code>
                                           ███ ███ ███ ███                      
                                           ███████████████                    
@@ -132,22 +117,16 @@ If your repo is on main:
 - Install location: --whereami
 - Lite mode: --lite
 - Low Color: --low-color, -lc
+- Check for updates: --check-update
 - Update: --update
 
 ## Controls
 
 ## Keyboard hotkey layout quick reference:
 
-<pre><code>
-Ctrl/Ctrl+Alt|\
-================
-qw           | weryuiop
-asdfg        | sfghl
-zx           | zxcvbnm
-</code></pre>
-
-Tmux based command: Ctrl-q + d (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
-Nvim based command:Q = Force-quit the program (reset for new session)
+## Quit or Detach
+Tmux based command: `Ctrl-q` + `d` (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
+Nvim based command `:Q` = Force-quit the program (reset for new session)
 ## Cycle nvim buffers within selected tmux buffer
 `Ctrl+ww` = Cycle between vim buffers within a tmux buffer
 ## Manually select vim buffer within selected tmux buffer
