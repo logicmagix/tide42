@@ -1,6 +1,7 @@
 # Tide42 NEWS:
 
 # 08.12.25
+- Latest stable version is 1.2.2
 - Tide42 now writes a tide42.vim file to ~/config/tide42 avoiding overwriting any exisiting user neovim configuration. Safely install tide42 and keep your custom nvim configs active. Added XDG_CONFIG_HOME support in install.sh and tide42.sh with fallback to ~/.config/tide42. Users can now install Tide42 and keep nvim configurations intact.
 - NERDTree starts in $HOME regardless of which directory tide42 is launched from. Cannot navigate higher than $HOME by default. Use sudoedit in the terminal buffer to edit as sudo.
 - Default space marker is now blank.. additional options are available and commented out in tide42.vim
