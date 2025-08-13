@@ -284,7 +284,7 @@ Pull requests, stars, and forks welcome
 ### 	
 
 ### Tide42 and Nvim now have seperate configurations.
-![Config](Screenshots/Screenshot.png)
+![Config](Screenshots/Screenshot1.png)
 
 ### Tide42 running bash X11
 ![Bash](Screenshots/Screenshot0.png)
