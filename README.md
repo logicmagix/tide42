@@ -267,7 +267,7 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - Nvim and Tide42 now have seperate configurations. To run Tide42 without tmux, use the flag --lite.
 
 # Customization
-- See init.vim for plugin configuration, UI tweaks, and terminal behavior.
+- See ~/.config/tide42/tide42.vim for plugin configuration, UI tweaks, and terminal behavior.
 Feel free to remix buffer sizes and colors to match your workflow.
 
 # TermiC Support
