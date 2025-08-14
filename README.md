@@ -80,13 +80,13 @@ zx           | zxcvbnm
 - Opening second file in right tmux buffer if session is detached with a loaded file in the left (default).
 
 ## Flags
-- Enable 88 color support (256 is default) with --low-color or -lc 
+- Set colorscheme: --colorscheme
+- Low Color: --low-color, -lc
 - Check version: --version
 - Silence log: --quiet
 - Help: --help
 - Install location: --whereami
 - Lite mode: --lite
-- Low Color: --low-color, -lc
 - Check for updates: --check-update
 - Update: --update
 

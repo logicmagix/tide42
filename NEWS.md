@@ -1,5 +1,9 @@
 # Tide42 NEWS:
 
+# 08.14.25
+- Tide42 has a new flag --colorscheme that can be used to set a desired theme. It may be manually edited within $HOME/.config/tide42/colorscheme.vim as well.
+- This theme will persist throughout updates. 
+
 # 08.12.25
 - Latest stable version is 1.2.2
 - Tide42 now writes a tide42.vim file to ~/config/tide42 avoiding overwriting any exisiting user neovim configuration. Safely install tide42 and keep your custom nvim configs active. Added XDG_CONFIG_HOME support in install.sh and tide42.sh with fallback to ~/.config/tide42. Users can now install Tide42 and keep nvim configurations intact.
