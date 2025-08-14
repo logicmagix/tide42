@@ -53,6 +53,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'jackMort/ChatGPT.nvim'
+Plug 'brenoprata10/nvim-highlight-colors'
 call plug#end()
 " Configure ChatGPT.nvim and Telescope
 lua << EOF
@@ -71,6 +72,15 @@ require('telescope').setup{
       },
     },
   },
+}
+require('nvim-highlight-colors').setup {
+    render = 'virtual',           -- Use virtual text for swatches
+    virtual_symbol = '■',        -- Symbol for the swatch
+    virtual_symbol_position = 'inline', -- Place swatch next to hex code
+    enable_hex = true,           -- Enable hex code highlighting
+    enable_short_hex = true,     -- Enable short hex codes (e.g., #fff)
+    enable_rgb = true,           -- Optional: enable RGB format
+    enable_hsl = true,           -- Optional: enable HSL format
 }
 EOF
                                         
