@@ -272,6 +272,7 @@ Feel free to remix buffer sizes and colors to match your workflow.
 
 - Add your api key in your .bashrc or .zshrc file to access an AI prompt within Tide42.
 
+- If you are using X11 or a modern fork, you can set your transparency settings in your terminal emulator and use \y in Tide42 to toggle transparency on/off.
 
 # TermiC Support
 - tide42 includes termic.sh, a lightweight live shell.
