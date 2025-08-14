@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
+
 set -e
 echo "[+] Installed tide42 and legacy xtide86 wrappers to $BIN_DIR"
+
 # === Legacy xtide86 alias ===
+
 cat <<EOF | sudo tee /usr/local/bin/xtide86 > /dev/null
 #!/usr/bin/env bash
 echo "[XTide86] XTide86 has been renamed to Tide42."
 exec tide42 "\$@"
 EOF
 sudo chmod +x /usr/local/bin/xtide86
+
 # === Detect OS and Package Manager ===
+
 detect_os_and_pkg() {
   OS=$(uname -s)
   case "$OS" in
@@ -62,12 +67,18 @@ update_package_manager() {
       ;;
   esac
 }
+
 # === Run OS detection and update ===
+
 detect_os_and_pkg
 update_package_manager
+
 # === Install system packages ===
+
 echo "[tide42] Installing tide42 dependencies..."
+
 # === Define packages ===
+
 declare -A PKG_NAMES=(
   ["tmux"]="tmux"
   ["ncurses"]="ncurses-term"
@@ -80,7 +91,9 @@ declare -A PKG_NAMES=(
   ["fonts-powerline"]="fonts-powerline"
   ["ripgrep"]="ripgrep"
 )
+
 # Adjust package names for specific package managers
+
 case "$PKG_MANAGER" in
   pacman)
     PKG_NAMES["ncurses"]="ncurses"
@@ -97,12 +110,16 @@ case "$PKG_MANAGER" in
     PKG_NAMES["ripgrep"]="ripgrep"
     ;;
 esac
+
 # Build package list for installation
+
 PKG_LIST=""
 for pkg in "${!PKG_NAMES[@]}"; do
   PKG_LIST="${PKG_LIST} ${PKG_NAMES[$pkg]}"
 done
+
 # Install packages using the appropriate command
+
 if [ "$PKG_MANAGER" = "unknown" ]; then
   echo "[tide42] Unknown package manager. Please install the following packages manually:"
   for pkg in "${!PKG_NAMES[@]}"; do
@@ -118,16 +135,22 @@ else
     exit 1
   }
 fi
+
 # === Install vim-plug for tide42 isolated setup ===
+
 if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
   echo "Installing vim-plug for tide42's Neovim..."
   mkdir -p ~/.local/share/tide42/site/autoload
   curl -fLo ~/.local/share/tide42/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
+
 # === Resolve the script's directory ===
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # === Copy nvim config to isolated tide42 dir ===
+
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 echo "Checking for existing tide42 Neovim config..."
@@ -138,24 +161,60 @@ if [ ! -f "$SCRIPT_DIR/tide42.vim" ]; then
 fi
 mkdir -p "$TIDE_CONF_DIR"
 cp -f "$SCRIPT_DIR/tide42.vim" "$TIDE_CONF_FILE"
+
+# === Create persistent colorscheme file if it doesn't exist ===
+
+COLORSCHEME_FILE="$TIDE_CONF_DIR/colorscheme.vim"
+if [ ! -f "$COLORSCHEME_FILE" ]; then
+  cat <<EOF > "$COLORSCHEME_FILE"
+"████████╗██╗██████╗ ███████╗██╗  ██╗██████╗ 
+"╚══██╔══╝██║██╔══██╗██╔════╝██║  ██║╚════██╗
+"   ██║   ██║██║  ██║█████╗  ███████║ █████╔╝
+"   ██║   ██║██║  ██║██╔══╝  ╚════██║██╔═══╝ 
+"   ██║   ██║██████╔╝███████╗     ██║███████╗
+"   ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
+"  Terminal Integrated Developer Environment 
+"                   -42-                     
+"                                            
+"=======================================================
+" Default nvim colorschemes include:
+" blue darkblue default delek desert elflord evening habamax industry
+" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
+" slate sorbet torte unokai
+" vim (used to set transparency, respects default terminal emulator settings)
+" wildcharm zaibatsu zellner
+colorscheme retrobox " <--- replace with your preferred default
+EOF
+  echo "[tide42] Created persistent colorscheme file at $COLORSCHEME_FILE"
+fi
+
 # === Resolve the script's directory ===
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # === Copy tide42.sh and termic.sh to system path ===
+
 echo "Installing tide42 and TermiC launch scripts..."
+
 # === Check if files exist ===
+
 for script in "$SCRIPT_DIR/tide42.sh" "$SCRIPT_DIR/termic.sh"; do
   if [ ! -f "$script" ]; then
     echo "Error: $script not found in $SCRIPT_DIR. Please ensure the file exists."
     exit 1
   fi
 done
+
 # === Set executable permissions locally (temporary for copying) ===
+
 echo "Setting temporary executable permissions for tide42.sh and termic.sh..."
 if ! chmod +x "$SCRIPT_DIR/tide42.sh" "$SCRIPT_DIR/termic.sh"; then
   echo "Error: Failed to set executable permissions on scripts."
   exit 1
 fi
+
 # === Copy tide42.sh to /usr/local/bin ===
+
 echo "Creating wrapper script at /usr/local/bin/tide42..."
 cat <<EOF | sudo tee /usr/local/bin/tide42 > /dev/null
 #!/usr/bin/env bash
@@ -165,26 +224,34 @@ EOF
 sudo chmod +x /usr/local/bin/tide42
 echo "Wrapper script created."
 echo "tide42.sh installed to /usr/local/bin/tide42."
+
 # === Copy termic.sh to /usr/local/bin ===
+
 echo "Copying termic.sh to /usr/local/bin/..."
 if ! sudo cp -f "$SCRIPT_DIR/termic.sh" /usr/local/bin/termic; then
   echo "Error: Failed to copy termic.sh to /usr/local/bin. Check permissions or disk space."
   exit 1
 fi
 echo "termic.sh installed to /usr/local/bin/termic."
+
 # === Ensure destination files are executable ===
+
 echo "Ensuring installed scripts are executable..."
 if ! sudo chmod 755 /usr/local/bin/tide42 /usr/local/bin/termic; then
   echo "Error: Failed to set executable permissions on installed scripts."
   exit 1
 fi
+
 # === Try apt install for system-wide fallback ===
+
 if ! command -v ipython3 &> /dev/null; then
   echo "Attempting to install ipython3 via apt..."
   sudo apt update
   sudo apt install -y python3-ipython || echo "Warning: apt install failed. You may need to install IPython manually."
 fi
+
 # === Ensure IPython is available ===
+
 ensure_ipython() {
   echo "[tide42] Ensuring IPython is available..."
   if command -v ipython &> /dev/null; then
@@ -226,7 +293,9 @@ ensure_ipython() {
     fi
   fi
 }
+
 # === Install man page ===
+
 MANPAGE_SOURCE="$SCRIPT_DIR/tide42.1"
 MANPAGE_TARGET="/usr/share/man/man1/tide42.1.gz"
 if [ -f "$MANPAGE_SOURCE" ]; then
@@ -242,7 +311,9 @@ if [ -f "$MANPAGE_SOURCE" ]; then
 else
     echo "[tide42] Warning: tide42.1 not found. Skipping man page install."
 fi
+
 # === Desktop launcher ===
+
 GLOBAL_INSTALL=false
 if [ "$1" == "--global" ]; then
   GLOBAL_INSTALL=true
@@ -274,7 +345,9 @@ set -g default-terminal "tmux-256color"
 set -as terminal-overrides ',*:Tc'
 EOF
 fi
+
 # === Install Neovim plugins with isolated setup ===
+
 echo "Installing Neovim plugins for tide42..."
 NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."

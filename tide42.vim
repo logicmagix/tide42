@@ -13,17 +13,16 @@
 
 " ── GENERAL ───────────────────────────────────────────────────
 
-" Default nvim colorschemes include:
-" blue darkblue default delek desert elflord evening habamax industry
-" koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
-" slate sorbet torte unokai
-" vim (used to set transparency, respects default terminal emulator settings)
-" wildcharm zaibatsu zellner
-
 syntax on
 filetype plugin indent on
 let g:default_colorscheme = "default"
-colorscheme retrobox "<---.replace with your preferred default"
+let g:tide42_config_dir = fnamemodify(expand('<sfile>'), ':h')
+let colorscheme_file = g:tide42_config_dir . '/colorscheme.vim'
+if filereadable(colorscheme_file)
+  execute 'source ' . colorscheme_file
+else
+  colorscheme default
+endif
 set noswapfile
 let g:using_vim_scheme = 0
 set termguicolors
@@ -55,7 +54,6 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'jackMort/ChatGPT.nvim'
 call plug#end()
-
 " Configure ChatGPT.nvim and Telescope
 lua << EOF
 require("chatgpt").setup({
@@ -75,7 +73,8 @@ require('telescope').setup{
   },
 }
 EOF
-                                         
+                                        
+
 " ── UI & COLORS ───────────────────────────────────────────────────
 
 set cursorline
@@ -88,12 +87,11 @@ augroup WindowLineNumbers
 augroup END
 set list
 " Without space marker
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,                                    
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,
 " With space marker
-"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧                                    
+"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
 " Medieval Set:
-"set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,                                    
-
+"set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,
 augroup CursorHighlights
   autocmd!
   autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
@@ -152,7 +150,6 @@ autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope bu
 
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
-
 autocmd VimEnter * echom "Detected shell: " . shell_name
 autocmd! VimEnter *
 autocmd VimEnter * NERDTree $HOME
@@ -179,7 +176,6 @@ else
     let terminal_resize = 1
     autocmd VimEnter * echom "Unknown shell detected, falling back to bash"
 endif
-
 autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
@@ -187,8 +183,7 @@ execute 'autocmd VimEnter * resize ' . terminal_resize
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
-
-" ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────                                                                          
+" ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────
 
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
@@ -729,4 +724,3 @@ augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 highlight ColorColumn ctermbg=239 guibg=#4e4e4e
-
