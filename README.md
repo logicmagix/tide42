@@ -264,11 +264,14 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - Support session save (Ctrl+q+d) and reset with :Q
 
 # Without tmux?
-- Nvim and Tide42 now have seperate configurations. To run Tide42 without tmux, use the flag --lite.
+- To run Tide42 without tmux, use the flag --lite.
 
 # Customization
 - See ~/.config/tide42/tide42.vim for plugin configuration, UI tweaks, and terminal behavior.
 Feel free to remix buffer sizes and colors to match your workflow.
+
+- Add your api key in your .bashrc or .zshrc file to access an AI prompt within Tide42.
+
 
 # TermiC Support
 - tide42 includes termic.sh, a lightweight live shell.
@@ -283,35 +286,45 @@ Pull requests, stars, and forks welcome
 
 ### 	
 
+### The Tide42 default startup interface
+![Config](Screenshots/Screenshot0.png)
+- Tide42 autodetects bash or zsh
+
 ### Tide42 and Nvim now have seperate configurations.
-![Config](Screenshots/Screenshot1.png)
+![Bash](Screenshots/Screenshot1.png)
+- Customize nvim to your liking seperately from Tide42
 
-### Tide42 running bash X11
-![Bash](Screenshots/Screenshot0.png)
-
-### Tide42 on Wayland/Integrated Ipython usage example
+### Integrated Ipython usage example
 ![Wayland/Ipython](Screenshots/Screenshot2.png)
+- Tide42 intergrates nicely with Hyprland hotkeys on Wayland
 
 ### Termic C/C++ Live Shell usage example
 ![TermiC cpp](Screenshots/Screenshot3.png)
+- Test and execute c or cpp code within Tide42 using Termic
 
 ### AI prompt in Tide42 (requires API key)
 ![OpenAI](Screenshots/Screenshot4.png)
+- Alternately use local models within the terminal buffer
 
 ### Search open buffers
 ![Buffers](Screenshots/Screenshot5.png)
+- Scroll through open buffers and select from the list.
 
 ### Search files
 ![Files](Screenshots/Screenshot6.png)
+- Quickly search for files.
 
 ### Ripgrep search
 ![Ripgrep](Screenshots/Screenshot7.png)
+- Fast ripgrep within files with preview.
 
 ### Study and Reference
 ![Reference](Screenshots/Screenshot8.png)
+- Easily read pdf study material or your favorite terminal browser to reference material while you work.
 
 ### Tide42 works well in a minimal tty environment.
 ![TTY](Screenshots/Screenshot9.png)
+- Seamless tty functionality with custom bindings makes the SSH experience feel like using a WM.
 
 ## Built With
 
