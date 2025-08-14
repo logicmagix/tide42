@@ -94,6 +94,9 @@ EOF
       shift
       if [ -z "$1" ]; then
         log "Error: --colorscheme requires a colorscheme name."
+        log "Colorschemes inlcude: blue darkblue default delek desert elflord evening habamax industry
+             koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine slate sorbet torte unokai vim 
+             wildcharm zaibatsu zellner"
         exit 1
       fi
       COLORSCHEME="$1"
