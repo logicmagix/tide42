@@ -41,19 +41,19 @@ let NERDTreeLimitedSyntax = 0
 
 " ── PLUGINS ────────────────────────────────────────────────────────
 call plug#begin('~/.local/share/tide42/plugged')
-Plug 'preservim/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'vim-airline/vim-airline'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'MunifTanjim/nui.nvim'
-Plug 'jackMort/ChatGPT.nvim'
-Plug 'brenoprata10/nvim-highlight-colors'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+Plug 'preservim/nerdtree'  " File explorer tree
+Plug 'tpope/vim-surround'  " Easily change surrounding characters (quotes, brackets, tags, etc.)
+Plug 'tpope/vim-commentary'  " Toggle comments on lines or visual selections
+Plug 'vim-airline/vim-airline' " Customizable status/tabline
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " Fuzzy finder core binary (requires install step)
+Plug 'junegunn/fzf.vim'  " Vim/Neovim integration for fzf
+Plug 'nvim-lua/plenary.nvim'  " Lua utility functions for many Neovim plugins
+Plug 'nvim-telescope/telescope.nvim'  " Extendable fuzzy finder for files, grep, buffers, etc.
+Plug 'MunifTanjim/nui.nvim'  " UI component library for Neovim (used by some plugins)
+Plug 'jackMort/ChatGPT.nvim'  " ChatGPT integration inside Neovim
+Plug 'brenoprata10/nvim-highlight-colors'  " Highlight color codes with a swatch
+Plug 'nvim-tree/nvim-web-devicons'  " Adds filetype icons to plugins like NERDTree, Telescope, Bufferline
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }  "Tab cycle with close buttons and icons
 Plug 'lewis6991/gitsigns.nvim'  " Git diff signs + hunk actions
 call plug#end()
 
