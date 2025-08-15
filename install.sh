@@ -351,5 +351,5 @@ fi
 echo "Installing Neovim plugins for tide42..."
 NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
-echo "[tide42] Love it? Hate it? Share feedback: github.com/logicmagix/tide42/discussions"
-echo "[tide42] Bugs or ideas? Post on r/neovim or DM @logicmagix on X."
+echo "[tide42] Share feedback: github.com/logicmagix/tide42/discussions"
+echo "[tide42] Bugs or ideas? DM @logicmagix on X or email logicmagix@protonmail.com"
