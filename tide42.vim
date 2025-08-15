@@ -211,6 +211,10 @@ elseif shell_name == 'bash'
     set shell=/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
     let terminal_resize = 2
+elseif shell_name == 'fish'
+    set shell=/usr/bin/fish
+    autocmd VimEnter * terminal fish -c 'termic cpp; exec fish -i'
+    let terminal_resize = 2
 else
     set shell=/usr/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
