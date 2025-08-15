@@ -92,7 +92,7 @@ declare -A PKG_NAMES=(
   ["ripgrep"]="ripgrep"
 )
 
-# Adjust package names for specific package managers
+# === Adjust package names for specific package managers ===
 
 case "$PKG_MANAGER" in
   pacman)
@@ -111,7 +111,7 @@ case "$PKG_MANAGER" in
     ;;
 esac
 
-# Build package list for installation
+# === Build package list for installation ===
 
 PKG_LIST=""
 for pkg in "${!PKG_NAMES[@]}"; do
@@ -186,6 +186,7 @@ if [ ! -f "$COLORSCHEME_FILE" ]; then
 colorscheme default " <--- replace with your preferred default
 
 " ── GRID STYLING ───────────────────────────────────────────────────
+
 augroup Grid
     autocmd!
     autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
