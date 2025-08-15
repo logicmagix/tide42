@@ -132,9 +132,9 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 ## Send to TermiC
 `\l` = Paste selected text into TermiC buffer and expand buffer, entering insert mode
 ## Append to Editor
-`\m\` = Paste selected text into nvim file editor buffer from any buffer: terminal, ipython, or termic.
+`\m` = Paste selected text into nvim file editor buffer from any buffer: terminal, ipython, or termic.
 ## Restart Tide42 UI
-`\q\` = Close all active buffers within tmux panel and restart Tide42 UI.
+`\q` = Close all active buffers within tmux panel and restart Tide42 UI.
 
 ## Tmux buffer controls (work in insert or command mode)
 ##
