@@ -52,8 +52,12 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'MunifTanjim/nui.nvim'
 Plug 'jackMort/ChatGPT.nvim'
 Plug 'brenoprata10/nvim-highlight-colors'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+Plug 'lewis6991/gitsigns.nvim'  " Git diff signs + hunk actions
 call plug#end()
-" Configure ChatGPT.nvim and Telescope
+
+" ── CONFIG ─────────────────────────────────────────────────────────
 lua << EOF
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",
@@ -61,6 +65,7 @@ require("chatgpt").setup({
     model = "gpt-4",
   }
 })
+
 require('telescope').setup{
   defaults = {
     mappings = {
@@ -71,16 +76,69 @@ require('telescope').setup{
     },
   },
 }
+
 require('nvim-highlight-colors').setup {
-    render = 'virtual',           -- Use virtual text for swatches
-    virtual_symbol = '■',        -- Symbol for the swatch
-    virtual_symbol_position = 'inline', -- Place swatch next to hex code
-    enable_hex = true,           -- Enable hex code highlighting
-    enable_short_hex = true,     -- Enable short hex codes (e.g., #fff)
-    enable_rgb = true,           -- Optional: enable RGB format
-    enable_hsl = true,           -- Optional: enable HSL format
+    render = 'virtual',
+    virtual_symbol = '■',
+    virtual_symbol_position = 'inline',
+    enable_hex = true,
+    enable_short_hex = true,
+    enable_rgb = true,
+    enable_hsl = true,
+}
+
+require('bufferline').setup {
+    options = {
+        numbers = "none",
+        diagnostics = "nvim_lsp",
+        separator_style = "slant",
+        show_buffer_close_icons = true,
+        show_close_icon = true,
+        color_icons = true,
+    }
+}
+
+require('gitsigns').setup {
+    signs = {
+        add          = { text = '│' },
+        change       = { text = '│' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+    },
+    signcolumn = true,
+    numhl      = false,
+    linehl     = false,
+    watch_gitdir = { interval = 1000, follow_files = true },
+    attach_to_untracked = true,
+    current_line_blame = true,
+    current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol',
+        delay = 500,
+    },
+    on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+        -- Hunk navigation
+        vim.keymap.set('n', ']c', function()
+          if vim.wo.diff then return ']c' end
+          vim.schedule(gs.next_hunk)
+          return '<Ignore>'
+        end, {expr=true, buffer=bufnr})
+        vim.keymap.set('n', '[c', function()
+          if vim.wo.diff then return '[c' end
+          vim.schedule(gs.prev_hunk)
+          return '<Ignore>'
+        end, {expr=true, buffer=bufnr})
+        -- Actions
+        vim.keymap.set('n', '<leader>hs', gs.stage_hunk, {buffer=bufnr})
+        vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, {buffer=bufnr})
+        vim.keymap.set('n', '<leader>hr', gs.reset_hunk, {buffer=bufnr})
+        vim.keymap.set('n', '<leader>hb', gs.blame_line, {buffer=bufnr})
+    end
 }
 EOF
+
                                         
 
 " ── FUNCTION COMMANDS ───────────────────────────────────────────────────
@@ -102,6 +160,8 @@ endif
 
 " ── KEYMAPS ────────────────────────────────────────────────────────
 nnoremap <silent> <leader>q :ResetUI<CR>
+nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
+nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
 nnoremap <leader>s :call <SID>MaximizeTerminalBuffer('left')<CR>
 nnoremap <leader>x :call <SID>MaximizeTerminalBuffer('right')<CR>
 nnoremap <silent> <leader>c :MaximizeIPythonBuffer<CR>
