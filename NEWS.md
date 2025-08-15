@@ -1,12 +1,13 @@
 # Tide42 NEWS:
 
-# 08.14.25
+# 08.15.25
 - Tide42 has a new hotkey \q to restart the UI.
 - Added a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
 - Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
 - Now includes uninstall script 
+- Tide42 now detects bash zsh or fish in either system or user installed locations.
 
 # 08.12.25
 - Latest stable version is 1.2.2
