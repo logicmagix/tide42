@@ -352,14 +352,30 @@ Pull requests, stars, and forks welcome
 ## Built With
 
 tide42 uses and integrates the following open-source tools:
-- [NeoVim](https://neovim.io/)
-- [Vim](https://www.vim.org/)
-- [tmux](https://github.com/tmux/tmux)
-- [Anaconda3](https://www.anaconda.com/)
-- [IPython](https://ipython.org/)
+- [NeoVim](https://neovim.io/) – Hyper-extensible Vim-based text editor.
+- [Vim](https://www.vim.org/) – Highly configurable text editor built to make creating and changing any kind of text very efficient.
+- [tmux](https://github.com/tmux/tmux) – Terminal multiplexer for managing multiple terminal sessions.
+- [Anaconda3](https://www.anaconda.com/) – Python/R distribution for data science and machine learning.
+- [IPython](https://ipython.org/) – Interactive Python shell with rich functionality.
+- [vim-plug](https://github.com/junegunn/vim-plug) – Minimalist Vim plugin manager by [Junegunn Choi](https://github.com/junegunn).
+- [NERDTree](https://github.com/preservim/nerdtree) – File system explorer for Vim by [Vineet Sinha](https://github.com/vineet-sinha).
+- [TermiC](https://github.com/hanoglu/TermiC) – Terminal integration utility by [Yusuf Kagan Hanoglu
+Max Schillinger].
 - [vim-plug](https://github.com/junegunn/vim-plug)
 - [NERDTree](https://github.com/preservim/nerdtree)
-- [TermiC](https://github.com/your-source-if-public-or-forked)
+- [vim-surround](https://github.com/tpope/vim-surround) – Surroundings management by [Tim Pope](https://github.com/tpope).
+- [vim-commentary](https://github.com/tpope/vim-commentary) – Comment/uncomment code quickly by [Tim Pope](https://github.com/tpope).
+- [vim-airline](https://github.com/vim-airline/vim-airline) – Lean & mean status/tabline for Vim.
+- [fzf](https://github.com/junegunn/fzf) – General-purpose command-line fuzzy finder by [Junegunn Choi](https://github.com/junegunn).
+- [fzf.vim](https://github.com/junegunn/fzf.vim) – Vim/Neovim integration for fzf by [Junegunn Choi](https://github.com/junegunn).
+- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim) – Lua utility functions for Neovim by [nvim-lua](https://github.com/nvim-lua).
+- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) – Highly extendable fuzzy finder over lists (https://github.com/nvim-telescope).
+- [nui.nvim](https://github.com/MunifTanjim/nui.nvim) – UI component library for Neovim by [Munif Tanjim](https://github.com/MunifTanjim).
+- [ChatGPT.nvim](https://github.com/jackMort/ChatGPT.nvim) – ChatGPT integration for Neovim by [Jack Mort](https://github.com/jackMort).
+- [nvim-highlight-colors](https://github.com/brenoprata10/nvim-highlight-colors) – Highlight color codes with their actual color by [Breno Prata](https://github.com/brenoprata10).
+- [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) – Adds file type icons to Neovim by [kyazdani42](https://github.com/kyazdani42) & contributors.
+- [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) – Tab-like bufferline with icons by [Akinsho](https://github.com/akinsho).
+- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) – Git signs in the gutter + hunk actions by [Lewis Warren](https://github.com/lewis6991).
 
 Thanks to the developers of these projects for making powerful tools free and accessible.
 
