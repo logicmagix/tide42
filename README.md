@@ -38,7 +38,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 08.14.25
-- Tide42 has a new flag --colorscheme that can be used to set a desired theme. 
+- Tide42 has a new hotkey \q to restart the UI.
+- Added a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
 - Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
@@ -132,6 +133,8 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `\l` = Paste selected text into TermiC buffer and expand buffer, entering insert mode
 ## Append to Editor
 `\m\` = Paste selected text into nvim file editor buffer from any buffer: terminal, ipython, or termic.
+## Restart Tide42 UI
+`\q\` = Close all active buffers within tmux panel and restart Tide42 UI.
 
 ## Tmux buffer controls (work in insert or command mode)
 ##

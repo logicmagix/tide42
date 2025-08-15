@@ -6,6 +6,7 @@
 - Set persistent default colorscheme
 - Added colorscheme flag and error relevant error messages.
 - Added uninstall.sh with option to remove repo directory if desired.
+- Added new hotkey \q to restart UI
 
 ## [1.2.2] - 2025-08-12
 ### Added
