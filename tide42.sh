@@ -90,7 +90,7 @@ EOF
       log "Applied 88-color config with pane border settings."
       ;;
     
-    --colorscheme)
+    --colorscheme|-cs)
       shift
       if [ -z "$1" ]; then
         log "Error: --colorscheme requires a colorscheme name."

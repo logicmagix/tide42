@@ -90,7 +90,7 @@ zx           | zxcvbnm
 - Opening second file in right tmux buffer if session is detached with a loaded file in the left (default).
 
 ## Flags
-- Set colorscheme: --colorscheme
+- Set colorscheme: --colorscheme, -cs
 - Low Color: --low-color, -lc
 - Check version: --version
 - Silence log: --quiet
