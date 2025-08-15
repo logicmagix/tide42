@@ -201,26 +201,59 @@ autocmd VimEnter * topleft split
 autocmd VimEnter * terminal ipython
 autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
-
-" ── DETECT SHELL ──
+"── DETECT SHELL ──
 if shell_name == 'zsh'
-    set shell=/usr/bin/zsh
-    autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
-    let terminal_resize = 2
+    if executable('/usr/local/bin/zsh')
+        set shell=/usr/local/bin/zsh
+        autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
+        let terminal_resize = 2
+    elseif executable('/usr/bin/zsh')
+        set shell=/usr/bin/zsh
+        autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
+        let terminal_resize = 2
+    else
+        set shell=/bin/bash
+        autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+        let terminal_resize = 2
+        autocmd VimEnter * echom "No valid Zsh shell found, falling back to bash"
+    endif
 elseif shell_name == 'bash'
-    set shell=/bin/bash
-    autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
-    let terminal_resize = 2
+    if executable('/usr/local/bin/bash')
+        set shell=/usr/local/bin/bash
+        autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+        let terminal_resize = 2
+    elseif executable('/bin/bash')
+        set shell=/bin/bash
+        autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+        let terminal_resize = 2
+    else
+        set shell=/bin/bash
+        autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+        let terminal_resize = 2
+        autocmd VimEnter * echom "No valid Bash shell found, falling back to /bin/bash"
+    endif
 elseif shell_name == 'fish'
-    set shell=/usr/bin/fish
-    autocmd VimEnter * terminal fish -c 'termic cpp; exec fish -i'
-    let terminal_resize = 2
+    if executable('/usr/local/bin/fish')
+        set shell=/usr/local/bin/fish
+        autocmd VimEnter * terminal fish -c 'termic cpp; exec fish -i'
+        let terminal_resize = 2
+    elseif executable('/usr/bin/fish')
+        set shell=/usr/bin/fish
+        autocmd VimEnter * terminal fish -c 'termic cpp; exec fish -i'
+        let terminal_resize = 2
+    else
+        set shell=/bin/bash
+        autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
+        let terminal_resize = 2
+        autocmd VimEnter * echom "No valid Fish shell found, falling back to bash"
+    endif
 else
-    set shell=/usr/bin/bash
+    set shell=/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
     let terminal_resize = 2
     autocmd VimEnter * echom "Unknown shell detected, falling back to bash"
 endif
+" ── AUTOCOMMANDS CONTINUED ───────────────────────────────────────────────────
 autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
