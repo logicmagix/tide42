@@ -214,7 +214,7 @@ elseif shell_name == 'bash'
 else
     set shell=/usr/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
-    let terminal_resize = 1
+    let terminal_resize = 2
     autocmd VimEnter * echom "Unknown shell detected, falling back to bash"
 endif
 autocmd VimEnter * belowright vs

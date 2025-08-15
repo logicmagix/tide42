@@ -242,7 +242,7 @@ Instructions:
 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
 - ``TermiC`` wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"  (live C/C++ shell)
 - ``Anaconda3`` with ``IPython`` (preferred, but may work with base ``IPython``)
-- ``bash``
+- ``bash`` or ``zsh``
 - Works on ARM. Tested on a Raspberry Pi5. Nvim 0.9.5 and 0.12 had to be built from source. Check your distro and dependencies on ARM.
 - Works on 32 bit systems. Newer versions of nvim must be built from source.
 
