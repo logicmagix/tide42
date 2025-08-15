@@ -7,6 +7,8 @@
 - Added colorscheme flag and error relevant error messages.
 - Added uninstall.sh with option to remove repo directory if desired.
 - Added new hotkey \q to restart UI
+- Added plugins gitsigns, bufferline, and nvim-web-devicons
+- Mapped hotkeys for new plugins \hs \hb \hr [c / ]c TAB and SHIFT + TAB
 
 ## [1.2.2] - 2025-08-12
 ### Added

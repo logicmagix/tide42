@@ -154,6 +154,17 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 ##
 `Ctrl+q`  + <-, -> = Switch between tmux buffers (selected buffer matches tmux bar color on the bottom)
 
+## Gitsigns (Git hunk navigation & actions)
+`[c` = Jump to previous Git hunk  
+`]c` = Jump to next Git hunk  
+`<leader>hs` = Stage current hunk  
+`<leader>hu` = Undo staging of current hunk  
+`<leader>hr` = Reset current hunk  
+`<leader>hb` = Blame current line
+
+## Bufferline
+`<TAB>` = Cycle to next buffer  
+`<S-TAB>` = Cycle to previous buffer
 
 ## Grid
 ##
