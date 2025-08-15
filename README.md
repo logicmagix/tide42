@@ -33,7 +33,14 @@ An ultra-efficient Neovim based IDE for Python and C/C++ prototyping.
 
 Tide42 is inspired in part by *The Hitchhiker’s Guide to the Galaxy*, where "42" is famously revealed as the Answer to the Ultimate Question of Life, the Universe, and Everything. 
 
-This project reflects that same spirit: a terminal IDE that encourages curiosity, simplicity, and discovery—*you ask the questions*. Tide42 is meant to be your solution, leaving the questions in your hands. 
+This project reflects that same spirit: a terminal IDE that encourages curiosity, simplicity, and discovery—*you ask the questions*. Tide42 is meant to be your solution, leaving the questions in your hands.
+
+## Latest News
+# 08.14.25
+- Tide42 has a new flag --colorscheme that can be used to set a desired theme. It may be manually edited within $HOME/.config/tide42/colorscheme.vim as well.
+- This theme will persist throughout updates. 
+- Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
+
 
 <pre><code>
 Ctrl/Ctrl+Alt|\
