@@ -104,7 +104,7 @@ if !exists(':ResetWindowsDefault')
 endif
 
 " ── KEYMAPS ────────────────────────────────────────────────────────
-
+nnoremap <silent> <leader>q :ResetUI<CR>
 nnoremap <leader>s :call <SID>MaximizeTerminalBuffer('left')<CR>
 nnoremap <leader>x :call <SID>MaximizeTerminalBuffer('right')<CR>
 nnoremap <silent> <leader>c :MaximizeIPythonBuffer<CR>
@@ -170,7 +170,8 @@ autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
 " ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────
-
+if !exists(':ResetUI')
+  command! ResetUI call s:ResetUI()
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
 endif
@@ -179,6 +180,42 @@ if !exists(':MaximizeIPythonBuffer')
 endif
 if !exists(':EnlargedWindow')
   command! EnlargedWindow call s:EnlargeWindow()
+endif
+if !exists(':ResetWindowsMaxEditor')
+  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
+endif
+if !exists(':ResetWindowsDefault')
+  command! ResetWindowsDefault call s:ResetWindowSizes(0)
+endif
+
+" ── RESET UI ───────────────────────────────────────────────────
+function! s:ResetUI() abort
+  try
+    " Save all buffers to avoid data loss
+    silent! wall
+    " Wipe all buffers to clear session state
+    silent! bufdo bwipeout!
+    " Close all windows
+    silent! only
+    " Source the configuration file
+    execute 'source ' . g:tide42_config_dir . '/tide42.vim'
+    " Re-run VimEnter autocommands to recreate UI
+    doautocmd VimEnter
+    " Reset window sizes to default
+    call s:ResetWindowSizes(0)
+    echom "tide42 UI reset: Wiped all buffers, sourced config, and restored default layout"
+  catch
+    echom "Error resetting UI: " . v:exception
+  endtry
+endfunction
+if !exists(':MaximizeTerminalBuffer')
+  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
+endif
+if !exists(':MaximizeIPythonBuffer')
+  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
+endif
+if !exists(':EnlargedWindow')
+  command! EnlargeWindow call s:EnlargeWindow()
 endif
 if !exists(':ResetWindowsMaxEditor')
   command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
@@ -703,4 +740,4 @@ function! Grid(...) abort
     let &colorcolumn = join(cols, ',')
     echo "GRID | Grid On " . dr . ", cols every " . dc
 endfunction
-
+endif
