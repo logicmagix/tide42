@@ -183,7 +183,37 @@ if [ ! -f "$COLORSCHEME_FILE" ]; then
 " slate sorbet torte unokai
 " vim (used to set transparency, respects default terminal emulator settings)
 " wildcharm zaibatsu zellner
-colorscheme retrobox " <--- replace with your preferred default
+colorscheme default " <--- replace with your preferred default
+
+" ── GRID STYLING ───────────────────────────────────────────────────
+augroup Grid
+    autocmd!
+    autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
+highlight ColorColumn ctermbg=239 guibg=#4e4e4e
+
+" ── UI & COLORS ───────────────────────────────────────────────────
+
+set cursorline
+set number
+set relativenumber
+augroup WindowLineNumbers
+    autocmd!
+    autocmd TermOpen * setlocal norelativenumber
+    autocmd BufWinEnter,WinEnter * if &buftype ==# 'terminal' | setlocal norelativenumber | else | setlocal relativenumber | endif
+augroup END
+set list
+" Without space marker
+set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,
+" With space marker
+"set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
+" Medieval Set:
+"set listchars=tab:⟭➳◎,eol:⚔,trail:♞,extends:♛,precedes:♚,space:␣,
+augroup CursorHighlights
+  autocmd!
+  autocmd ColorScheme,VimEnter * highlight clear CursorLine | highlight CursorLine cterm=underline gui=underline
+augroup END
+highlight Visual ctermbg=110 guibg=#87afd7
+highlight MatchParen ctermbg=100 guibg=#878700
 EOF
   echo "[tide42] Created persistent colorscheme file at $COLORSCHEME_FILE"
 fi

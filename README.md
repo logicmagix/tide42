@@ -8,7 +8,7 @@
                              ██║   ██║██████╔╝███████╗     ██║███████╗
                              ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
                             Terminal Integrated Developer Environment 
-                                               -42-                     
+                                             -42-                     
 
 </code></pre>
 ## License
@@ -36,12 +36,13 @@ Tide42 is inspired in part by *The Hitchhiker’s Guide to the Galaxy*, where "4
 This project reflects that same spirit: a terminal IDE that encourages curiosity, simplicity, and discovery—*you ask the questions*. Tide42 is meant to be your solution, leaving the questions in your hands.
 
 ## Latest News
+
 # 08.14.25
 - Tide42 has a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
-
 - Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
+- Now includes uninstall script 
 
 <pre><code>
 Ctrl/Ctrl+Alt|\
@@ -180,6 +181,7 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 
 ## Tips
 ##
+- Edit your highlight and grid colors in $HOME/tide42/colorscheme.vim
 - If you would like to map tide42 to a keyboard shortcut the best method is to use this command and substitute your terminal name: <gnome-terminal> -- bash -c "/usr/local/bin/tide42; exec bash"
 - ggVG to select all when in nvim command mode followed by  \p or \l for efficient transfer of text into IPython or TermiC
 - Once in insert mode in any ``nvim`` buffer, the recommended way of entering command mode is `jk`
@@ -227,7 +229,8 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - ``TermiC`` wget "https://raw.githubusercontent.com/hanoglu/TermiC/main/TermiC.sh"  (live C/C++ shell)
 - ``Anaconda3`` with ``IPython`` (preferred, but may work with base ``IPython``)
 - ``bash``
-- Works on ARM. Tested on a Raspberry Pi5. Nvim 0.9.5 and 0.12 had to be built from source. Check your distro and dependencies on ARM. 
+- Works on ARM. Tested on a Raspberry Pi5. Nvim 0.9.5 and 0.12 had to be built from source. Check your distro and dependencies on ARM.
+- Works on 32 bit systems. Newer versions of nvim must be built from source.
 
 ## Installation
 
@@ -262,14 +265,11 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 ## Usage
 - Launch tide42 from your terminal or assigned launcher with tide42 or tide42 <FILENAME>. It will:
-
 - Open a tmux session with vertically split nvim, TermiC, and IPython
-
 - Send text from the file editor to the live interpreter buffer with ggVG(select all) \p for ipython and \l for TermiC
-
 - Automatic insert mode and buffer sizing for paste to Termic and paste to IPython functions.
-
 - Support session save (Ctrl+q+d) and reset with :Q
+- To uninstall, chmod +x uninstall.sh and ./uninstall.sh from repo directory
 
 # Without tmux?
 - To run Tide42 without tmux, use the flag --lite.
@@ -290,7 +290,6 @@ Licensed under GPLv3 and included with permission.
 Pull requests, stars, and forks welcome 
 
 ## Screenshots
-
 - See tide42 in action:
 
 ### 	

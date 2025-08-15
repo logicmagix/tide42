@@ -124,12 +124,6 @@ EOF
 " vim (used to set transparency, respects default terminal emulator settings)
 " wildcharm zaibatsu zellner
 colorscheme $COLORSCHEME " <--- replace with your preferred default
-
-" ── GRID STYLING ───────────────────────────────────────────────────
-augroup Grid
-    autocmd!
-    autocmd ColorScheme * highlight clear ColorColumn | highlight ColorColumn ctermbg=239 guibg=#4e4e4e
-highlight ColorColumn ctermbg=239 guibg=#4e4e4e
 EOF
       fi
       log "Updated colorscheme to '$COLORSCHEME' in $COLORSCHEME_FILE"

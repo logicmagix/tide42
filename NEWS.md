@@ -4,8 +4,8 @@
 - Tide42 has a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
-
 - Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
+- Now includes uninstall script 
 
 # 08.12.25
 - Latest stable version is 1.2.2
