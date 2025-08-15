@@ -12,7 +12,6 @@
 " tide42 (formerly xtide86) — see LICENSE for details
 
 " ── GENERAL ───────────────────────────────────────────────────
-
 syntax on
 filetype plugin indent on
 let g:default_colorscheme = "default"
@@ -41,7 +40,6 @@ let NERDTreeShowLineNumbers = 1
 let NERDTreeLimitedSyntax = 0
 
 " ── PLUGINS ────────────────────────────────────────────────────────
-
 call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
@@ -86,7 +84,6 @@ EOF
                                         
 
 " ── FUNCTION COMMANDS ───────────────────────────────────────────────────
-
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
 endif
@@ -133,7 +130,6 @@ command! Q call ForceQuitAndKillTmux()
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
 " ── AUTOCOMMANDS ───────────────────────────────────────────────────
-
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
 autocmd VimEnter * echom "Detected shell: " . shell_name
@@ -146,8 +142,7 @@ autocmd VimEnter * terminal ipython
 autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
 
-" ── DETECT SHELL ───────────────────────────────────────────────────
-
+" ── DETECT SHELL ──
 if shell_name == 'zsh'
     set shell=/usr/bin/zsh
     autocmd VimEnter * terminal zsh -i -c 'termic cpp; exec zsh -i'
@@ -155,7 +150,7 @@ if shell_name == 'zsh'
 elseif shell_name == 'bash'
     set shell=/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
-    let terminal_resize = 1
+    let terminal_resize = 2
 else
     set shell=/usr/bin/bash
     autocmd VimEnter * terminal bash -c 'termic cpp; exec bash -i'
@@ -187,6 +182,21 @@ endif
 if !exists(':ResetWindowsDefault')
   command! ResetWindowsDefault call s:ResetWindowSizes(0)
 endif
+if !exists(':MaximizeTerminalBuffer')
+  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
+endif
+if !exists(':MaximizeIPythonBuffer')
+  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
+endif
+if !exists(':EnlargedWindow')
+  command! EnlargeWindow call s:EnlargeWindow()
+endif
+if !exists(':ResetWindowsMaxEditor')
+  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
+endif
+if !exists(':ResetWindowsDefault')
+  command! ResetWindowsDefault call s:ResetWindowSizes(0)
+endif
 
 " ── RESET UI ───────────────────────────────────────────────────
 function! s:ResetUI() abort
@@ -208,24 +218,8 @@ function! s:ResetUI() abort
     echom "Error resetting UI: " . v:exception
   endtry
 endfunction
-if !exists(':MaximizeTerminalBuffer')
-  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
-endif
-if !exists(':MaximizeIPythonBuffer')
-  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
-endif
-if !exists(':EnlargedWindow')
-  command! EnlargeWindow call s:EnlargeWindow()
-endif
-if !exists(':ResetWindowsMaxEditor')
-  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
-endif
-if !exists(':ResetWindowsDefault')
-  command! ResetWindowsDefault call s:ResetWindowSizes(0)
-endif
 
 " ── TOGGLE NVIM COLORSCHEMES ───────────────────────────────────────────────────
-
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
@@ -238,7 +232,6 @@ function! ToggleScheme()
 endfunction
 
 " ── FORCE-QUIT ───────────────────────────────────────────────────
-
 function! ForceQuitAndKillTmux() abort
   try
     if empty($TMUX)
@@ -257,13 +250,11 @@ function! ForceQuitAndKillTmux() abort
 endfunction
 
 " ── PREVENT REPEAT CALLS ───────────────────────────────────────────────────
-
 let s:is_running = 0
 let s:last_run = 0
 let s:debounce_ms = 500
 
 " ── SEND TO IPYTHON ───────────────────────────────────────────────────
-
 function! SendToIPython() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -325,7 +316,6 @@ function! SendToIPython() abort
 endfunction
 
 " ── SEND TO TERMICS ───────────────────────────────────────────────────
-
 function! SendToTermiC() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -400,7 +390,6 @@ function! SendToTermiC() abort
 endfunction
 
 " ── APPEND TO EDITORS ───────────────────────────────────────────────────
-
 function! AppendToEditor() abort
   if !exists('s:last_run')
     let s:last_run = 0
@@ -450,7 +439,6 @@ function! AppendToEditor() abort
 endfunction
 
 " ── FOCUS: FILE EDITOR ───────────────────────────────────────────────────
-
 function! s:ResetWindowSizes(maximize_editor) abort
   let current_win = winnr()
   let ipython_win = 0
@@ -519,7 +507,6 @@ function! s:ResetWindowSizes(maximize_editor) abort
 endfunction
 
 " ── FOCUS: IPYTHONS ───────────────────────────────────────────────────
-
 function! MaximizeIPythonBuffer() abort
   silent! try
     let l:initial_win = winnr()
@@ -571,7 +558,6 @@ function! MaximizeIPythonBuffer() abort
 endfunction
 
 " ── MAX TERMINAL ───────────────────────────────────────────────────
-
 function! s:MaximizeTerminalBuffer(direction = 'left') abort
   silent! try
     let l:initial_win = winnr()
@@ -661,14 +647,12 @@ function! s:MaximizeTerminalBuffer(direction = 'left') abort
 endfunction
 
 " ── MAX CURRENT ───────────────────────────────────────────────────
-
 function! s:EnlargeWindow() abort
   wincmd _
   echom "SET SIZE | Focus: (Currently Selected Buffer)"
 endfunction
 
 " ── RESTART IPYTHON ───────────────────────────────────────────────────
-
 command! RestartIPython call s:RestartIPython()
 function! s:RestartIPython() abort
   let current_win = winnr()
@@ -697,7 +681,6 @@ function! s:RestartIPython() abort
 endfunction
 
 " ── GRID: 5x5 or 10x10 ───────────────────────────────────────────────────
-
 function! Grid(...) abort
     if exists('b:grid_row_grp') || exists('b:grid_prev_cc')
         call matchdelete(b:grid_row_grp)
