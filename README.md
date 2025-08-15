@@ -292,7 +292,7 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - See ~/.config/tide42/tide42.vim for plugin configuration, UI tweaks, and terminal behavior.
 Feel free to remix buffer sizes and colors to match your workflow.
 
-- Use this one liner to set up your OpenAI API key: "echo 'export OPENAI_API_KEY="your_api_key_here"' >> ~/.$(basename $SHELL)rc && source ~/.$(basename $SHELL)rc"
+- Use this one liner to set up your OpenAI API key: echo `'export OPENAI_API_KEY="your_api_key_here"' >> ~/.$(basename $SHELL)rc && source ~/.$(basename $SHELL)rc`
 
 - If you are using X11 or a modern fork, you can set your transparency settings in your terminal emulator and use \y in Tide42 to toggle transparency on/off.
 
