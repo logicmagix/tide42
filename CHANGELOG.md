@@ -1,14 +1,14 @@
 # Changelog
 
 ## [1.2.2] - 2025-08-14
-###
+### Added
 - Seperate Highlight augroup and Grid Styling blocks from tide42.vim in colorscheme.vim
 - Set persistent default colorscheme
 - Added colorscheme flag and error relevant error messages.
 - Added uninstall.sh with option to remove repo directory if desired.
 
 ## [1.2.2] - 2025-08-12
-###
+### Added
 - Updated Telescope setup in tide42.vim to force horizontal layout with preview on the right.
 - Set preview_cutoff=10 to show previews in narrow windows.
 - Configured prompt_position="top", preview_width=0.5, width=0.9, height=0.8 for consistent UI across systems.
