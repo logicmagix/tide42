@@ -183,7 +183,7 @@ if [ ! -f "$COLORSCHEME_FILE" ]; then
 " slate sorbet torte unokai
 " vim (used to set transparency, respects default terminal emulator settings)
 " wildcharm zaibatsu zellner
-colorscheme default " <--- replace with your preferred default
+colorscheme retrobox " <--- replace with your preferred default
 
 " ── GRID STYLING ───────────────────────────────────────────────────
 
