@@ -86,10 +86,6 @@ zx           | zxcvbnm
 </code></pre>
 
 
-
-## Coming Soon!
-- Opening second file in right tmux buffer if session is detached with a loaded file in the left (default).
-
 ## Flags
 - Set colorscheme: --colorscheme, -cs
 - Low Color: --low-color, -lc
@@ -196,9 +192,10 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 
 ## Tips
 ##
+- Tide42 will detect and run the Friendly Interactive Shell but this causes significant loss in performance due to errors in the terminal buffer when resized. Bash or zsh are recommended.
 - Edit your highlight and grid colors in $HOME/tide42/colorscheme.vim
 - If you would like to map tide42 to a keyboard shortcut the best method is to use this command and substitute your terminal name: <gnome-terminal> -- bash -c "/usr/local/bin/tide42; exec bash"
-- ggVG to select all when in nvim command mode followed by  \p or \l for efficient transfer of text into IPython or TermiC
+- \h to select all when in nvim command mode followed by  \p or \l for efficient transfer of text into IPython or TermiC
 - Once in insert mode in any ``nvim`` buffer, the recommended way of entering command mode is `jk`
 - NERDTree may be refreshed with Shift+r after performing operations in the terminal buffer.
 - All NeoVim commands can also be used in any other buffer eg. /Documents to find and jump to ~/Documents directory.
