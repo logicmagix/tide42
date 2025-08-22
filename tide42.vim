@@ -100,19 +100,28 @@ require('bufferline').setup {
             return buftype == ''
         end,
         close_command = function(buf_number)
-            if buf_number == vim.api.nvim_get_current_buf() then
-                vim.notify("Cannot close the active buffer", vim.log.levels.WARN)
+            local buffers = vim.tbl_filter(function(b)
+                return vim.api.nvim_buf_is_valid(b) and
+                       vim.api.nvim_buf_get_option(b, 'buftype') == '' and
+                       b ~= buf_number
+            end, vim.api.nvim_list_bufs())
+            local is_active = buf_number == vim.api.nvim_get_current_buf()
+            if is_active and #buffers == 0 then
+                vim.notify("Cannot close the last buffer. Force close with :Q", vim.log.levels.WARN)
                 return
             end
-            if vim.api.nvim_buf_is_valid(buf_number) then
-                if vim.api.nvim_buf_get_option(buf_number, 'modified') then
-                    vim.notify("Buffer has unsaved changes, save or force close", vim.log.levels.WARN)
-                    return
-                end
-                pcall(vim.api.nvim_buf_delete, buf_number, { force = false })
-            else
-                vim.notify("Invalid buffer number", vim.log.levels.ERROR)
+            if not vim.api.nvim_buf_is_valid(buf_number) then
+                vim.notify("Buffer does not exist or is invalid.", vim.log.levels.ERROR)
+                return
             end
+            if vim.api.nvim_buf_get_option(buf_number, 'modified') then
+                vim.notify("Buffer has unsaved changes, Save with :w or force close with :Q", vim.log.levels.WARN)
+                return
+            end
+            if is_active and #buffers > 0 then
+                vim.api.nvim_set_current_buf(buffers[1])
+            end
+            pcall(vim.api.nvim_buf_delete, buf_number, { force = false })
         end,
     }
 }
