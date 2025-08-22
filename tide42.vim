@@ -122,6 +122,50 @@ require('bufferline').setup {
     }
 }
 
+-- Function to handle mouse clicks and block tabline clicks in terminal buffers
+function _G.conditional_mouse_click()
+    local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+    local mousepos = vim.fn.getmousepos()
+    -- Check if click is on tabline (adjust screenrow if needed based on your setup)
+    if mousepos.screenrow <= 2 and buftype == 'terminal' then
+        vim.notify("Double click to force tab switching in terminal buffer", vim.log.levels.INFO)
+        -- Feed an empty key sequence to prevent further event propagation
+        vim.api.nvim_feedkeys("", "n", false)
+        return
+    end
+    -- Allow default mouse behavior for non-tabline clicks or non-terminal buffers
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<LeftMouse>", true, true, true), "n", true)
+end
+
+-- Set up buffer-local mouse mappings for terminal buffers
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*",
+    callback = function()
+        local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+        if buftype == 'terminal' then
+            -- Map <LeftMouse> to our conditional function in terminal buffers
+            vim.keymap.set('n', '<LeftMouse>', ':lua _G.conditional_mouse_click()<CR>', { buffer = true, silent = true })
+        else
+            -- Remove buffer-local mapping to restore default behavior
+            pcall(vim.keymap.del, 'n', '<LeftMouse>', { buffer = true })
+        end
+    end,
+})
+
+-- Existing conditional buffer cycling
+function _G.conditional_bufferline_cycle(direction)
+    local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
+    if buftype == '' then
+        if direction == 'next' then
+            vim.cmd('BufferLineCycleNext')
+        elseif direction == 'prev' then
+            vim.cmd('BufferLineCyclePrev')
+        end
+    else
+        vim.notify("Buffer cycling is only allowed in file editor buffers", vim.log.levels.INFO)
+    end
+end
+
 require('gitsigns').setup {
     signs = {
         add          = { text = '│' },
@@ -181,6 +225,12 @@ if !exists(':ResetWindowsDefault')
 endif
 
 " ── KEYMAPS ────────────────────────────────────────────────────────────
+" Ensure global <LeftMouse> mapping is removed to avoid conflicts
+silent! unmap <LeftMouse>
+
+" Key mappings for buffer cycling (unchanged)
+nnoremap <silent> <TAB> :lua _G.conditional_bufferline_cycle('next')<CR>
+nnoremap <silent> <S-TAB> :lua _G.conditional_bufferline_cycle('prev')<CR>
 nnoremap <silent> <leader>q :ResetUI<CR>
 nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
 nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
