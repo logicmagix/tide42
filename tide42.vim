@@ -95,6 +95,11 @@ require('bufferline').setup {
         show_buffer_close_icons = true,
         show_close_icon = true,
         color_icons = true,
+        custom_filter = function(buf_number)
+            -- Only include buffers that are regular files (not terminals)
+            local buftype = vim.api.nvim_buf_get_option(buf_number, 'buftype')
+            return buftype == ''
+        end,
     }
 }
 

@@ -118,7 +118,7 @@ for pkg in "${!PKG_NAMES[@]}"; do
   PKG_LIST="${PKG_LIST} ${PKG_NAMES[$pkg]}"
 done
 
-# Install packages using the appropriate command
+# === Install packages using the appropriate command ===
 
 if [ "$PKG_MANAGER" = "unknown" ]; then
   echo "[tide42] Unknown package manager. Please install the following packages manually:"
