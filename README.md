@@ -109,6 +109,8 @@ Tmux based command: `Ctrl-q` + `d` (or gui exit button) = Exit and save tmux sta
 Nvim based command `:Q` = Force-quit the program (reset for new session)
 ## Force close tab
 `:BD` = Force close tab (unsaved work will be lost)
+## Close plugin window
+`Esc Esc` = Close opened plugin window
 ## Cycle nvim buffers within selected tmux buffer
 `Ctrl+ww` = Cycle between vim buffers within a tmux buffer
 ## Manually select vim buffer within selected tmux buffer
@@ -130,13 +132,13 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 ## AI
 `\o` = optional OpenAI ChatGPT implementation with API key (stored in a global variable)
 ## Send to IPython
-`\p` = Paste selected text into IPython buffer and expand buffer, entering insert mode.
+`\p` = Paste selected text into IPython buffer and expand buffer, entering insert mode
 ## Send to TermiC
 `\l` = Paste selected text into TermiC buffer and expand buffer, entering insert mode
 ## Append to Editor
-`\m` = Paste selected text into nvim file editor buffer from any buffer: terminal, ipython, or termic.
+`\m` = Paste selected text into nvim file editor buffer from any buffer: terminal, ipython, or termic
 ## Restart Tide42 UI
-`\q` = Close all active buffers within tmux panel and restart Tide42 UI.
+`\q` = Close all active buffers within tmux panel and restart Tide42 UI
 
 ## Tmux buffer controls (work in insert or command mode)
 ##
