@@ -344,7 +344,6 @@ else
 fi
 
 # === Desktop launcher ===
-
 GLOBAL_INSTALL=false
 if [ "$1" == "--global" ]; then
   GLOBAL_INSTALL=true
@@ -370,9 +369,33 @@ else
     echo "[tide42] No GUI detected — skipping .desktop launcher install."
   fi
 fi
+
+# Detect the default terminal
 if [ ! -f "$HOME/.tmux.conf" ]; then
+  # Default to a common terminal type if $TERM is not set or is generic
+  DEFAULT_TERMINAL="xterm-256color"
+  
+  # Check if $TERM is set and not generic (like 'xterm' or 'linux')
+  if [ -n "$TERM" ] && [ "$TERM" != "xterm" ] && [ "$TERM" != "linux" ]; then
+    DEFAULT_TERMINAL="$TERM"
+  else
+    # Try to detect common terminal emulators
+    if command -v gnome-terminal > /dev/null; then
+      DEFAULT_TERMINAL="xterm-256color"
+    elif command -v konsole > /dev/null; then
+      DEFAULT_TERMINAL="konsole-256color"
+    elif command -v xfce4-terminal > /dev/null; then
+      DEFAULT_TERMINAL="xterm-256color"
+    elif command -v alacritty > /dev/null; then
+      DEFAULT_TERMINAL="alacritty"
+    elif command -v kitty > /dev/null; then
+      DEFAULT_TERMINAL="kitty"
+    fi
+  fi
+
+  # Write the detected terminal to .tmux.conf
   cat <<EOF > "$HOME/.tmux.conf"
-set -g default-terminal "tmux-256color"
+set -g default-terminal "$DEFAULT_TERMINAL"
 set -as terminal-overrides ',*:Tc'
 EOF
 fi
