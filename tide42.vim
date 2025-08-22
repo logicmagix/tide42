@@ -57,7 +57,7 @@ Plug 'akinsho/bufferline.nvim', { 'tag': '*' }  "Tab cycle with close buttons an
 Plug 'lewis6991/gitsigns.nvim'  " Git diff signs + hunk actions
 call plug#end()
 
-" ── CONFIG ─────────────────────────────────────────────────────────
+" ── PLUGIN CONFIGURATION ─────────────────────────────────────────────────────────
 lua << EOF
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",
