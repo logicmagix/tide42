@@ -1,8 +1,9 @@
 # Tide42 NEWS:
 
-#
-08.22.25
-- Tabs can be cycled through the file editor buffer. Only inactive tabs may be closed. 
+# 08.22.25
+- The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
+- Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
+- Tabs can be cycled through the file editor buffer. 
  
 # 08.15.25
 - Tide42 has a new hotkey \q to restart the UI.

@@ -163,8 +163,6 @@ require('gitsigns').setup {
 }
 EOF
 
-                                        
-
 " ── FUNCTION COMMANDS ──────────────────────────────────────────────────
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
@@ -370,7 +368,6 @@ if !exists(':ResetWindowsDefault')
   command! ResetWindowsDefault call s:ResetWindowSizes(0)
 endif
 
-" ── RESET UI ───────────────────────────────────────────────────────────
 function! s:ResetUI() abort
   try
     " Save all buffers to avoid data loss
@@ -617,6 +614,8 @@ function! s:ResetWindowSizes(maximize_editor) abort
   let term_win = 0
   let nerdtree_win = 0
   let edit_win = 0
+
+  " Identify windows
   for w in range(1, winnr('$'))
     let buf = winbufnr(w)
     let bufname = bufname(buf)
@@ -632,50 +631,70 @@ function! s:ResetWindowSizes(maximize_editor) abort
       let edit_win = w
     endif
   endfor
+
+  " Minimize non-editor windows initially
   if nerdtree_win > 0
     execute nerdtree_win . 'wincmd w'
-    vertical resize 18
+    vertical resize 1
   endif
   if ipython_win > 0
     execute ipython_win . 'wincmd w'
-    resize 12
+    resize 1
     setlocal winfixheight
   endif
   if term_win > 0
     execute term_win . 'wincmd w'
     if !a:maximize_editor
       vertical resize 33
-      resize 12
+      resize 3
     else
-      vertical resize 1
-      resize 1
+      vertical resize 12
+      resize 12
+      setlocal winfixheight
     endif
   endif
+
+  " Focus editor window
   if edit_win > 0
     execute edit_win . 'wincmd w'
   else
     wincmd l
     let edit_win = winnr()
   endif
+
+  " Resize editor window
   if a:maximize_editor
     wincmd _
     wincmd |
   else
     vertical resize 89
   endif
-  wincmd j
-  wincmd l
+
+  " Adjust NERDTree and terminal based on maximize_editor
   if nerdtree_win > 0
     execute nerdtree_win . 'wincmd w'
-    vertical resize 18
+    if a:maximize_editor
+      vertical resize 1  " Hide NERDTree
+    else
+      vertical resize 25  " Show NERDTree
+    endif
   endif
+  if term_win > 0
+    execute term_win . 'wincmd w'
+    vertical resize 2
+    resize 2
+    setlocal winfixheight
+  endif
+
+  " Return to editor window
   if edit_win > 0
     execute edit_win . 'wincmd w'
   else
     wincmd j
     wincmd l
   endif
-  echom "SET SIZE | " . (a:maximize_editor ? "Focus : (File Editor)" : "Reset Default Configuration") . ""
+
+  echom "SET SIZE | " . (a:maximize_editor ? "Focus: File Editor (Hide NERDTree)" : "Focus: File Editor (Show NERDTree)") . ""
 endfunction
 
 " ── FOCUS: IPYTHONS ────────────────────────────────────────────────────

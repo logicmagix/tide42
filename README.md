@@ -38,6 +38,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 08.22.25
+- The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
+- Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
 - Tabs can be cycled through the file editor buffer. Only inactive tabs may be closed. 
 - Tide42 has a new hotkey \q to restart the UI.
 - Added a new flag --colorscheme that can be used to set a desired theme. 
@@ -105,6 +107,8 @@ zx           | zxcvbnm
 ## Quit or Detach
 Tmux based command: `Ctrl-q` + `d` (or gui exit button) = Exit and save tmux state (lost on restart of PC) 
 Nvim based command `:Q` = Force-quit the program (reset for new session)
+## Force close tab
+`:BD` = Force close tab (unsaved work will be lost)
 ## Cycle nvim buffers within selected tmux buffer
 `Ctrl+ww` = Cycle between vim buffers within a tmux buffer
 ## Manually select vim buffer within selected tmux buffer
@@ -153,12 +157,12 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `Ctrl+q`  + <-, -> = Switch between tmux buffers (selected buffer matches tmux bar color on the bottom)
 
 ## Gitsigns (Git hunk navigation & actions)
-`[c` = Jump to previous Git hunk  
+`[c]` = Jump to previous Git hunk  
 `]c` = Jump to next Git hunk  
-`<leader>hs` = Stage current hunk  
-`<leader>hu` = Undo staging of current hunk  
-`<leader>hr` = Reset current hunk  
-`<leader>hb` = Blame current line
+`\hs` = Stage current hunk  
+`\hu` = Undo staging of current hunk  
+`\hr` = Reset current hunk  
+`\hb` = Blame current line
 
 ## Bufferline
 `<TAB>` = Cycle to next buffer  
@@ -172,7 +176,10 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 
 ## NeoVim buffer presets
 ##
-`\z` = Maximize edit buffer or open Nerdtree on startup (lower)
+`\z` = Focus file editor with NERDTree hidden
+##
+`\b` = Focus file editor and show NERDTree
+##
 `\s` = Maximize and enter TermiC buffer (left)
 ##
 `\x` = Maximize and enter Terminal buffer(right)
@@ -180,8 +187,7 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `\c` = Maximize IPython buffer (upper)
 ##
 `\v` = Currently selected buffer
-##
-`\b` = Display all buffers
+
 ##
 
 

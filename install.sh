@@ -370,16 +370,12 @@ else
   fi
 fi
 
-# Detect the default terminal
+# === Detect the default terminal ===
 if [ ! -f "$HOME/.tmux.conf" ]; then
-  # Default to a common terminal type if $TERM is not set or is generic
   DEFAULT_TERMINAL="xterm-256color"
-  
-  # Check if $TERM is set and not generic (like 'xterm' or 'linux')
   if [ -n "$TERM" ] && [ "$TERM" != "xterm" ] && [ "$TERM" != "linux" ]; then
     DEFAULT_TERMINAL="$TERM"
   else
-    # Try to detect common terminal emulators
     if command -v gnome-terminal > /dev/null; then
       DEFAULT_TERMINAL="xterm-256color"
     elif command -v konsole > /dev/null; then
@@ -392,8 +388,6 @@ if [ ! -f "$HOME/.tmux.conf" ]; then
       DEFAULT_TERMINAL="kitty"
     fi
   fi
-
-  # Write the detected terminal to .tmux.conf
   cat <<EOF > "$HOME/.tmux.conf"
 set -g default-terminal "$DEFAULT_TERMINAL"
 set -as terminal-overrides ',*:Tc'
