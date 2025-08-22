@@ -676,7 +676,7 @@ function! s:ResetWindowSizes(maximize_editor) abort
     if a:maximize_editor
       vertical resize 1  " Hide NERDTree
     else
-      vertical resize 25  " Show NERDTree
+      vertical resize 40  " Show NERDTree
     endif
   endif
   if term_win > 0
