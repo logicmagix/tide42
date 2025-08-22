@@ -681,7 +681,7 @@ function! s:ResetWindowSizes(maximize_editor) abort
   endif
   if term_win > 0
     execute term_win . 'wincmd w'
-    vertical resize 2
+    vertical resize 1
     resize 2
     setlocal winfixheight
   endif
