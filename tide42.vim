@@ -96,9 +96,23 @@ require('bufferline').setup {
         show_close_icon = true,
         color_icons = true,
         custom_filter = function(buf_number)
-            -- Only include buffers that are regular files (not terminals)
             local buftype = vim.api.nvim_buf_get_option(buf_number, 'buftype')
             return buftype == ''
+        end,
+        close_command = function(buf_number)
+            if buf_number == vim.api.nvim_get_current_buf() then
+                vim.notify("Cannot close the active buffer", vim.log.levels.WARN)
+                return
+            end
+            if vim.api.nvim_buf_is_valid(buf_number) then
+                if vim.api.nvim_buf_get_option(buf_number, 'modified') then
+                    vim.notify("Buffer has unsaved changes, save or force close", vim.log.levels.WARN)
+                    return
+                end
+                pcall(vim.api.nvim_buf_delete, buf_number, { force = false })
+            else
+                vim.notify("Invalid buffer number", vim.log.levels.ERROR)
+            end
         end,
     }
 }
