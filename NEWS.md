@@ -1,5 +1,9 @@
 # Tide42 NEWS:
 
+#
+08.22.25
+- Tabs can be cycled through the file editor buffer. Only inactive tabs may be closed. 
+ 
 # 08.15.25
 - Tide42 has a new hotkey \q to restart the UI.
 - Added a new flag --colorscheme that can be used to set a desired theme. 
