@@ -11,7 +11,7 @@
 "=======================================================
 " tide42 (formerly xtide86) — see LICENSE for details
 
-" ── GENERAL ───────────────────────────────────────────────────
+" ── GENERAL ────────────────────────────────────────────────────────────
 syntax on
 filetype plugin indent on
 let g:default_colorscheme = "default"
@@ -39,7 +39,7 @@ let NERDTreeDirArrows = 1
 let NERDTreeShowLineNumbers = 1
 let NERDTreeLimitedSyntax = 0
 
-" ── PLUGINS ────────────────────────────────────────────────────────
+" ── PLUGINS ────────────────────────────────────────────────────────────
 call plug#begin('~/.local/share/tide42/plugged')
 Plug 'preservim/nerdtree'  " File explorer tree
 Plug 'tpope/vim-surround'  " Easily change surrounding characters (quotes, brackets, tags, etc.)
@@ -57,7 +57,7 @@ Plug 'akinsho/bufferline.nvim', { 'tag': '*' }  "Tab cycle with close buttons an
 Plug 'lewis6991/gitsigns.nvim'  " Git diff signs + hunk actions
 call plug#end()
 
-" ── PLUGIN CONFIGURATION ─────────────────────────────────────────────────────────
+" ── PLUGIN CONFIGURATION ───────────────────────────────────────────────
 lua << EOF
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",
@@ -114,14 +114,10 @@ require('bufferline').setup {
                 vim.notify("Buffer does not exist or is invalid.", vim.log.levels.ERROR)
                 return
             end
-            if vim.api.nvim_buf_get_option(buf_number, 'modified') then
-                vim.notify("Buffer has unsaved changes, Save with :w or force close with :Q", vim.log.levels.WARN)
-                return
-            end
             if is_active and #buffers > 0 then
                 vim.api.nvim_set_current_buf(buffers[1])
             end
-            pcall(vim.api.nvim_buf_delete, buf_number, { force = false })
+            pcall(vim.api.nvim_buf_delete, buf_number, { force = true })
         end,
     }
 }
@@ -169,7 +165,7 @@ EOF
 
                                         
 
-" ── FUNCTION COMMANDS ───────────────────────────────────────────────────
+" ── FUNCTION COMMANDS ──────────────────────────────────────────────────
 if !exists(':MaximizeTerminalBuffer')
   command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
 endif
@@ -186,7 +182,7 @@ if !exists(':ResetWindowsDefault')
   command! ResetWindowsDefault call s:ResetWindowSizes(0)
 endif
 
-" ── KEYMAPS ────────────────────────────────────────────────────────
+" ── KEYMAPS ────────────────────────────────────────────────────────────
 nnoremap <silent> <leader>q :ResetUI<CR>
 nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
 nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
@@ -215,9 +211,10 @@ inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
+command! BD lua vim.api.nvim_buf_delete(0, { force = true })
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
-" ── AUTOCOMMANDS ───────────────────────────────────────────────────
+" ── SESSION INIT  ──────────────────────────────────────────────────────
 let shell_path = $SHELL
 let shell_name = fnamemodify(shell_path, ':t')
 autocmd VimEnter * echom "Detected shell: " . shell_name
@@ -315,7 +312,7 @@ else
 endif
 
 
-" ── AUTOCOMMANDS CONTINUED ───────────────────────────────────────────────────
+" ── SESSION INIT CONTINUED ─────────────────────────────────────────────
 autocmd VimEnter * belowright vs
 autocmd VimEnter * vertical resize
 autocmd VimEnter * terminal
@@ -324,6 +321,22 @@ autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
 
 " ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────
+
+" ── FORCE CLOSE TAB ────────────────────────────────────────────────────
+command! BD call s:ForceDeleteBuffer()
+function! s:ForceDeleteBuffer() abort
+    let l:current_buf = bufnr('%')
+    let l:buffers = filter(getbufinfo(), 'v:val.listed && v:val.bufnr != ' . l:current_buf . ' && getbufvar(v:val.bufnr, "&buftype") == ""')
+    if len(l:buffers) > 0
+        execute 'buffer ' . l:buffers[0].bufnr
+    else
+        enew
+    endif
+    call luaeval('vim.api.nvim_buf_delete(' . l:current_buf . ', { force = true })')
+endfunction
+nnoremap <silent> <leader>bd :BD<CR>
+
+" ── RESET UI ───────────────────────────────────────────────────────────
 if !exists(':ResetUI')
   command! ResetUI call s:ResetUI()
 if !exists(':MaximizeTerminalBuffer')
@@ -357,7 +370,7 @@ if !exists(':ResetWindowsDefault')
   command! ResetWindowsDefault call s:ResetWindowSizes(0)
 endif
 
-" ── RESET UI ───────────────────────────────────────────────────
+" ── RESET UI ───────────────────────────────────────────────────────────
 function! s:ResetUI() abort
   try
     " Save all buffers to avoid data loss
@@ -378,7 +391,7 @@ function! s:ResetUI() abort
   endtry
 endfunction
 
-" ── TOGGLE NVIM COLORSCHEMES ───────────────────────────────────────────────────
+" ── TOGGLE NVIM COLORSCHEMES ───────────────────────────────────────────
 function! ToggleScheme()
   if g:using_vim_scheme
     execute 'colorscheme ' . g:default_colorscheme
@@ -390,7 +403,7 @@ function! ToggleScheme()
   endif
 endfunction
 
-" ── FORCE-QUIT ───────────────────────────────────────────────────
+" ── FORCE-QUIT ─────────────────────────────────────────────────────────
 function! ForceQuitAndKillTmux() abort
   try
     if empty($TMUX)
@@ -408,12 +421,12 @@ function! ForceQuitAndKillTmux() abort
   endtry
 endfunction
 
-" ── PREVENT REPEAT CALLS ───────────────────────────────────────────────────
+" ── PREVENT REPEAT CALLS ───────────────────────────────────────────────
 let s:is_running = 0
 let s:last_run = 0
 let s:debounce_ms = 500
 
-" ── SEND TO IPYTHON ───────────────────────────────────────────────────
+" ── SEND TO IPYTHON ────────────────────────────────────────────────────
 function! SendToIPython() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -474,7 +487,7 @@ function! SendToIPython() abort
   endtry
 endfunction
 
-" ── SEND TO TERMICS ───────────────────────────────────────────────────
+" ── SEND TO TERMIC ─────────────────────────────────────────────────────
 function! SendToTermiC() abort
   let current_time = reltimefloat(reltime()) * 1000
   if exists('s:last_run') && current_time - s:last_run < get(s:, 'debounce_ms', 500)
@@ -548,7 +561,7 @@ function! SendToTermiC() abort
   endtry
 endfunction
 
-" ── APPEND TO EDITORS ───────────────────────────────────────────────────
+" ── APPEND TO EDITORS ──────────────────────────────────────────────────
 function! AppendToEditor() abort
   if !exists('s:last_run')
     let s:last_run = 0
@@ -597,7 +610,7 @@ function! AppendToEditor() abort
   endtry
 endfunction
 
-" ── FOCUS: FILE EDITOR ───────────────────────────────────────────────────
+" ── FOCUS: FILE EDITOR ─────────────────────────────────────────────────
 function! s:ResetWindowSizes(maximize_editor) abort
   let current_win = winnr()
   let ipython_win = 0
@@ -665,7 +678,7 @@ function! s:ResetWindowSizes(maximize_editor) abort
   echom "SET SIZE | " . (a:maximize_editor ? "Focus : (File Editor)" : "Reset Default Configuration") . ""
 endfunction
 
-" ── FOCUS: IPYTHONS ───────────────────────────────────────────────────
+" ── FOCUS: IPYTHONS ────────────────────────────────────────────────────
 function! MaximizeIPythonBuffer() abort
   silent! try
     let l:initial_win = winnr()
@@ -716,7 +729,7 @@ function! MaximizeIPythonBuffer() abort
   endtry
 endfunction
 
-" ── MAX TERMINAL ───────────────────────────────────────────────────
+" ── MAX TERMINAL ───────────────────────────────────────────────────────
 function! s:MaximizeTerminalBuffer(direction = 'left') abort
   silent! try
     let l:initial_win = winnr()
@@ -805,13 +818,13 @@ function! s:MaximizeTerminalBuffer(direction = 'left') abort
   endtry
 endfunction
 
-" ── MAX CURRENT ───────────────────────────────────────────────────
+" ── MAX CURRENT ────────────────────────────────────────────────────────
 function! s:EnlargeWindow() abort
   wincmd _
   echom "SET SIZE | Focus: (Currently Selected Buffer)"
 endfunction
 
-" ── RESTART IPYTHON ───────────────────────────────────────────────────
+" ── RESTART IPYTHON ────────────────────────────────────────────────────
 command! RestartIPython call s:RestartIPython()
 function! s:RestartIPython() abort
   let current_win = winnr()
@@ -839,7 +852,7 @@ function! s:RestartIPython() abort
   execute current_win . 'wincmd w'
 endfunction
 
-" ── GRID: 5x5 or 10x10 ───────────────────────────────────────────────────
+" ── GRID: 5x5 or 10x10 ─────────────────────────────────────────────────
 function! Grid(...) abort
     if exists('b:grid_row_grp') || exists('b:grid_prev_cc')
         call matchdelete(b:grid_row_grp)
