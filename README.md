@@ -278,7 +278,6 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - The sudo command may prompt for your password to modify /usr/local/bin.
 - If you used a ZIP download, you cannot use tide42 --update unless you convert the directory to a Git repository.
 
-
 ## Usage
 - Launch tide42 from your terminal or assigned launcher with tide42 or tide42 <FILENAME>. It will:
 - Open a tmux session with vertically split nvim, TermiC, and IPython
