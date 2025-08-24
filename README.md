@@ -255,12 +255,6 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - Works on 32 bit systems. Newer versions of nvim must be built from source.
 
 ## Installation
-
-# Preferred for updates:
-:`bash`
-- git clone https://github.com/logicmagix/tide42.git
-- cd tide42
-
 # Make the script executable (one-time setup)
 - chmod +x install.sh
 - ./install
