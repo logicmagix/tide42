@@ -671,6 +671,7 @@ function! s:FocusFileEditor() abort
     execute l:editor_win . 'wincmd w'
     execute 'vertical resize'
     execute 'resize'
+    execute 'resize -1'
     echom "SET FOCUS | File Editor"
   else
     echom "Error: File editor window not found"
@@ -691,6 +692,7 @@ function! s:FocusNERDTree() abort
     execute l:nerdtree_win . 'wincmd w'
     execute 'vertical resize 40'
     execute 'resize'
+    execute 'resize -1'
     echom "SET FOCUS | NERDTree"
   else
     echom "Error: NERDTree window not found"
