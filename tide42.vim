@@ -31,13 +31,13 @@ set winminheight=1
 set shell=/bin/bash
 let g:NERDTreeWinSize=10
 let NERDTreeShowHidden=1
-let NERDTreeMinimalUI = 1
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeQuitOnOpen = 0
-let NERDTreeRespectWildIgnore = 1
-let NERDTreeDirArrows = 1
-let NERDTreeShowLineNumbers = 1
-let NERDTreeLimitedSyntax = 0
+let NERDTreeMinimalUI=1
+let NERDTreeAutoDeleteBuffer=1
+let NERDTreeQuitOnOpen=0
+let NERDTreeRespectWildIgnore=1
+let NERDTreeDirArrows=1
+let NERDTreeShowLineNumbers=0
+let NERDTreeLimitedSyntax=0
 
 " ── PLUGINS ────────────────────────────────────────────────────────────
 call plug#begin('~/.local/share/tide42/plugged')
@@ -237,8 +237,8 @@ nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
 nnoremap <leader>s :call <SID>MaximizeTerminalBuffer('left')<CR>
 nnoremap <leader>x :call <SID>MaximizeTerminalBuffer('right')<CR>
 nnoremap <silent> <leader>c :MaximizeIPythonBuffer<CR>
-nnoremap <silent> <leader>b :ResetWindowsDefault<CR>
-nnoremap <silent> <leader>z :ResetWindowsMaxEditor<CR>
+nnoremap <silent> <leader>b :call <SID>FocusNERDTree()<CR>
+nnoremap <silent> <leader>z :call <SID>FocusFileEditor()<CR>
 nnoremap <silent> <leader>v :EnlargedWindow<CR>
 nnoremap <expr> <leader>i ":vertical resize " . input('Resize to: ') . "<CR>"
 nnoremap <expr> <leader>u ":resize " . input('Resize to: ') . "<CR>"
@@ -658,93 +658,41 @@ function! AppendToEditor() abort
 endfunction
 
 " ── FOCUS: FILE EDITOR ─────────────────────────────────────────────────
-function! s:ResetWindowSizes(maximize_editor) abort
-  let current_win = winnr()
-  let ipython_win = 0
-  let term_win = 0
-  let nerdtree_win = 0
-  let edit_win = 0
-
-  " Identify windows
+function! s:FocusFileEditor() abort
+  let l:editor_win = 0
   for w in range(1, winnr('$'))
-    let buf = winbufnr(w)
-    let bufname = bufname(buf)
-    if getbufvar(buf, '&filetype') == 'nerdtree'
-      let nerdtree_win = w
-    elseif getbufvar(buf, '&buftype') == 'terminal'
-      if bufname =~ 'ipython'
-        let ipython_win = w
-      elseif bufname =~ 'termic'
-        let term_win = w
-      endif
-    else
-      let edit_win = w
+    let l:buf = winbufnr(w)
+    if getbufvar(l:buf, '&buftype') == '' && bufname(l:buf) !~ 'NERD'
+      let l:editor_win = w
+      break
     endif
   endfor
+  if l:editor_win > 0
+    execute l:editor_win . 'wincmd w'
+    execute 'vertical resize'
+    echom "SET FOCUS | File Editor"
+  else
+    echom "Error: File editor window not found"
+  endif
+endfunction
 
-  " Minimize non-editor windows initially
-  if nerdtree_win > 0
-    execute nerdtree_win . 'wincmd w'
-    vertical resize 1
-  endif
-  if ipython_win > 0
-    execute ipython_win . 'wincmd w'
-    resize 1
-    setlocal winfixheight
-  endif
-  if term_win > 0
-    execute term_win . 'wincmd w'
-    if !a:maximize_editor
-      vertical resize 33
-      resize 3
-    else
-      vertical resize 12
-      resize 12
-      setlocal winfixheight
+" ── FOCUS: NERDTREE ────────────────────────────────────────────────────
+function! s:FocusNERDTree() abort
+  let l:nerdtree_win = 0
+  for w in range(1, winnr('$'))
+    let l:buf = winbufnr(w)
+    if getbufvar(l:buf, '&filetype') == 'nerdtree'
+      let l:nerdtree_win = w
+      break
     endif
-  endif
-
-  " Focus editor window
-  if edit_win > 0
-    execute edit_win . 'wincmd w'
+  endfor
+  if l:nerdtree_win > 0
+    execute l:nerdtree_win . 'wincmd w'
+    execute 'vertical resize 40'
+    echom "SET FOCUS | NERDTree (resized to width 40)"
   else
-    wincmd l
-    let edit_win = winnr()
+    echom "Error: NERDTree window not found"
   endif
-
-  " Resize editor window
-  if a:maximize_editor
-    wincmd _
-    wincmd |
-  else
-    vertical resize 89
-  endif
-
-  " Adjust NERDTree and terminal based on maximize_editor
-  if nerdtree_win > 0
-    execute nerdtree_win . 'wincmd w'
-    if a:maximize_editor
-      vertical resize 1  " Hide NERDTree
-    else
-      vertical resize 40  " Show NERDTree
-    endif
-  endif
-  if term_win > 0
-    execute term_win . 'wincmd w'
-    vertical resize 1
-    resize 2
-    setlocal winfixheight
-  endif
-
-  " Return to editor window
-  if edit_win > 0
-    execute edit_win . 'wincmd w'
-  else
-    wincmd j
-    wincmd l
-  endif
-
-  echom "SET SIZE | " . (a:maximize_editor ? "Focus: File Editor (Hide NERDTree)" : "Focus: File Editor (Show NERDTree)") . ""
 endfunction
 
 " ── FOCUS: IPYTHONS ────────────────────────────────────────────────────
