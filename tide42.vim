@@ -107,7 +107,7 @@ require('bufferline').setup {
             end, vim.api.nvim_list_bufs())
             local is_active = buf_number == vim.api.nvim_get_current_buf()
             if is_active and #buffers == 0 then
-                vim.notify("Cannot close the last buffer. Force close with :Q", vim.log.levels.WARN)
+                vim.notify("Cannot close the last buffer. Force close with :Q or :BD to refresh.", vim.log.levels.WARN)
                 return
             end
             if not vim.api.nvim_buf_is_valid(buf_number) then
