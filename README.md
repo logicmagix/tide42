@@ -201,6 +201,7 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 
 ## Tips
 ##
+- To save all tabs at once use :wall or :wa
 - To cycle terminal buffers within the current selected buffer use \w otherwise cycle file editor tabs with Tab and Shift + Tab.
 - Tide42 will detect and run the Friendly Interactive Shell but this causes significant loss in performance due to errors in the terminal buffer when resized. Bash or zsh are recommended.
 - Edit your highlight and grid colors in $HOME/tide42/colorscheme.vim
