@@ -37,7 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 08.22.25
+# 09.02.25
+- Tide42 now checks for updates and logs status in the command line.
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
 - Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
 - Tabs can be cycled through the file editor buffer. Only inactive tabs may be closed. 
@@ -45,9 +46,6 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - Added a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
-- Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
-- Now includes uninstall script 
-- Tide42 now detects bash zsh or fish in either system or user installed locations.
 
 <pre><code>
 Ctrl/Ctrl+Alt|\

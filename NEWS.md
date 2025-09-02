@@ -1,5 +1,8 @@
 # Tide42 NEWS:
 
+# 09.02.25
+- Tide42 now checks for available updates and logs status in the command line.
+
 # 08.22.25
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
 - Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
