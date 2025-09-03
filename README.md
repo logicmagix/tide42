@@ -37,7 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 08.22.25
+# 09.02.25
+- Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated between 6:00pm and 12:00pm EST
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
 - Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
 - Tabs can be cycled through the file editor buffer. Only inactive tabs may be closed. 
