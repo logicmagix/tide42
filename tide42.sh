@@ -84,7 +84,7 @@ check_for_updates() {
   [ -f "$VERSION_FILE" ] && VERSION_NUMBER="$(<"$VERSION_FILE")"
   if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
     SHORT_HASH="$(git rev-parse --short HEAD)"
-    log "Tide42 is up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
+    log "Already up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
   else
     SHORT_LOCAL="$(git rev-parse --short HEAD)"
     SHORT_REMOTE="$(git rev-parse --short "origin/$CHECK_BRANCH")"
