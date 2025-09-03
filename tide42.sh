@@ -7,7 +7,7 @@
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful,
+# This program  is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
@@ -19,6 +19,7 @@
 # This project includes `termic.sh` from [Yusuf Kagan Hanoglu/Max Schillinger/TermiC], licensed under the [GPL3] License.
 
 # === Initialize ===
+
 set -e
 echo "[tide42] Running..."
 VERSION_PATH="$(dirname "$0")/VERSION"
@@ -40,6 +41,7 @@ TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 
 # === Define pane border settings in tmux.conf ===
+
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
@@ -51,52 +53,9 @@ EOF
 log() {
   $IS_QUIET || echo "[tide42] $@"
 }
-
-# === Function to check for updates ===
-check_for_updates() {
-  log "Checking for available updates…"
-  SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
-  SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
-  cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; return 1; }
-  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    log "Error: This directory is not a Git repository."
-    return 1
-  fi
-  CURRENT_BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "detached")"
-  if [ "$CURRENT_BRANCH" = "detached" ]; then
-    log "Error: You are in a detached HEAD state. Cannot check for updates."
-    return 1
-  fi
-  # Prefer 'stable' if present
-  CHECK_BRANCH="$CURRENT_BRANCH"
-  if git ls-remote --heads origin stable >/dev/null 2>&1; then
-    CHECK_BRANCH="stable"
-  fi
-  log "Checking branch: $CHECK_BRANCH"
-  git fetch --tags --prune origin "$CHECK_BRANCH" 2>/dev/null || {
-    log "Error: Failed to fetch updates from origin."
-    return 1
-  }
-  LOCAL_HASH="$(git rev-parse HEAD)"
-  REMOTE_HASH="$(git rev-parse "origin/$CHECK_BRANCH")"
-  VERSION_FILE="$SCRIPT_DIR/VERSION"
-  VERSION_NUMBER="unknown"
-  [ -f "$VERSION_FILE" ] && VERSION_NUMBER="$(<"$VERSION_FILE")"
-  if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
-    SHORT_HASH="$(git rev-parse --short HEAD)"
-    log "Already up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
-  else
-    SHORT_LOCAL="$(git rev-parse --short HEAD)"
-    SHORT_REMOTE="$(git rev-parse --short "origin/$CHECK_BRANCH")"
-    REMOTE_VERSION="$(git show "origin/$CHECK_BRANCH":VERSION 2>/dev/null || echo "unknown")"
-    log "Update available: $VERSION_NUMBER ($CHECK_BRANCH@$SHORT_LOCAL) → $REMOTE_VERSION ($CHECK_BRANCH@$SHORT_REMOTE)"
-  fi
-}
-
-# === Check for updates on startup ===
-check_for_updates
 while [ $# -gt 0 ]; do
   case "$1" in
+    
     --whereami)
       SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
       SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
@@ -104,14 +63,17 @@ while [ $# -gt 0 ]; do
       log "Source directory: $SCRIPT_DIR"
       exit 0
       ;;
+    
     --lite)
       shift
       log "[tide42] Launching in lite mode (no tmux)..."
       exec env NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" "$@"
       ;;
+    
     --quiet|-q)
       IS_QUIET=true
       ;;
+    
     --low-color|-lc) # 88 Color
       IS_LOW_COLOR=true
       COLOR_FLAG_PROVIDED=true
@@ -127,11 +89,14 @@ $PANE_BORDER_CONFIG
 EOF
       log "Applied 88-color config with pane border settings."
       ;;
+    
     --colorscheme|-cs)
       shift
       if [ -z "$1" ]; then
         log "Error: --colorscheme requires a colorscheme name."
-        log "Colorschemes include: blue darkblue default delek desert elflord evening habamax industry koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine slate sorbet torte unokai vim wildcharm zaibatsu zellner"
+        log "Colorschemes inlcude: blue darkblue default delek desert elflord evening habamax industry
+             koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine slate sorbet torte unokai vim 
+             wildcharm zaibatsu zellner"
         exit 1
       fi
       COLORSCHEME="$1"
@@ -165,10 +130,49 @@ EOF
       COLORSCHEME_PROCESSED=true
       shift
       ;;
+    
     --check-update)
-      check_for_updates
-      exit 0
+      log "Checking for available updates…"
+      SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
+      SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
+      cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; exit 1; }
+      if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        log "Error: This directory is not a Git repository."
+        exit 1
+      fi
+      CURRENT_BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "detached")"
+      if [ "$CURRENT_BRANCH" = "detached" ]; then
+        log "Error: You are in a detached HEAD state. Cannot check for updates."
+        exit 1
+      fi
+      # Prefer 'stable' if present
+      CHECK_BRANCH="$CURRENT_BRANCH"
+      if git ls-remote --heads origin stable >/dev/null 2>&1; then
+        CHECK_BRANCH="stable"
+      fi
+      log "Checking branch: $CHECK_BRANCH"
+      git fetch --tags --prune origin "$CHECK_BRANCH" || {
+        log "Error: Failed to fetch updates from origin."
+        exit 1
+      }
+      LOCAL_HASH="$(git rev-parse HEAD)"
+      REMOTE_HASH="$(git rev-parse "origin/$CHECK_BRANCH")"
+      VERSION_FILE="$SCRIPT_DIR/VERSION"
+      VERSION_NUMBER="unknown"
+      [ -f "$VERSION_FILE" ] && VERSION_NUMBER="$(<"$VERSION_FILE")"
+      if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
+        SHORT_HASH="$(git rev-parse --short HEAD)"
+        log "Already up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
+        exit 0
+      else
+        SHORT_LOCAL="$(git rev-parse --short HEAD)"
+        SHORT_REMOTE="$(git rev-parse --short "origin/$CHECK_BRANCH")"
+        REMOTE_VERSION="$(git show "origin/$CHECK_BRANCH":VERSION 2>/dev/null || echo "unknown")"
+        log "Update available: $VERSION_NUMBER ($CHECK_BRANCH@$SHORT_LOCAL) → $REMOTE_VERSION ($CHECK_BRANCH@$SHORT_REMOTE)"
+        exit 0
+      fi
       ;;
+    
     --update)
       UPDATE_PROCESSED=true
       log "Checking for updates from GitHub..."
@@ -206,7 +210,9 @@ EOF
         exit 1
       }
       log "Update complete."
+      
       # === Re-run install script if present ===
+      
       INSTALL_SCRIPT="$SCRIPT_DIR/install.sh"
       if [ -f "$INSTALL_SCRIPT" ]; then
         log "Running installer to apply updates..."
@@ -221,10 +227,12 @@ EOF
       fi
       exit 0
       ;;
+    
     --version)
       log "tide42 version $TIDE_VERSION"
       exit 0
       ;;
+    
     --help|-h)
       echo "Usage: tide42 [--color | --low-color] [--colorscheme <name>] [--update] [--quiet] [--version] [filename]"
       echo ""
@@ -253,6 +261,7 @@ EOF
 done
 
 # === Exit if --update or --colorscheme was processed ===
+
 if [ "$UPDATE_PROCESSED" = true ]; then
   log "Update process completed, exiting."
   exit 0
@@ -263,6 +272,7 @@ if [ "$COLORSCHEME_PROCESSED" = true ]; then
 fi
 
 # === Apply environment variables ===
+
 if [ "$IS_LOW_COLOR" = true ]; then
   export TERM="xterm-88color"
   unset COLORTERM
@@ -276,6 +286,7 @@ else
 fi
 
 # === Write default tmux.conf only if no color flag provided ===
+
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
   if [ -f "$TMUX_CONF" ]; then
     if grep -q "# tide42_overwrite_ok" "$TMUX_CONF"; then
@@ -312,6 +323,7 @@ EOF
 fi
 
 # === Check for existing session ===
+
 if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   if tmux list-clients -t "$SESSION_NAME" >/dev/null 2>&1; then
     tmux detach-client -s "$SESSION_NAME" 2>/dev/null || true
@@ -337,6 +349,7 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
 fi
 
 # === Ensure mouse support in tmux.conf ===
+
 if [ -s "$TMUX_CONF" ]; then
   if ! grep -q "set -g mouse on" "$TMUX_CONF"; then
     echo "set -g mouse on" >> "$TMUX_CONF"
@@ -348,10 +361,12 @@ else
 fi
 
 # === Start new tmux session ===
+
 tmux new-session -d -s "$SESSION_NAME"
 tmux split-window -h
 
 # === Set keybindings ===
+
 tmux unbind C-b
 tmux set-option -g prefix C-q
 tmux bind-key h select-pane -L
@@ -368,10 +383,12 @@ tmux bind-key -n C-M-c resize-pane -x 60%
 tmux bind-key -n C-M-v resize-pane -x 75%
 
 # === Startup UI ===
+
 tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
 tmux select-pane -t "$SESSION_NAME":0.0
 
 # === Open file in pane 0 ===
+
 if [ -n "$FILENAME" ]; then
   tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
 else
@@ -379,7 +396,9 @@ else
 fi
 
 # === Preload right pane 1 with nvim if desired ===
+
 tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 
 # === Attach to the session ===
+
 tmux attach-session -t "$SESSION_NAME"
