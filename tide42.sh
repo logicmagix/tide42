@@ -54,21 +54,17 @@ log() {
 
 # === Function to check for updates ===
 check_for_updates() {
-  # Save the current working directory
-  ORIGINAL_DIR="$PWD"
   log "Checking for available updates…"
   SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
   SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
-  cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; cd "$ORIGINAL_DIR"; return 1; }
+  cd "$SCRIPT_DIR" || { log "Error: Cannot access directory $SCRIPT_DIR"; return 1; }
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     log "Error: This directory is not a Git repository."
-    cd "$ORIGINAL_DIR"
     return 1
   fi
   CURRENT_BRANCH="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "detached")"
   if [ "$CURRENT_BRANCH" = "detached" ]; then
     log "Error: You are in a detached HEAD state. Cannot check for updates."
-    cd "$ORIGINAL_DIR"
     return 1
   fi
   # Prefer 'stable' if present
@@ -79,7 +75,6 @@ check_for_updates() {
   log "Checking branch: $CHECK_BRANCH"
   git fetch --tags --prune origin "$CHECK_BRANCH" 2>/dev/null || {
     log "Error: Failed to fetch updates from origin."
-    cd "$ORIGINAL_DIR"
     return 1
   }
   LOCAL_HASH="$(git rev-parse HEAD)"
@@ -89,15 +84,13 @@ check_for_updates() {
   [ -f "$VERSION_FILE" ] && VERSION_NUMBER="$(<"$VERSION_FILE")"
   if [ "$LOCAL_HASH" = "$REMOTE_HASH" ]; then
     SHORT_HASH="$(git rev-parse --short HEAD)"
-    log "Already up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
+    log "Tide42 is up to date: v$VERSION_NUMBER ($CHECK_BRANCH@$SHORT_HASH)"
   else
     SHORT_LOCAL="$(git rev-parse --short HEAD)"
     SHORT_REMOTE="$(git rev-parse --short "origin/$CHECK_BRANCH")"
     REMOTE_VERSION="$(git show "origin/$CHECK_BRANCH":VERSION 2>/dev/null || echo "unknown")"
     log "Update available: $VERSION_NUMBER ($CHECK_BRANCH@$SHORT_LOCAL) → $REMOTE_VERSION ($CHECK_BRANCH@$SHORT_REMOTE)"
   fi
-  # Restore the original working directory
-  cd "$ORIGINAL_DIR"
 }
 
 # === Check for updates on startup ===
@@ -355,8 +348,8 @@ else
 fi
 
 # === Start new tmux session ===
-tmux new-session -d -s "$SESSION_NAME" -c "$HOME"
-tmux split-window -h -c "$HOME"
+tmux new-session -d -s "$SESSION_NAME"
+tmux split-window -h
 
 # === Set keybindings ===
 tmux unbind C-b
