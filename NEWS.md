@@ -1,5 +1,8 @@
 # Tide42 NEWS:
 
+# 09.02.25
+- Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated on 09/02/2025 between6:00pm and 12:00pm EST
+
 # 08.22.25
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
 - Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
