@@ -231,6 +231,7 @@ silent! unmap <LeftMouse>
 " Key mappings for buffer cycling (unchanged)
 nnoremap <silent> <TAB> :lua _G.conditional_bufferline_cycle('next')<CR>
 nnoremap <silent> <S-TAB> :lua _G.conditional_bufferline_cycle('prev')<CR>
+nnoremap <leader>t :enew<CR>
 nnoremap <silent> <leader>q :ResetUI<CR>
 nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
 nnoremap <silent> <S-TAB> :BufferLineCyclePrev<CR>
