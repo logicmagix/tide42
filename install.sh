@@ -97,7 +97,7 @@ case "$PKG_MANAGER" in
     PKG_FONTS="powerline-fonts"
     ;;
   brew)
-    # === Homebrew specifics: ===
+    # === Homebrew specifics ===
     PKG_NCURSES="ncurses"
     PKG_PIP=""
     PKG_IPY="ipython"
