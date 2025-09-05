@@ -38,6 +38,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 09.04.25
+- Added screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64)
+- Man page currently does not install on Macbooks. The repo directory now contains tide42man.md which is a copy of the man page for Apple users 
 - Added hotkey for  new tab \t
 - Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated on 09/02/2025 between6:00pm and 12:00pm EST
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
@@ -354,7 +356,7 @@ Pull requests, stars, and forks welcome
 ![TTY](Screenshots/Screenshot9.png)
 - Seamless tty functionality with custom bindings makes the SSH experience feel like using a WM.
 
-### Tested and working on Macbook Air/Macbook Pro (x86_64 and Apple Silicon)
+### Tested and working on Macbook Air(Apple Silicon) / Macbook Pro(x86_64)
 ![Macbook-Air](Screenshots/Screenshot10.png)
 ![Macbook-Pro](Screenshots/Screenshot11.png)
 
