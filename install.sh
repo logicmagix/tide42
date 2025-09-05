@@ -79,59 +79,52 @@ echo "[tide42] Installing tide42 dependencies..."
 
 # === Define packages ===
 
-declare -A PKG_NAMES=(
-  ["tmux"]="tmux"
-  ["ncurses"]="ncurses-term"
-  ["neovim"]="neovim"
-  ["python3"]="python3"
-  ["python3-pip"]="python3-pip"
-  ["ipython"]="python3-ipython"
-  ["curl"]="curl"
-  ["git"]="git"
-  ["fonts-powerline"]="fonts-powerline"
-  ["ripgrep"]="ripgrep"
-)
-
-# === Adjust package names for specific package managers ===
-
+PKG_TMUX="tmux"
+PKG_NCURSES="ncurses-term"
+PKG_NVIM="neovim"
+PKG_PY3="python3"
+PKG_PIP="python3-pip"
+PKG_IPY="python3-ipython"
+PKG_CURL="curl"
+PKG_GIT="git"
+PKG_FONTS="fonts-powerline"
+PKG_RG="ripgrep"
 case "$PKG_MANAGER" in
   pacman)
-    PKG_NAMES["ncurses"]="ncurses"
-    PKG_NAMES["python3-pip"]="python-pip"
-    PKG_NAMES["ipython"]="ipython"
-    PKG_NAMES["fonts-powerline"]="powerline-fonts"
-    PKG_NAMES["ripgrep"]="ripgrep"
+    PKG_NCURSES="ncurses"
+    PKG_PIP="python-pip"
+    PKG_IPY="ipython"
+    PKG_FONTS="powerline-fonts"
     ;;
   brew)
-    PKG_NAMES["ncurses"]="ncurses"
-    PKG_NAMES["python3-pip"]="python-pip"
-    PKG_NAMES["ipython"]="ipython"
-    PKG_NAMES["fonts-powerline"]="powerline-fonts"
-    PKG_NAMES["ripgrep"]="ripgrep"
+    # === Homebrew specifics: ===
+    PKG_NCURSES="ncurses"
+    PKG_PIP=""
+    PKG_IPY="ipython"
+    PKG_FONTS=""
     ;;
 esac
 
-# === Build package list for installation ===
+if [ "$PKG_MANAGER" = "brew" ]; then
+  brew tap homebrew/cask-fonts || true
+  brew install --cask font-hack-nerd-font || true
+fi
+PKG_LIST="$PKG_TMUX $PKG_NCURSES $PKG_NVIM $PKG_PY3 $PKG_PIP $PKG_IPY $PKG_CURL $PKG_GIT $PKG_RG"
+set -- $PKG_LIST
+PKG_LIST="$*"
 
-PKG_LIST=""
-for pkg in "${!PKG_NAMES[@]}"; do
-  PKG_LIST="${PKG_LIST} ${PKG_NAMES[$pkg]}"
-done
-
-# === Install packages using the appropriate command ===
+# === Install packages ===
 
 if [ "$PKG_MANAGER" = "unknown" ]; then
-  echo "[tide42] Unknown package manager. Please install the following packages manually:"
-  for pkg in "${!PKG_NAMES[@]}"; do
-    echo "- ${PKG_NAMES[$pkg]}"
-  done
-  echo "For ripgrep, visit: https://github.com/BurntSushi/ripgrep#installation"
+  echo "[tide42] Unknown package manager. Please install these manually:"
+  for p in $PKG_LIST; do echo "- $p"; done
+  echo "For ripgrep, see: https://github.com/BurntSushi/ripgrep#installation"
   exit 1
 else
   echo "[tide42] Installing packages: $PKG_LIST"
   $INSTALL_CMD $PKG_LIST || {
-    echo "[tide42] Failed to install packages. Please check the package manager and try again."
-    echo "For ripgrep, ensure it is installed: https://github.com/BurntSushi/ripgrep#installation"
+    echo "[tide42] Failed to install packages. Please check your package manager."
+    echo "For ripgrep, see: https://github.com/BurntSushi/ripgrep#installation"
     exit 1
   }
 fi
