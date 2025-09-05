@@ -53,6 +53,22 @@ EOF
 log() {
   $IS_QUIET || echo "[tide42] $@"
 }
+
+
+# === Portable sed (GNU/BSD) ===
+
+inplace_sed() {
+  # usage: inplace_sed 's/old/new/' <file>
+  if sed --version >/dev/null 2>&1; then
+    # GNU sed
+    sed -i "$1" "$2"
+  else
+    # BSD sed (macOS)
+    sed -i '' "$1" "$2"
+  fi
+}
+
+
 while [ $# -gt 0 ]; do
   case "$1" in
     
@@ -111,7 +127,7 @@ EOF
       if [ -f "$COLORSCHEME_FILE" ]; then
         cp "$COLORSCHEME_FILE" "$COLORSCHEME_FILE.bak"
         if grep -q "^colorscheme " "$COLORSCHEME_FILE"; then
-          sed -i "s/^colorscheme .*/colorscheme $COLORSCHEME \" <--- replace with your preferred default/" "$COLORSCHEME_FILE"
+	  inplace_sed "s/^colorscheme .*/colorscheme $COLORSCHEME \" <--- replace with your preferred default/" "$COLORSCHEME_FILE"	
         else
           echo "colorscheme $COLORSCHEME \" <--- replace with your preferred default" >> "$COLORSCHEME_FILE"
         fi
