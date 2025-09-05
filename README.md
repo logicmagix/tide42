@@ -37,7 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 09.02.25
+# 09.04.25
+- Added hotkey for  new tab \t
 - Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated on 09/02/2025 between6:00pm and 12:00pm EST
 - The keybind mappings \z and \b now focus the file editor with NERDTree shown or hidden.
 - Active and unsaved tabs may be closed with :BD (unsaved work will be lost)
@@ -124,6 +125,8 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `\e` = Locate file within current directory
 ## Ripgrep
 `\r` = ripgrep within file
+## New tab
+`\t` = Open new tab with No Name file
 ## Toggle Colorscheme
 `\y` = toggle between default and alternate colorscheme
 ## Quick vertical resize within horizontal nvim buffer

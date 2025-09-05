@@ -1,5 +1,8 @@
 # Tide42 NEWS:
 
+# 09.04.25
+- Added hotkey for  new tab \t
+
 # 09.02.25
 - Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated on 09/02/2025 between6:00pm and 12:00pm EST
 
