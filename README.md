@@ -354,7 +354,7 @@ Pull requests, stars, and forks welcome
 ![TTY](Screenshots/Screenshot9.png)
 - Seamless tty functionality with custom bindings makes the SSH experience feel like using a WM.
 
-### Tested and working Mac both x86_64 and Apple Silicon
+### Tested and working on Macbook Air/Macbook Pro (x86_64 and Apple Silicon)
 ![Macbook-Air](Screenshots/Screenshot10.png)
 ![Macbook-Pro](Screenshots/Screenshot11.png)
 
