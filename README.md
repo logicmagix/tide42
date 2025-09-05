@@ -37,8 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 09.04.25
-- Added screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64)
+# 09.05.25
+- Screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64) have been added.
 - Man page currently does not install on Macbooks. The repo directory now contains tide42man.md which is a copy of the man page for Apple users 
 - Added hotkey for  new tab \t
 - Recent update check changes were reverted due to slow startup and edge cases. Please re-install tide42 if you cloned or updated on 09/02/2025 between6:00pm and 12:00pm EST
@@ -49,9 +49,6 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - Added a new flag --colorscheme that can be used to set a desired theme. 
 - colorscheme.vim may be edited manually in $HOME/.config/tide42/colorscheme.vim
 - This theme will persist throughout updates. 
-- Tide42 now uses nvim-highlight-colors swatch display as a default plugin.
-- Now includes uninstall script 
-- Tide42 now detects bash zsh or fish in either system or user installed locations.
 
 <pre><code>
 Ctrl/Ctrl+Alt|\

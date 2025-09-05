@@ -1,5 +1,9 @@
 # Tide42 NEWS:
 
+# 09.05.25
+- Screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64) have been added.
+- Man page currently does not install on Macbooks. The repo directory now contains tide42man.md which is a copy of the man page for Apple user
+
 # 09.04.25
 - Added hotkey for  new tab \t
 
