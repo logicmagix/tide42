@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-echo "[+] Installing Tide42"
+echo "[+] Installing Tide42..."
 
 # === Legacy xtide86 alias ===
 
