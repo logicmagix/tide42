@@ -1,4 +1,6 @@
 # Tide42 NEWS:
+# 09.07.25
+- Mac users may have to run :PlugInstall manually after initial installation. 
 
 # 09.05.25
 - Screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64) have been added.
