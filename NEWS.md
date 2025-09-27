@@ -1,4 +1,8 @@
 # Tide42 NEWS:
+
+# 09.26.25
+- Tide42 now includes Gentoo in its install logic and prompts users whether they would like to continue with the installation before updating or compiling. 
+
 # 09.07.25
 - Mac users may have to run :PlugInstall manually after initial installation. 
 

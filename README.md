@@ -37,7 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 09.07.25
+# 09.26.25
+- Tide42 now includes Gentoo in its install logic and prompts users whether they would like to continue with the installation before updating or compiling. 
 - Mac users may have to run :PlugInstall manually after initial installation. 
 - Screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64) have been added.
 - Man page currently does not install on Macbooks. The repo directory now contains tide42man.md which is a copy of the man page for Apple users 
