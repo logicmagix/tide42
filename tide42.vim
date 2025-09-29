@@ -6,7 +6,7 @@
 "   ██║   ██║██████╔╝███████╗     ██║███████╗
 "   ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
 "  Terminal Integrated Developer Environment 
-"                   -42-                     
+"                  -42-                     
 "                                            
 "=======================================================
 " tide42 (formerly xtide86) — see LICENSE for details
@@ -23,6 +23,7 @@ else
   colorscheme default
 endif
 set noswapfile
+set noautochdir
 let g:using_vim_scheme = 0
 set termguicolors
 set mouse=nvi
@@ -30,6 +31,7 @@ set laststatus=2
 set winminheight=1
 set shell=/bin/bash
 let g:NERDTreeWinSize=10
+let g:NERDTreeChDirMode = 0
 let NERDTreeShowHidden=1
 let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
@@ -229,7 +231,7 @@ endif
 silent! unmap <LeftMouse>
 
 " Key mappings for buffer cycling
-nnoremap <leader>j :NERDTreeExplore<CR>
+nnoremap <leader>j :cd ~ \| NERDTreeExplore<CR>
 nnoremap <silent> <TAB> :lua _G.conditional_bufferline_cycle('next')<CR>
 nnoremap <silent> <S-TAB> :lua _G.conditional_bufferline_cycle('prev')<CR>
 nnoremap <leader>t :enew<CR>
