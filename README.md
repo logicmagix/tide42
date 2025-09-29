@@ -37,7 +37,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
-# 09.26.25
+# 09.29.25
+- New mapping added to display NERDTree in any buffer or if you have opened a file in the NERDTree buffer. Alternately, use :NERDTreeExplore in the desired buffer.
 - Tide42 now includes Gentoo in its install logic and prompts users whether they would like to continue with the installation before updating or compiling. 
 - Mac users may have to run :PlugInstall manually after initial installation. 
 - Screenshots of Tide42 on a Macbook Air (Apple Silicon) and Macbook Pro(x86_64) have been added.
@@ -50,10 +51,10 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 
 <pre><code>
-Ctrl/Ctrl+Alt|\
+Ctrl+Alt     |\
 ================
-qw           | weryuiop
-asdfg        | sfghl
+qw           | qwertyuiop
+asdfg        | sfghjl
 zx           | zxcvbnm
 </code></pre>
 <pre><code>
@@ -115,6 +116,8 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `Ctrl+ww` = Cycle between vim buffers within a tmux buffer
 ## Manually select vim buffer within selected tmux buffer
 `Ctrl+w` + <-, ^, ->, v = Selects vim buffer within current tmux buffer
+## Display NERDTree
+`\j` = Display NERDTree in any buffer.
 ## Restart IPython
 `\n` = Restart IPython buffer if process exits.
 ## Fuzzy Finder

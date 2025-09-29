@@ -1,5 +1,8 @@
 # Tide42 NEWS:
 
+# 09.29.25
+- New mapping added to display NERDTree in any buffer or if you have opened a file in the NERDTree buffer. Alternately, use :NERDTreeExplore in the desired buffer.
+
 # 09.26.25
 - Tide42 now includes Gentoo in its install logic and prompts users whether they would like to continue with the installation before updating or compiling. 
 
