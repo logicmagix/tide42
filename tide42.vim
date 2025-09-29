@@ -229,7 +229,7 @@ endif
 silent! unmap <LeftMouse>
 
 " Key mappings for buffer cycling
-nnoremap <leader>j :NERDTreeExplore!<CR>
+nnoremap <leader>j :NERDTreeExplore<CR>
 nnoremap <silent> <TAB> :lua _G.conditional_bufferline_cycle('next')<CR>
 nnoremap <silent> <S-TAB> :lua _G.conditional_bufferline_cycle('prev')<CR>
 nnoremap <leader>t :enew<CR>
