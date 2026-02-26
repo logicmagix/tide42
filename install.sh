@@ -428,7 +428,7 @@ else
     }
     update-desktop-database "$HOME/.local/share/applications" || true
   else
-    echo "[tide42] No GUI detected — skipping .desktop launcher install."
+    echo "[tide42] No GUI detected -- skipping .desktop launcher install."
   fi
 fi
 

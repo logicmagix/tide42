@@ -3,7 +3,7 @@
 # 09.25.26
 - TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)
 - --low-color: Removed backup logic, just writes directly to the tide42-owned file
-- Default config block: Simplified to a single "if file doesn't exist, create it" check — no marker checking, no backup, no append logic
+- Default config block: Simplified to a single "if file doesn't exist, create it" check -- no marker checking, no backup, no append logic
 - Mouse support block: Removed entirely (already included in the default config write)
 - tmux new-session: Now uses -f "$TMUX_CONF" to load the config on fresh server start
 - tmux source-file: Added immediately after to handle the case where the server was already running

@@ -9,7 +9,7 @@
 "                  -42-                     
 "                                            
 "=======================================================
-" tide42 (formerly xtide86) — see LICENSE for details
+" tide42 (formerly xtide86) -- see LICENSE for details
 
 " ── GENERAL ────────────────────────────────────────────────────────────
 syntax on
