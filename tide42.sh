@@ -40,6 +40,15 @@ TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
 TMUX_CONF="$TIDE_CONF_DIR/tmux.conf"
 
+# === Detect IPython binary ===
+if command -v ipython >/dev/null 2>&1; then
+  export TIDE42_IPYTHON_CMD="ipython"
+elif command -v ipython3 >/dev/null 2>&1; then
+  export TIDE42_IPYTHON_CMD="ipython3"
+else
+  export TIDE42_IPYTHON_CMD="ipython"
+fi
+
 # === Define pane border settings in tmux.conf ===
 
 PANE_BORDER_CONFIG=$(cat <<EOF

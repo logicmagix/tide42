@@ -275,7 +275,7 @@ autocmd VimEnter * NERDTree $HOME
 autocmd VimEnter * vertical resize 1
 autocmd VimEnter * wincmd l
 autocmd VimEnter * topleft split
-autocmd VimEnter * terminal ipython
+autocmd VimEnter * execute 'terminal ' . ($TIDE42_IPYTHON_CMD != '' ? $TIDE42_IPYTHON_CMD : 'ipython')
 autocmd VimEnter * resize 3
 autocmd VimEnter * belowright split
 
@@ -875,7 +875,7 @@ function! s:RestartIPython() abort
   endif
   if ipython_buf == 0
     execute 'topleft split'
-    execute 'terminal ipython'
+    execute 'terminal ' . ($TIDE42_IPYTHON_CMD != '' ? $TIDE42_IPYTHON_CMD : 'ipython')
     execute 'resize 1'
   else
   endif
