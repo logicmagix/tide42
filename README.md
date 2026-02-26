@@ -38,7 +38,6 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 02.25.26
-- Session persistence via TPM + tmux-resurrect + tmux-continuum. Sessions auto-save every 5 minutes and auto-restore on next launch. :Q clears saved sessions for a fresh start.
 - --gui flag: Desktop launcher now auto-detects the default terminal emulator instead of relying on Terminal=true
 - install.sh skips already-installed packages instead of reinstalling them (avoids unnecessary recompilation on Gentoo)
 - IPython binary auto-detection: tide42 detects whether ipython or ipython3 is available and uses the correct one
@@ -261,7 +260,7 @@ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 - Open a tmux session with vertically split nvim, TermiC, and IPython
 - Send text from the file editor to the live interpreter buffer with ggVG(select all) \p for ipython and \l for TermiC
 - Automatic insert mode and buffer sizing for paste to Termic and paste to IPython functions.
-- Support session save (Ctrl+q+d) and reset with :Q
+- Detach session with Ctrl+q+d and force-quit with :Q
 - To uninstall, chmod +x uninstall.sh and ./uninstall.sh from repo directory
 
 # Without tmux?

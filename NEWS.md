@@ -1,7 +1,6 @@
 # Tide42 NEWS:
 
 # 02.25.26
-- Session persistence via TPM + tmux-resurrect + tmux-continuum. Sessions auto-save every 5 minutes and auto-restore on next launch. :Q clears saved sessions for a fresh start.
 - --gui flag: Desktop launcher now auto-detects the default terminal emulator instead of relying on Terminal=true
 - install.sh skips already-installed packages instead of reinstalling them (avoids unnecessary recompilation on Gentoo)
 - IPython binary auto-detection: tide42 detects whether ipython or ipython3 is available and uses the correct one
