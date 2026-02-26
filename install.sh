@@ -422,8 +422,9 @@ else
   fi
 fi
 
-# === Detect the default terminal ===
-if [ ! -f "$HOME/.tmux.conf" ]; then
+# === Create tide42 tmux.conf if it doesn't exist ===
+TMUX_CONF="$TIDE_CONF_DIR/tmux.conf"
+if [ ! -f "$TMUX_CONF" ]; then
   DEFAULT_TERMINAL="xterm-256color"
   if [ -n "$TERM" ] && [ "$TERM" != "xterm" ] && [ "$TERM" != "linux" ]; then
     DEFAULT_TERMINAL="$TERM"
@@ -440,10 +441,14 @@ if [ ! -f "$HOME/.tmux.conf" ]; then
       DEFAULT_TERMINAL="kitty"
     fi
   fi
-  cat <<EOF > "$HOME/.tmux.conf"
+  mkdir -p "$TIDE_CONF_DIR"
+  cat <<EOF > "$TMUX_CONF"
+# tide42: Default terminal config
 set -g default-terminal "$DEFAULT_TERMINAL"
 set -as terminal-overrides ',*:Tc'
+set -g mouse on
 EOF
+  echo "[tide42] Created tmux config at $TMUX_CONF"
 fi
 
 # === Install Neovim plugins with isolated setup ===

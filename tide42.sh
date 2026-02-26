@@ -36,9 +36,9 @@ COLOR_FLAG_PROVIDED=false
 UPDATE_PROCESSED=false
 COLORSCHEME_PROCESSED=false
 SESSION_NAME="tide42"
-TMUX_CONF="$HOME/.tmux.conf"
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
+TMUX_CONF="$TIDE_CONF_DIR/tmux.conf"
 
 # === Define pane border settings in tmux.conf ===
 
@@ -94,10 +94,9 @@ while [ $# -gt 0 ]; do
       IS_LOW_COLOR=true
       COLOR_FLAG_PROVIDED=true
       log "Enabling low-color (88-color) mode. Warning: Home/End keys may not work."
-      [ -s "$TMUX_CONF" ] && cp "$TMUX_CONF" "$TMUX_CONF.bak"
+      mkdir -p "$(dirname "$TMUX_CONF")"
       cat <<EOF > "$TMUX_CONF"
 # tide42: 88-color config
-# tide42_overwrite_ok
 set -g default-terminal "xterm-88color"
 set -sa terminal-overrides ",xterm-88color*:colors=88"
 set -g mouse on
@@ -304,32 +303,11 @@ fi
 # === Write default tmux.conf only if no color flag provided ===
 
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
-  if [ -f "$TMUX_CONF" ]; then
-    if grep -q "# tide42_overwrite_ok" "$TMUX_CONF"; then
-      log "Tide42 marker found. Copying and backing up tmux.conf"
-      cp "$TMUX_CONF" "$TMUX_CONF.bak"
-      cat <<EOF > "$TMUX_CONF"
-# tide42: Default 256-color scheme
-# tide42_overwrite_ok
-set -g default-terminal "tmux-256color"
-set -sa terminal-overrides ",*:Tc"
-set -g mouse on
-$PANE_BORDER_CONFIG
-EOF
-    else
-      # If no Tide42 marker, append pane border settings if not already present
-      if ! grep -q "pane-border-style" "$TMUX_CONF"; then
-        log "Appending pane border settings to existing tmux.conf"
-        cp "$TMUX_CONF" "$TMUX_CONF.bak"
-        echo "$PANE_BORDER_CONFIG" >> "$TMUX_CONF"
-      fi
-      log "Launching Tide42"
-    fi
-  else
+  if [ ! -f "$TMUX_CONF" ]; then
+    mkdir -p "$(dirname "$TMUX_CONF")"
     log "No tmux.conf found. Writing default tide42 config."
     cat <<EOF > "$TMUX_CONF"
 # tide42: Default 256-color scheme
-# tide42_overwrite_ok
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
@@ -363,22 +341,10 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     exit 1
   fi
 fi
-
-# === Ensure mouse support in tmux.conf ===
-
-if [ -s "$TMUX_CONF" ]; then
-  if ! grep -q "set -g mouse on" "$TMUX_CONF"; then
-    echo "set -g mouse on" >> "$TMUX_CONF"
-    log "Enabled mouse support in ~/.tmux.conf"
-  fi
-else
-  echo "set -g mouse on" > "$TMUX_CONF"
-  log "Created ~/.tmux.conf with mouse support"
-fi
-
 # === Start new tmux session ===
 
-tmux new-session -d -s "$SESSION_NAME"
+tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
+tmux source-file "$TMUX_CONF"
 tmux split-window -h
 
 # === Set keybindings ===
