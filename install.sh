@@ -508,6 +508,22 @@ set -g default-terminal "$DEFAULT_TERMINAL"
 set -as terminal-overrides ',*:Tc'
 set -g mouse on
 
+# Keybindings
+unbind C-b
+set-option -g prefix C-q
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+set-window-option -g mode-keys vi
+bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
+bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+bind-key -n C-M-s resize-pane -x 50%
+bind-key -n C-M-z resize-pane -x 25%
+bind-key -n C-M-x resize-pane -x 30%
+bind-key -n C-M-c resize-pane -x 60%
+bind-key -n C-M-v resize-pane -x 75%
+
 # Session persistence
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'

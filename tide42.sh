@@ -172,6 +172,22 @@ set -sa terminal-overrides ",xterm-88color*:colors=88"
 set -g mouse on
 $PANE_BORDER_CONFIG
 
+# Keybindings
+unbind C-b
+set-option -g prefix C-q
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+set-window-option -g mode-keys vi
+bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
+bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+bind-key -n C-M-s resize-pane -x 50%
+bind-key -n C-M-z resize-pane -x 25%
+bind-key -n C-M-x resize-pane -x 30%
+bind-key -n C-M-c resize-pane -x 60%
+bind-key -n C-M-v resize-pane -x 75%
+
 # Session persistence
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
@@ -423,6 +439,22 @@ set -sa terminal-overrides ",*:Tc"
 set -g mouse on
 $PANE_BORDER_CONFIG
 
+# Keybindings
+unbind C-b
+set-option -g prefix C-q
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+set-window-option -g mode-keys vi
+bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
+bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+bind-key -n C-M-s resize-pane -x 50%
+bind-key -n C-M-z resize-pane -x 25%
+bind-key -n C-M-x resize-pane -x 30%
+bind-key -n C-M-c resize-pane -x 60%
+bind-key -n C-M-v resize-pane -x 75%
+
 # Session persistence
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
@@ -498,22 +530,6 @@ if [ -n "$RESURRECT_SAVE" ]; then
     tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/restore.sh"
   fi
 
-  # Set keybindings for restored session
-  tmux unbind C-b
-  tmux set-option -g prefix C-q
-  tmux bind-key h select-pane -L
-  tmux bind-key j select-pane -D
-  tmux bind-key k select-pane -U
-  tmux bind-key l select-pane -R
-  tmux set-window-option -g mode-keys vi
-  tmux bind-key -n C-M-a resize-pane -R 999 \\; select-pane -t 1
-  tmux bind-key -n C-M-d resize-pane -L 999 \\; select-pane -t 0
-  tmux bind-key -n C-M-s resize-pane -x 50%
-  tmux bind-key -n C-M-z resize-pane -x 25%
-  tmux bind-key -n C-M-x resize-pane -x 30%
-  tmux bind-key -n C-M-c resize-pane -x 60%
-  tmux bind-key -n C-M-v resize-pane -x 75%
-
   tmux attach-session -t "$SESSION_NAME"
   # Save session on detach for persistence across reboots
   if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
@@ -536,23 +552,6 @@ if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" ]; then
 fi
 
 tmux split-window -h
-
-# === Set keybindings ===
-
-tmux unbind C-b
-tmux set-option -g prefix C-q
-tmux bind-key h select-pane -L
-tmux bind-key j select-pane -D
-tmux bind-key k select-pane -U
-tmux bind-key l select-pane -R
-tmux set-window-option -g mode-keys vi
-tmux bind-key -n C-M-a resize-pane -R 999 \\; select-pane -t 1
-tmux bind-key -n C-M-d resize-pane -L 999 \\; select-pane -t 0
-tmux bind-key -n C-M-s resize-pane -x 50%
-tmux bind-key -n C-M-z resize-pane -x 25%
-tmux bind-key -n C-M-x resize-pane -x 30%
-tmux bind-key -n C-M-c resize-pane -x 60%
-tmux bind-key -n C-M-v resize-pane -x 75%
 
 # === Startup UI ===
 
