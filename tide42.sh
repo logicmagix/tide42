@@ -479,7 +479,7 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   if [ -n "$FILENAME" ]; then
     if tmux list-panes -t "$SESSION_NAME":0.0 >/dev/null 2>&1; then
       tmux select-pane -t "$SESSION_NAME":0.0
-      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
+      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
       log "Opened $FILENAME in left pane of existing session."
     else
       log "Warning: Left pane not available. Attaching without opening $FILENAME."
@@ -537,16 +537,16 @@ if [ -n "$RESURRECT_SAVE" ]; then
   tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
   tmux select-pane -t "$SESSION_NAME":0.0
 
-  # Restore commands in panes
+  # Restore commands in panes (TIDE42_RESTORE=1 triggers buffer list restore in tide42.vim)
   if [ -n "$PANE0_CMD" ] && [[ "$PANE0_CMD" == nvim* ]]; then
-    tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 $PANE0_CMD" C-m
+    tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 $PANE0_CMD" C-m
   else
-    tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+    tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
   fi
   if [ -n "$PANE1_CMD" ] && [[ "$PANE1_CMD" == nvim* ]]; then
-    tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 $PANE1_CMD" C-m
+    tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 $PANE1_CMD" C-m
   else
-    tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+    tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
   fi
 
   log "Session restored."
@@ -583,14 +583,14 @@ tmux select-pane -t "$SESSION_NAME":0.0
 # === Open file in pane 0 ===
 
 if [ -n "$FILENAME" ]; then
-  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
 else
-  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 fi
 
 # === Preload right pane 1 with nvim if desired ===
 
-tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 
 # === Attach to the session ===
 
