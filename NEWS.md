@@ -1,5 +1,13 @@
 # Tide42 NEWS:
 
+# 09.25.26
+- TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)
+- --low-color: Removed backup logic, just writes directly to the tide42-owned file
+- Default config block: Simplified to a single "if file doesn't exist, create it" check — no marker checking, no backup, no append logic
+- Mouse support block: Removed entirely (already included in the default config write)
+- tmux new-session: Now uses -f "$TMUX_CONF" to load the config on fresh server start
+- tmux source-file: Added immediately after to handle the case where the server was already running
+
 # 09.29.25
 - New mapping added to display NERDTree in any buffer or if you have opened a file in the NERDTree buffer. Alternately, use :NERDTreeExplore in the desired buffer.
 
