@@ -939,7 +939,7 @@ function! s:SaveBufferList() abort
   let l:buffile = g:tide42_config_dir . '/nvim_buffers_' . l:pane . '.txt'
   let l:files = []
   for b in getbufinfo({'buflisted': 1})
-    if b.buftype == '' && b.name != '' && b.name !~# 'NERD'
+    if getbufvar(b.bufnr, '&buftype') == '' && b.name != '' && b.name !~# 'NERD'
       call add(l:files, b.name)
     endif
   endfor
