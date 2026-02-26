@@ -8,6 +8,9 @@
 - --check-update added to --help menu
 - Man page fixes: added missing keybindings (\j, \c, \v), removed duplicate \n entry, fixed empty OPTIONS section, added --gui and --check-update
 - Quieter man page install (mandb -q)
+- tmux.conf is now regenerated on every install and launch to ensure config updates take effect
+- Heavy pane border lines for better visibility between tmux panes
+- install.sh now prompts before updating package manager and installing dependencies
 
 # 09.25.26
 - TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)

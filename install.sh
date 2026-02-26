@@ -92,10 +92,13 @@ update_package_manager() {
 
 # === Run OS detection and update ===
 detect_os_and_pkg
-update_package_manager
 
-# === Install system packages ===
-echo "[tide42] Installing tide42 dependencies..."
+read -p "[tide42] Update package manager and install dependencies? (y/N): " dep_response
+if [[ "$dep_response" =~ ^[Yy]$ ]]; then
+  update_package_manager
+
+  # === Install system packages ===
+  echo "[tide42] Installing tide42 dependencies..."
 
 # === Define packages ===
 PKG_TMUX="tmux"
@@ -204,6 +207,10 @@ else
     echo "Run 'emerge -pv $PKG_LIST' to diagnose issues."
     exit 1
   }
+fi
+
+else
+  echo "[tide42] Skipping package manager update and dependency install."
 fi
 
 # === Install vim-plug for tide42 isolated setup ===
@@ -422,7 +429,7 @@ fi
 
 # === Desktop launcher ===
 GLOBAL_INSTALL=false
-if [ "$1" == "--global" ]; then
+if [ "${1:-}" == "--global" ]; then
   GLOBAL_INSTALL=true
 fi
 if [ "$GLOBAL_INSTALL" = true ]; then
@@ -459,9 +466,9 @@ else
   fi
 fi
 
-# === Create tide42 tmux.conf if it doesn't exist ===
+# === Write tide42 tmux.conf (always regenerate to apply updates) ===
 TMUX_CONF="$TIDE_CONF_DIR/tmux.conf"
-if [ ! -f "$TMUX_CONF" ]; then
+{
   DEFAULT_TERMINAL="xterm-256color"
   if [ -n "$TERM" ] && [ "$TERM" != "xterm" ] && [ "$TERM" != "linux" ]; then
     DEFAULT_TERMINAL="$TERM"
@@ -497,8 +504,8 @@ set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
 # Initialize TPM (must be last)
 run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
-  echo "[tide42] Created tmux config at $TMUX_CONF"
-fi
+  echo "[tide42] Written tmux config at $TMUX_CONF"
+}
 
 # === Install Neovim plugins with isolated setup ===
 

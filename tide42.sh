@@ -57,6 +57,7 @@ set -g pane-border-style fg=black
 set -g pane-active-border-style fg=brightred
 set -g pane-border-format "#{pane_index} "
 set -g pane-border-style "fg=black,bg=default,dim"
+set -g pane-border-lines heavy
 EOF
 )
 log() {
@@ -381,10 +382,9 @@ fi
 # === Write default tmux.conf only if no color flag provided ===
 
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
-  if [ ! -f "$TMUX_CONF" ]; then
-    mkdir -p "$(dirname "$TMUX_CONF")"
-    log "No tmux.conf found. Writing default tide42 config."
-    cat <<EOF > "$TMUX_CONF"
+  mkdir -p "$(dirname "$TMUX_CONF")"
+  log "Writing default tide42 tmux config."
+  cat <<EOF > "$TMUX_CONF"
 # tide42: Default 256-color scheme
 set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
@@ -403,7 +403,6 @@ set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
 # Initialize TPM (must be last)
 run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
-  fi
 fi
 
 # === Check for existing session ===

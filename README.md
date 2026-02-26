@@ -45,6 +45,9 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - --check-update added to --help menu
 - Man page fixes: added missing keybindings (\j, \c, \v), removed duplicate \n entry, fixed empty OPTIONS section
 - Quieter man page install
+- tmux.conf is now regenerated on every install and launch to ensure config updates take effect
+- Heavy pane border lines for better visibility between tmux panes
+- install.sh now prompts before updating package manager and installing dependencies
 
 
 
