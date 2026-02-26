@@ -411,7 +411,7 @@ if [ -f "$MANPAGE_SOURCE" ]; then
     if gzip -f -c "$MANPAGE_SOURCE" > tide42.1.gz; then
         echo "[tide42] Installing man page to $MANPAGE_TARGET..."
         sudo cp tide42.1.gz "$MANPAGE_TARGET"
-        sudo mandb
+        sudo mandb -q /usr/share/man
         echo "[tide42] Man page installed. Try: man tide42"
     else
         echo "[tide42] Error: Failed to compress man page."
