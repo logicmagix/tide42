@@ -534,9 +534,6 @@ set-environment -g NVIM_APPNAME tide42
 set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
 set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
 
-# Save session on detach
-set-hook -g client-detached 'run-shell $TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh'
-
 # Initialize TPM (must be last)
 run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
