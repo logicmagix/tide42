@@ -89,6 +89,61 @@ while [ $# -gt 0 ]; do
       exit 0
       ;;
     
+    --gui)
+      shift
+      # Detect default terminal emulator and re-launch tide42 inside it
+      TERM_CMD=""
+      if [ -n "${TERMINAL:-}" ] && command -v "$TERMINAL" >/dev/null 2>&1; then
+        TERM_CMD="$TERMINAL"
+      elif command -v x-terminal-emulator >/dev/null 2>&1; then
+        TERM_CMD="x-terminal-emulator"
+      elif command -v gnome-terminal >/dev/null 2>&1; then
+        TERM_CMD="gnome-terminal"
+      elif command -v konsole >/dev/null 2>&1; then
+        TERM_CMD="konsole"
+      elif command -v xfce4-terminal >/dev/null 2>&1; then
+        TERM_CMD="xfce4-terminal"
+      elif command -v foot >/dev/null 2>&1; then
+        TERM_CMD="foot"
+      elif command -v alacritty >/dev/null 2>&1; then
+        TERM_CMD="alacritty"
+      elif command -v kitty >/dev/null 2>&1; then
+        TERM_CMD="kitty"
+      elif command -v wezterm >/dev/null 2>&1; then
+        TERM_CMD="wezterm"
+      elif command -v mate-terminal >/dev/null 2>&1; then
+        TERM_CMD="mate-terminal"
+      elif command -v tilix >/dev/null 2>&1; then
+        TERM_CMD="tilix"
+      elif command -v terminator >/dev/null 2>&1; then
+        TERM_CMD="terminator"
+      elif command -v urxvt >/dev/null 2>&1; then
+        TERM_CMD="urxvt"
+      elif command -v xterm >/dev/null 2>&1; then
+        TERM_CMD="xterm"
+      fi
+      if [ -z "$TERM_CMD" ]; then
+        echo "[tide42] Error: No terminal emulator found."
+        exit 1
+      fi
+      log "Detected terminal: $TERM_CMD"
+      case "$TERM_CMD" in
+        gnome-terminal)  exec gnome-terminal -- tide42 "$@" ;;
+        konsole)         exec konsole -e tide42 "$@" ;;
+        xfce4-terminal)  exec xfce4-terminal -e "tide42 $*" ;;
+        foot)            exec foot tide42 "$@" ;;
+        alacritty)       exec alacritty -e tide42 "$@" ;;
+        kitty)           exec kitty tide42 "$@" ;;
+        wezterm)         exec wezterm start -- tide42 "$@" ;;
+        mate-terminal)   exec mate-terminal -e "tide42 $*" ;;
+        tilix)           exec tilix -e "tide42 $*" ;;
+        terminator)      exec terminator -e "tide42 $*" ;;
+        urxvt)           exec urxvt -e tide42 "$@" ;;
+        xterm)           exec xterm -e tide42 "$@" ;;
+        *)               exec "$TERM_CMD" -e tide42 "$@" ;;
+      esac
+      ;;
+
     --lite)
       shift
       log "[tide42] Launching in lite mode (no tmux)..."
@@ -274,6 +329,7 @@ EOF
       echo ""
       echo "Options:"
       echo " --whereami Display git installation directory"
+      echo " --gui Detect terminal emulator and launch tide42 inside it"
       echo " --lite Launch without tmux for quick editing or low-resource systems"
       echo " --low-color, -lc Enable 88-color mode (warning: Home/End keys may not work)"
       echo " --colorscheme <name> Set the Neovim colorscheme (e.g., desert, retrobox)"

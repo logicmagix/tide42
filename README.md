@@ -38,12 +38,13 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 02.25.26
-- TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)
-- --low-color: Removed backup logic, just writes directly to the tide42-owned file
-- Default config block: Simplified to a single "if file doesn't exist, create it" check -- no marker checking, no backup, no append logic
-- Mouse support block: Removed entirely (already included in the default config write)
-- tmux new-session: Now uses -f "$TMUX_CONF" to load the config on fresh server start
-- tmux source-file: Added immediately after to handle the case where the server was already running
+- Session persistence via TPM + tmux-resurrect + tmux-continuum. Sessions auto-save every 5 minutes and auto-restore on next launch. :Q clears saved sessions for a fresh start.
+- --gui flag: Desktop launcher now auto-detects the default terminal emulator instead of relying on Terminal=true
+- install.sh skips already-installed packages instead of reinstalling them (avoids unnecessary recompilation on Gentoo)
+- IPython binary auto-detection: tide42 detects whether ipython or ipython3 is available and uses the correct one
+- --check-update added to --help menu
+- Man page fixes: added missing keybindings (\j, \c, \v), removed duplicate \n entry, fixed empty OPTIONS section
+- Quieter man page install
 
 
 
