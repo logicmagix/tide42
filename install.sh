@@ -176,7 +176,7 @@ PKG_LIST=""
 for p in $ALL_PKGS; do
   [ -z "$p" ] && continue
   if pkg_already_installed "$p"; then
-    echo "[tide42] Already installed: $p (skipping)"
+    echo "[tide42] Found: $p (skipping)"
   else
     PKG_LIST="$PKG_LIST $p"
   fi
