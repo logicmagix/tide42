@@ -506,8 +506,8 @@ if [ -n "$RESURRECT_SAVE" ]; then
   tmux bind-key k select-pane -U
   tmux bind-key l select-pane -R
   tmux set-window-option -g mode-keys vi
-  tmux bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
-  tmux bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+  tmux bind-key -n C-M-a resize-pane -R 999 \\; select-pane -t 1
+  tmux bind-key -n C-M-d resize-pane -L 999 \\; select-pane -t 0
   tmux bind-key -n C-M-s resize-pane -x 50%
   tmux bind-key -n C-M-z resize-pane -x 25%
   tmux bind-key -n C-M-x resize-pane -x 30%
@@ -546,8 +546,8 @@ tmux bind-key j select-pane -D
 tmux bind-key k select-pane -U
 tmux bind-key l select-pane -R
 tmux set-window-option -g mode-keys vi
-tmux bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
-tmux bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+tmux bind-key -n C-M-a resize-pane -R 999 \\; select-pane -t 1
+tmux bind-key -n C-M-d resize-pane -L 999 \\; select-pane -t 0
 tmux bind-key -n C-M-s resize-pane -x 50%
 tmux bind-key -n C-M-z resize-pane -x 25%
 tmux bind-key -n C-M-x resize-pane -x 30%
