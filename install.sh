@@ -191,6 +191,16 @@ if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
   }
 fi
 
+# === Install TPM (Tmux Plugin Manager) ===
+TPM_DIR="$TIDE_CONF_DIR/tmux/plugins/tpm"
+if [ ! -d "$TPM_DIR" ]; then
+  echo "[tide42] Installing TPM (Tmux Plugin Manager)..."
+  mkdir -p "$TIDE_CONF_DIR/tmux/plugins"
+  git clone https://github.com/tmux-plugins/tpm "$TPM_DIR" || {
+    echo "[tide42] Warning: Failed to install TPM. Session persistence will not be available."
+  }
+fi
+
 # === Resolve the script's directory ===
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -447,6 +457,18 @@ if [ ! -f "$TMUX_CONF" ]; then
 set -g default-terminal "$DEFAULT_TERMINAL"
 set -as terminal-overrides ',*:Tc'
 set -g mouse on
+
+# Session persistence
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '5'
+set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
+set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
+
+# Initialize TPM (must be last)
+run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
   echo "[tide42] Created tmux config at $TMUX_CONF"
 fi

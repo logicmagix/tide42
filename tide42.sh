@@ -101,6 +101,18 @@ set -g default-terminal "xterm-88color"
 set -sa terminal-overrides ",xterm-88color*:colors=88"
 set -g mouse on
 $PANE_BORDER_CONFIG
+
+# Session persistence
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '5'
+set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
+set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
+
+# Initialize TPM (must be last)
+run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
       log "Applied 88-color config with pane border settings."
       ;;
@@ -312,6 +324,18 @@ set -g default-terminal "tmux-256color"
 set -sa terminal-overrides ",*:Tc"
 set -g mouse on
 $PANE_BORDER_CONFIG
+
+# Session persistence
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '5'
+set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
+set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
+
+# Initialize TPM (must be last)
+run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
   fi
 fi
@@ -345,6 +369,12 @@ fi
 
 tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
 tmux source-file "$TMUX_CONF"
+
+# Bootstrap TPM plugins (runs in background to avoid blocking startup)
+if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ]; then
+  "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" >/dev/null 2>&1 &
+fi
+
 tmux split-window -h
 
 # === Set keybindings ===

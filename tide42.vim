@@ -462,6 +462,11 @@ function! ForceQuitAndKillTmux() abort
       execute "quitall!"
       return
     endif
+    " Clear resurrect saves so session won't auto-restore
+    let l:resurrect_dir = expand('~/.config/tide42/tmux/resurrect')
+    if isdirectory(l:resurrect_dir)
+      call system('rm -rf ' . shellescape(l:resurrect_dir))
+    endif
     silent !tmux list-panes -s -F '\#P' | xargs -I {} tmux send-keys -t {} 'exit' C-m 2>/tmp/tmux_kill_session.log
     silent !tmux kill-session -t $(tmux display-message -p '\#S') 2>>/tmp/tmux_kill_session.log
     sleep 100m
