@@ -190,6 +190,7 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 - Fine tune tmux buffer size with hold Ctrl + q + arrow keys.
 - Open/close NERDTree with \z and \i + <Enter>
 - Switch between tty sessions and retain tide42 session through tmux. Handy if connecting through SSH.
+- If you built Neovim from source (common on Pi Zero, older Debian, or 32-bit systems), the installer's automatic `:PlugInstall` may fail silently. Just launch tide42 and run `:PlugInstall` manually inside Neovim — it works fine with a real terminal attached.
 - If you're running tide42 inside a tmux or custom terminal session, you might run into issues when trying to save root-owned files from within Neovim:
 Using commands like :w !sudo tee % in NeoVim may silently fail to prompt for a password and kick you out after 3 attempts.
 Solutions:
