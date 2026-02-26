@@ -1,5 +1,12 @@
 # Tide42 NEWS:
 
+# 02.26.26
+- --separator-color (-sc) flag to set the Neovim window separator color (persists across sessions)
+- --separator-width (-sw) flag to set the Neovim window separator width: thick, double, medium, or thin
+- --border-width (-bw) flag to set the tmux pane border width: thick, double, medium, or thin
+- Full block separator characters for Neovim window borders (default: thick)
+- Gray/darkgray color names corrected to match expected brightness
+
 # 02.25.26
 - --gui flag: Desktop launcher now auto-detects the default terminal emulator instead of relying on Terminal=true
 - install.sh skips already-installed packages instead of reinstalling them (avoids unnecessary recompilation on Gentoo)
@@ -12,8 +19,6 @@
 - install.sh now prompts before updating package manager and installing dependencies
 - --border-color (-bc) flag to set the active tmux pane border color
 - --colorscheme (-cs) now sets the colorscheme and launches tide42 instead of exiting
-
-# 09.25.26
 - TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)
 - --low-color: Removed backup logic, just writes directly to the tide42-owned file
 - Default config block: Simplified to a single "if file doesn't exist, create it" check -- no marker checking, no backup, no append logic

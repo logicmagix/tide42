@@ -26,6 +26,18 @@ set noswapfile
 set noautochdir
 let g:using_vim_scheme = 0
 set termguicolors
+if $TIDE42_SEPARATOR_WIDTH == 'thin'
+  set fillchars=vert:│,horiz:─,horizup:┴,horizdown:┬,vertleft:┤,vertright:├,verthoriz:┼
+elseif $TIDE42_SEPARATOR_WIDTH == 'double'
+  set fillchars=vert:║,horiz:═,horizup:╩,horizdown:╦,vertleft:╣,vertright:╠,verthoriz:╬
+elseif $TIDE42_SEPARATOR_WIDTH == 'medium'
+  set fillchars=vert:┃,horiz:━,horizup:┻,horizdown:┳,vertleft:┫,vertright:┣,verthoriz:╋
+else
+  set fillchars=vert:█,horiz:█,horizup:█,horizdown:█,vertleft:█,vertright:█,verthoriz:█
+endif
+if !empty($TIDE42_SEPARATOR_COLOR)
+  execute 'highlight WinSeparator guifg=' . $TIDE42_SEPARATOR_COLOR . ' guibg=NONE'
+endif
 set mouse=nvi
 set laststatus=2
 set winminheight=1

@@ -49,6 +49,21 @@ Set the active pane border color. Run without a value to see available colors.
 Accepts standard tmux color names (e.g., red, brightcyan), 256-color palette (colour0-colour255), or hex (#RRGGBB).
 
 .TP
+.BR \-\-border-width ", " \-bw " " \fIwidth\fR
+Set the tmux pane border width. Run without a value to see available widths.
+Accepts: thick (heavy, default), double, medium (single), or thin (simple).
+
+.TP
+.BR \-\-separator-color ", " \-sc " " \fIcolor\fR
+Set the Neovim window separator color. Run without a value to see available colors.
+Accepts named colors (e.g., red, gray, darkgray) or hex (#RRGGBB).
+
+.TP
+.BR \-\-separator-width ", " \-sw " " \fIwidth\fR
+Set the Neovim window separator width. Run without a value to see available widths.
+Accepts: thick (full block, default), double, medium (heavy lines), or thin (light lines).
+
+.TP
 .BR \-\-quiet ", " \-q
 Suppress verbose logging messages during initialization.
 

@@ -56,13 +56,40 @@ if [ -f "$BORDER_COLOR_FILE" ]; then
   ACTIVE_BORDER_COLOR="$(cat "$BORDER_COLOR_FILE")"
 fi
 
+SEPARATOR_COLOR_FILE="$TIDE_CONF_DIR/separator_color"
+if [ -f "$SEPARATOR_COLOR_FILE" ]; then
+  _sep_color="$(cat "$SEPARATOR_COLOR_FILE")"
+  case "$_sep_color" in
+    gray)     export TIDE42_SEPARATOR_COLOR="darkgray" ;;
+    darkgray) export TIDE42_SEPARATOR_COLOR="gray" ;;
+    *)        export TIDE42_SEPARATOR_COLOR="$_sep_color" ;;
+  esac
+fi
+
+BORDER_WIDTH_FILE="$TIDE_CONF_DIR/border_width"
+BORDER_WIDTH="heavy"
+if [ -f "$BORDER_WIDTH_FILE" ]; then
+  case "$(cat "$BORDER_WIDTH_FILE")" in
+    thick)  BORDER_WIDTH="heavy" ;;
+    double) BORDER_WIDTH="double" ;;
+    medium) BORDER_WIDTH="single" ;;
+    thin)   BORDER_WIDTH="simple" ;;
+  esac
+fi
+
+SEPARATOR_WIDTH_FILE="$TIDE_CONF_DIR/separator_width"
+export TIDE42_SEPARATOR_WIDTH="thick"
+if [ -f "$SEPARATOR_WIDTH_FILE" ]; then
+  export TIDE42_SEPARATOR_WIDTH="$(cat "$SEPARATOR_WIDTH_FILE")"
+fi
+
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
 set -g pane-active-border-style fg=$ACTIVE_BORDER_COLOR
 set -g pane-border-format "#{pane_index} "
 set -g pane-border-style "fg=black,bg=default,dim"
-set -g pane-border-lines heavy
+set -g pane-border-lines $BORDER_WIDTH
 EOF
 )
 log() {
@@ -221,6 +248,98 @@ EOF
       log "Active pane border color set to '$BORDER_COLOR' (saved)."
       ;;
 
+    --border-width|-bw)
+      shift
+      if [ -z "${1:-}" ]; then
+        log "Available tmux border widths:"
+        log "  thick   - heavy solid lines (default)"
+        log "  double  - double lines"
+        log "  medium  - standard single lines"
+        log "  thin    - minimal lines"
+        log ""
+        log "Usage: tide42 --border-width <thick|double|medium|thin>"
+        if [ -f "$BORDER_WIDTH_FILE" ]; then
+          log "Current: $(cat "$BORDER_WIDTH_FILE")"
+        fi
+        exit 0
+      fi
+      case "$1" in
+        thick)  BORDER_WIDTH="heavy" ;;
+        double) BORDER_WIDTH="double" ;;
+        medium) BORDER_WIDTH="single" ;;
+        thin)   BORDER_WIDTH="simple" ;;
+        *)
+          log "Error: Invalid border width '$1'. Use 'thick', 'double', 'medium', or 'thin'."
+          exit 1
+          ;;
+      esac
+      mkdir -p "$TIDE_CONF_DIR"
+      echo "$1" > "$BORDER_WIDTH_FILE"
+      PANE_BORDER_CONFIG=$(cat <<EOF
+# Unfocused pane border
+set -g pane-border-style fg=black
+set -g pane-active-border-style fg=$ACTIVE_BORDER_COLOR
+set -g pane-border-format "#{pane_index} "
+set -g pane-border-style "fg=black,bg=default,dim"
+set -g pane-border-lines $BORDER_WIDTH
+EOF
+)
+      log "Tmux border width set to '$1' (saved)."
+      ;;
+
+    --separator-width|-sw)
+      shift
+      if [ -z "${1:-}" ]; then
+        log "Available Neovim separator widths:"
+        log "  thick   - full block characters (default)"
+        log "  double  - double line characters"
+        log "  medium  - heavy line characters"
+        log "  thin    - light line characters"
+        log ""
+        log "Usage: tide42 --separator-width <thick|double|medium|thin>"
+        if [ -f "$SEPARATOR_WIDTH_FILE" ]; then
+          log "Current: $(cat "$SEPARATOR_WIDTH_FILE")"
+        fi
+        exit 0
+      fi
+      case "$1" in
+        thick|double|medium|thin) ;;
+        *)
+          log "Error: Invalid separator width '$1'. Use 'thick', 'double', 'medium', or 'thin'."
+          exit 1
+          ;;
+      esac
+      mkdir -p "$TIDE_CONF_DIR"
+      echo "$1" > "$SEPARATOR_WIDTH_FILE"
+      export TIDE42_SEPARATOR_WIDTH="$1"
+      log "Neovim separator width set to '$1' (saved)."
+      ;;
+
+    --separator-color|-sc)
+      shift
+      if [ -z "${1:-}" ]; then
+        log "Available Neovim window separator colors:"
+        log "  black, red, green, yellow, blue, magenta, cyan, white"
+        log "  gray, darkgray, orange, pink, purple, violet"
+        log "  #RRGGBB (hex, e.g. #ff5500, #888888)"
+        log ""
+        log "Usage: tide42 --separator-color <color>"
+        if [ -f "$SEPARATOR_COLOR_FILE" ]; then
+          log "Current: $(cat "$SEPARATOR_COLOR_FILE")"
+        fi
+        exit 0
+      fi
+      SEP_COLOR="$1"
+      mkdir -p "$TIDE_CONF_DIR"
+      echo "$SEP_COLOR" > "$SEPARATOR_COLOR_FILE"
+      case "$SEP_COLOR" in
+        gray)     export TIDE42_SEPARATOR_COLOR="darkgray" ;;
+        darkgray) export TIDE42_SEPARATOR_COLOR="gray" ;;
+        *)        export TIDE42_SEPARATOR_COLOR="$SEP_COLOR" ;;
+      esac
+      log "Neovim separator color set to '$SEP_COLOR' (saved)."
+      ;;
+
     --colorscheme|-cs)
       shift
       if [ -z "$1" ]; then
@@ -371,6 +490,9 @@ EOF
       echo " --lite Launch without tmux for quick editing or low-resource systems"
       echo " --low-color, -lc Enable 88-color mode (warning: Home/End keys may not work)"
       echo " --border-color, -bc Set active pane border color (run without value to see colors)"
+      echo " --border-width, -bw Set tmux border width: thick, double, medium, or thin"
+      echo " --separator-color, -sc Set Neovim window separator color (run without value to see colors)"
+      echo " --separator-width, -sw Set Neovim separator width: thick, double, medium, or thin"
       echo " --colorscheme, -cs Set the Neovim colorscheme and launch (e.g., desert, retrobox)"
       echo " --quiet, -q Suppress log output"
       echo " --check-update Check for available updates without installing"

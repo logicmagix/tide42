@@ -37,6 +37,13 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
+# 02.26.26
+- --separator-color (-sc) flag to set the Neovim window separator color (persists across sessions)
+- --separator-width (-sw) flag to set the Neovim window separator width: thick, double, medium, or thin
+- --border-width (-bw) flag to set the tmux pane border width: thick, double, medium, or thin
+- Full block separator characters for Neovim window borders (default: thick)
+- Gray/darkgray color names corrected to match expected brightness
+
 # 02.25.26
 - --gui flag: Desktop launcher now auto-detects the default terminal emulator instead of relying on Terminal=true
 - install.sh skips already-installed packages instead of reinstalling them (avoids unnecessary recompilation on Gentoo)
@@ -63,6 +70,10 @@ zx           | zxcvbnm
 
 ## Flags
 - Set colorscheme: --colorscheme, -cs
+- Border color: --border-color, -bc
+- Border width: --border-width, -bw
+- Separator color: --separator-color, -sc
+- Separator width: --separator-width, -sw
 - Low Color: --low-color, -lc
 - Check version: --version
 - Silence log: --quiet
