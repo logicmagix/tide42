@@ -17,16 +17,15 @@ TermiC (lightweight live shell for C/C++)
 
 .SH OPTIONS
 
-.SH COLORSCHEMES
-blue darkblue default delek desert elflord evening habamax industry
+.TP
+.BR \-\-colorscheme ", " \-cs
+Set Tide42 colorscheme. Use the flag with no name to see a list of included themes.
+.br
+Available colorschemes: blue darkblue default delek desert elflord evening habamax industry
 koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
 slate sorbet torte unokai
 vim (used to set transparency, respects default terminal emulator settings)
 wildcharm zaibatsu zellner
-
-.TP
-.BR \-\-colorscheme ", " \-cs
-Set Tide42 colorscheme. Use the flag with no name to see a list of included themes.
 
 .TP
 .BR \-\-lite ",
@@ -108,6 +107,8 @@ Adjust active buffer 75%
 Enter command mode
 .IP "Shift r"
 Refresh NERDTree within buffer
+.IP "\e j"
+Display NERDTree in any buffer (cds to home directory)
 .IP "\e q"
 Restart Tide42 UI
 .IP "\e f/g"
@@ -144,14 +145,12 @@ Select all text within buffer
 Paste selection into IPython
 .IP "\e l"
 Paste selection into TermiC
-.IP "\e n"
-Open new Ipython buffer
 .IP "\e i"
 Quick vertical resize
 .IP "\e u"
 Quick horizontal resize
-.IP "\e z, \e s, \e x, \e b"
-Preset layout configurations
+.IP "\e z, \e b, \e s, \e x, \e c, \e v"
+Preset layout configurations (focus editor, NERDTree, TermiC, terminal, IPython, enlarge current)
 .IP "Tab"
 Cycle to the next tab
 .IP "Shift + Tab"

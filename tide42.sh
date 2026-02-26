@@ -278,6 +278,7 @@ EOF
       echo " --low-color, -lc Enable 88-color mode (warning: Home/End keys may not work)"
       echo " --colorscheme <name> Set the Neovim colorscheme (e.g., desert, retrobox)"
       echo " --quiet, -q Suppress log output"
+      echo " --check-update Check for available updates without installing"
       echo " --update Pull latest Git changes to clean repo and reinstall"
       echo " --version Show current version"
       echo " --help, -h Show this help message"
