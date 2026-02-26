@@ -151,19 +151,45 @@ elif [ "$PKG_MANAGER" = "emerge" ]; then
   echo "[tide42] After installation, run: fc-cache -vf ~/.local/share/fonts/"
 fi
 
-# Core packages (excluding fonts for Gentoo)
-PKG_LIST="$PKG_TMUX $PKG_NCURSES $PKG_NVIM $PKG_PY3 $PKG_PIP $PKG_IPY $PKG_CURL $PKG_GIT $PKG_RG"
-set -- $PKG_LIST
-PKG_LIST="$*"
+# === Check which packages are already installed ===
+# Map each package to the command it provides
+pkg_already_installed() {
+  case "$1" in
+    tmux|app-misc/tmux)           command -v tmux >/dev/null 2>&1 ;;
+    ncurses-term|ncurses|sys-libs/ncurses) command -v infocmp >/dev/null 2>&1 ;;
+    neovim|app-editors/neovim)    command -v nvim >/dev/null 2>&1 ;;
+    python3|dev-lang/python)      command -v python3 >/dev/null 2>&1 ;;
+    python3-pip|python-pip|dev-python/pip) command -v pip3 >/dev/null 2>&1 || command -v pip >/dev/null 2>&1 ;;
+    python3-ipython|ipython|dev-python/ipython) command -v ipython >/dev/null 2>&1 || command -v ipython3 >/dev/null 2>&1 ;;
+    curl|net-misc/curl)           command -v curl >/dev/null 2>&1 ;;
+    git|dev-vcs/git)              command -v git >/dev/null 2>&1 ;;
+    ripgrep|sys-apps/ripgrep)     command -v rg >/dev/null 2>&1 ;;
+    *)                            return 1 ;;
+  esac
+}
+
+ALL_PKGS="$PKG_TMUX $PKG_NCURSES $PKG_NVIM $PKG_PY3 $PKG_PIP $PKG_IPY $PKG_CURL $PKG_GIT $PKG_RG"
+PKG_LIST=""
+for p in $ALL_PKGS; do
+  [ -z "$p" ] && continue
+  if pkg_already_installed "$p"; then
+    echo "[tide42] Already installed: $p (skipping)"
+  else
+    PKG_LIST="$PKG_LIST $p"
+  fi
+done
+PKG_LIST="${PKG_LIST# }"
 
 # === Install packages ===
-if [ "$PKG_MANAGER" = "unknown" ]; then
+if [ -z "$PKG_LIST" ]; then
+  echo "[tide42] All dependencies already installed."
+elif [ "$PKG_MANAGER" = "unknown" ]; then
   echo "[tide42] Unknown package manager. Please install these manually:"
   for p in $PKG_LIST; do echo "- $p"; done
   echo "For ripgrep, see: https://github.com/BurntSushi/ripgrep#installation"
   exit 1
 else
-  echo "[tide42] Checking package availability: $PKG_LIST"
+  echo "[tide42] Packages to install: $PKG_LIST"
   if [ "$PKG_MANAGER" = "emerge" ]; then
     emerge -pv $PKG_LIST || {
       echo "[tide42] Error: Some packages are unavailable or have conflicts. Check USE flags or overlays."
@@ -192,6 +218,7 @@ if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
 fi
 
 # === Install TPM (Tmux Plugin Manager) ===
+TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TPM_DIR="$TIDE_CONF_DIR/tmux/plugins/tpm"
 if [ ! -d "$TPM_DIR" ]; then
   echo "[tide42] Installing TPM (Tmux Plugin Manager)..."
