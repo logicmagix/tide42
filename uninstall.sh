@@ -58,7 +58,7 @@ fi
 
 # === Prompt user to remove the repository directory ===
 echo "[tide42] Repository directory: $SCRIPT_DIR"
-read -p "[tide42] Would you like to remove the repository directory ($SCRIPT_DIR)? [y/N]: " response
+read -p "[tide42] WOULD YOU LIKE TO REMOVE THE REPOSITORY DIRECTORY? ($SCRIPT_DIR)? [y/N]: " response
 if [[ "$response" =~ ^[Yy]$ ]]; then
   echo "[tide42] Removing repository directory $SCRIPT_DIR..."
   if [ -d "$SCRIPT_DIR" ]; then
