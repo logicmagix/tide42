@@ -473,9 +473,12 @@ if [ -n "$RESURRECT_SAVE" ]; then
   tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
   tmux source-file "$TMUX_CONF"
 
-  # Bootstrap TPM plugins inside the session if needed
-  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ] && [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
-    tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" 2>/dev/null
+  # Bootstrap persistence plugins if needed
+  if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
+    git clone https://github.com/tmux-plugins/tmux-resurrect "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" 2>/dev/null
+  fi
+  if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" ]; then
+    git clone https://github.com/tmux-plugins/tmux-continuum "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" 2>/dev/null
   fi
 
   # Trigger resurrect restore
@@ -508,9 +511,12 @@ fi
 tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
 tmux source-file "$TMUX_CONF"
 
-# Bootstrap TPM plugins inside the session if needed
-if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ] && [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
-  tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" 2>/dev/null
+# Bootstrap persistence plugins if needed
+if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
+  git clone https://github.com/tmux-plugins/tmux-resurrect "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" 2>/dev/null
+fi
+if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" ]; then
+  git clone https://github.com/tmux-plugins/tmux-continuum "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" 2>/dev/null
 fi
 
 tmux split-window -h

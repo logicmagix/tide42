@@ -224,7 +224,7 @@ if [ ! -f ~/.local/share/tide42/site/autoload/plug.vim ]; then
   }
 fi
 
-# === Install TPM (Tmux Plugin Manager) ===
+# === Install TPM (Tmux Plugin Manager) and persistence plugins ===
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TPM_DIR="$TIDE_CONF_DIR/tmux/plugins/tpm"
 if [ ! -d "$TPM_DIR" ]; then
@@ -232,6 +232,22 @@ if [ ! -d "$TPM_DIR" ]; then
   mkdir -p "$TIDE_CONF_DIR/tmux/plugins"
   git clone https://github.com/tmux-plugins/tpm "$TPM_DIR" || {
     echo "[tide42] Warning: Failed to install TPM. Session persistence will not be available."
+  }
+fi
+
+RESURRECT_DIR="$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect"
+if [ ! -d "$RESURRECT_DIR" ]; then
+  echo "[tide42] Installing tmux-resurrect..."
+  git clone https://github.com/tmux-plugins/tmux-resurrect "$RESURRECT_DIR" || {
+    echo "[tide42] Warning: Failed to install tmux-resurrect. Session persistence will not be available."
+  }
+fi
+
+CONTINUUM_DIR="$TIDE_CONF_DIR/tmux/plugins/tmux-continuum"
+if [ ! -d "$CONTINUUM_DIR" ]; then
+  echo "[tide42] Installing tmux-continuum..."
+  git clone https://github.com/tmux-plugins/tmux-continuum "$CONTINUUM_DIR" || {
+    echo "[tide42] Warning: Failed to install tmux-continuum. Session persistence will not be available."
   }
 fi
 
