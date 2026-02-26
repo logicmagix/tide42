@@ -512,24 +512,50 @@ if [ -d "$RESURRECT_DIR" ]; then
 fi
 
 if [ -n "$RESURRECT_SAVE" ]; then
-  # Saved session found -- start tmux server and let continuum restore it
-  log "Restoring previous session..."
-  tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
+  # Saved session found -- restore layout and commands from save file
+  log "Restoring previous session from $RESURRECT_SAVE..."
+
+  # Parse save file for pane directories and commands (tide42 session only)
+  PANE0_DIR=""
+  PANE1_DIR=""
+  PANE0_CMD=""
+  PANE1_CMD=""
+  while IFS=$'\t' read -r line_type session_name window_number window_active window_flags pane_index pane_title dir pane_active pane_command pane_full_command rest; do
+    [ "$line_type" = "pane" ] || continue
+    [ "$session_name" = "$SESSION_NAME" ] || continue
+    dir="${dir#:}"
+    pane_full_command="${pane_full_command#:}"
+    if [ "$pane_index" = "0" ]; then
+      PANE0_DIR="$dir"
+      PANE0_CMD="$pane_full_command"
+    elif [ "$pane_index" = "1" ]; then
+      PANE1_DIR="$dir"
+      PANE1_CMD="$pane_full_command"
+    fi
+  done < "$RESURRECT_SAVE"
+
+  # Start fresh session with saved layout
+  tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME" ${PANE0_DIR:+-c "$PANE0_DIR"}
   tmux source-file "$TMUX_CONF"
+  tmux split-window -h ${PANE1_DIR:+-c "$PANE1_DIR"}
 
-  # Bootstrap persistence plugins if needed
-  if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
-    git clone https://github.com/tmux-plugins/tmux-resurrect "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" 2>/dev/null
+  # Restore pane sizing
+  tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
+  tmux select-pane -t "$SESSION_NAME":0.0
+
+  # Restore commands in panes
+  if [ -n "$PANE0_CMD" ] && [[ "$PANE0_CMD" == nvim* ]]; then
+    tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 $PANE0_CMD" C-m
+  else
+    tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
   fi
-  if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" ]; then
-    git clone https://github.com/tmux-plugins/tmux-continuum "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" 2>/dev/null
+  if [ -n "$PANE1_CMD" ] && [[ "$PANE1_CMD" == nvim* ]]; then
+    tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 $PANE1_CMD" C-m
+  else
+    tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
   fi
 
-  # Trigger resurrect restore
-  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/restore.sh" ]; then
-    tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/restore.sh"
-  fi
-
+  log "Session restored."
   tmux attach-session -t "$SESSION_NAME"
   # Save session on detach for persistence across reboots
   if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
