@@ -34,7 +34,6 @@ IS_QUIET=false
 FILENAME=""
 COLOR_FLAG_PROVIDED=false
 UPDATE_PROCESSED=false
-COLORSCHEME_PROCESSED=false
 SESSION_NAME="tide42"
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
@@ -181,7 +180,33 @@ run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
       log "Applied 88-color config with pane border settings."
       ;;
-    
+
+    --border-color|-bc)
+      shift
+      if [ -z "${1:-}" ]; then
+        log "Available tmux border colors:"
+        log "  black, red, green, yellow, blue, magenta, cyan, white"
+        log "  brightblack, brightred, brightgreen, brightyellow"
+        log "  brightblue, brightmagenta, brightcyan, brightwhite"
+        log "  colour0-colour255 (256-color palette)"
+        log "  #RRGGBB (hex, e.g. #ff5500)"
+        log ""
+        log "Usage: tide42 --border-color <color>"
+        exit 0
+      fi
+      BORDER_COLOR="$1"
+      PANE_BORDER_CONFIG=$(cat <<EOF
+# Unfocused pane border
+set -g pane-border-style fg=black
+set -g pane-active-border-style fg=$BORDER_COLOR
+set -g pane-border-format "#{pane_index} "
+set -g pane-border-style "fg=black,bg=default,dim"
+set -g pane-border-lines heavy
+EOF
+)
+      log "Active pane border color set to '$BORDER_COLOR'."
+      ;;
+
     --colorscheme|-cs)
       shift
       if [ -z "$1" ]; then
@@ -219,8 +244,6 @@ colorscheme $COLORSCHEME " <--- replace with your preferred default
 EOF
       fi
       log "Updated colorscheme to '$COLORSCHEME' in $COLORSCHEME_FILE"
-      COLORSCHEME_PROCESSED=true
-      shift
       ;;
     
     --check-update)
@@ -333,7 +356,8 @@ EOF
       echo " --gui Detect terminal emulator and launch tide42 inside it"
       echo " --lite Launch without tmux for quick editing or low-resource systems"
       echo " --low-color, -lc Enable 88-color mode (warning: Home/End keys may not work)"
-      echo " --colorscheme <name> Set the Neovim colorscheme (e.g., desert, retrobox)"
+      echo " --border-color, -bc Set active pane border color (run without value to see colors)"
+      echo " --colorscheme, -cs Set the Neovim colorscheme and launch (e.g., desert, retrobox)"
       echo " --quiet, -q Suppress log output"
       echo " --check-update Check for available updates without installing"
       echo " --update Pull latest Git changes to clean repo and reinstall"
@@ -358,10 +382,6 @@ done
 
 if [ "$UPDATE_PROCESSED" = true ]; then
   log "Update process completed, exiting."
-  exit 0
-fi
-if [ "$COLORSCHEME_PROCESSED" = true ]; then
-  log "Colorscheme update completed, exiting."
   exit 0
 fi
 

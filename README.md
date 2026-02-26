@@ -48,6 +48,8 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 - tmux.conf is now regenerated on every install and launch to ensure config updates take effect
 - Heavy pane border lines for better visibility between tmux panes
 - install.sh now prompts before updating package manager and installing dependencies
+- --border-color (-bc) flag to set the active tmux pane border color
+- --colorscheme (-cs) now sets the colorscheme and launches tide42 instead of exiting
 
 
 

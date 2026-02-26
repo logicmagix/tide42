@@ -11,6 +11,8 @@
 - tmux.conf is now regenerated on every install and launch to ensure config updates take effect
 - Heavy pane border lines for better visibility between tmux panes
 - install.sh now prompts before updating package manager and installing dependencies
+- --border-color (-bc) flag to set the active tmux pane border color
+- --colorscheme (-cs) now sets the colorscheme and launches tide42 instead of exiting
 
 # 09.25.26
 - TMUX_CONF now points to $TIDE_CONF_DIR/tmux.conf (~/.config/tide42/tmux.conf)

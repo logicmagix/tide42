@@ -19,7 +19,7 @@ TermiC (lightweight live shell for C/C++)
 
 .TP
 .BR \-\-colorscheme ", " \-cs
-Set Tide42 colorscheme. Use the flag with no name to see a list of included themes.
+Set Tide42 colorscheme and launch. Use the flag with no name to see a list of included themes.
 .br
 Available colorschemes: blue darkblue default delek desert elflord evening habamax industry
 koehler lunaperche morning murphy pablo peachpuff quiet retrobox ron shine
@@ -42,6 +42,11 @@ Display git installation directory.
 .TP
 .BR \-\-low-color ", " \-lc
 Enable 88-color mode (limited compatibility; some keybindings like Home/End may not function correctly).
+
+.TP
+.BR \-\-border-color ", " \-bc " " \fIcolor\fR
+Set the active pane border color. Run without a value to see available colors.
+Accepts standard tmux color names (e.g., red, brightcyan), 256-color palette (colour0-colour255), or hex (#RRGGBB).
 
 .TP
 .BR \-\-quiet ", " \-q
