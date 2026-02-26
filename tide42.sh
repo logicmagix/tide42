@@ -51,12 +51,13 @@ fi
 # === Define pane border settings in tmux.conf ===
 
 BORDER_COLOR_FILE="$TIDE_CONF_DIR/border_color"
-ACTIVE_BORDER_COLOR="brightred"
+ACTIVE_BORDER_COLOR="brightyellow"
 if [ -f "$BORDER_COLOR_FILE" ]; then
   ACTIVE_BORDER_COLOR="$(cat "$BORDER_COLOR_FILE")"
 fi
 
 SEPARATOR_COLOR_FILE="$TIDE_CONF_DIR/separator_color"
+export TIDE42_SEPARATOR_COLOR="yellow"
 if [ -f "$SEPARATOR_COLOR_FILE" ]; then
   _sep_color="$(cat "$SEPARATOR_COLOR_FILE")"
   case "$_sep_color" in
@@ -67,7 +68,7 @@ if [ -f "$SEPARATOR_COLOR_FILE" ]; then
 fi
 
 BORDER_WIDTH_FILE="$TIDE_CONF_DIR/border_width"
-BORDER_WIDTH="heavy"
+BORDER_WIDTH="double"
 if [ -f "$BORDER_WIDTH_FILE" ]; then
   case "$(cat "$BORDER_WIDTH_FILE")" in
     thick)  BORDER_WIDTH="heavy" ;;
@@ -78,7 +79,7 @@ if [ -f "$BORDER_WIDTH_FILE" ]; then
 fi
 
 SEPARATOR_WIDTH_FILE="$TIDE_CONF_DIR/separator_width"
-export TIDE42_SEPARATOR_WIDTH="thick"
+export TIDE42_SEPARATOR_WIDTH="medium"
 if [ -f "$SEPARATOR_WIDTH_FILE" ]; then
   export TIDE42_SEPARATOR_WIDTH="$(cat "$SEPARATOR_WIDTH_FILE")"
 fi
