@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Prompt user to confirm installation and system update
 echo "[tide42] This script will install the Tide42 command line IDE and requires an updated system to proceed.
-On Gentoo, this may take significant time, network usage.
+On compiled distros, this may take significant time, network usage.
 System updates may interrupt your work."
 read -p "[tide42] Would you like to continue? (y/N): " response
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
