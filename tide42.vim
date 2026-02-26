@@ -938,12 +938,14 @@ function! s:SaveBufferList() abort
   endif
   let l:buffile = g:tide42_config_dir . '/nvim_buffers_' . l:pane . '.txt'
   let l:files = []
-  for b in getbufinfo({'buflisted': 1})
-    if getbufvar(b.bufnr, '&buftype') == '' && b.name != '' && b.name !~# 'NERD'
-      call add(l:files, b.name)
+  for l:bnr in range(1, bufnr('$'))
+    if buflisted(l:bnr) && getbufvar(l:bnr, '&buftype') ==# '' && bufname(l:bnr) !=# '' && bufname(l:bnr) !~# 'NERD'
+      call add(l:files, fnamemodify(bufname(l:bnr), ':p'))
     endif
   endfor
-  call writefile(l:files, l:buffile)
+  if !empty(l:files)
+    call writefile(l:files, l:buffile)
+  endif
 endfunction
 
 function! s:RestoreBufferList() abort
@@ -986,7 +988,8 @@ endfunction
 
 augroup Tide42BufferPersistence
   autocmd!
-  autocmd BufEnter * call s:SaveBufferList()
+  autocmd BufRead * call s:SaveBufferList()
+  autocmd BufDelete * call s:SaveBufferList()
   autocmd VimLeavePre * call s:SaveBufferList()
   autocmd VimEnter * call timer_start(800, {tid -> s:RestoreBufferList()})
 augroup END
