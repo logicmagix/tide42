@@ -533,7 +533,9 @@ if [ -n "$RESURRECT_SAVE" ]; then
   tmux attach-session -t "$SESSION_NAME"
   # Save session on detach for persistence across reboots
   if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    log "Saving session for persistence..."
     "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
+    log "Session saved to $TIDE_CONF_DIR/tmux/resurrect/"
   fi
   exit 0
 fi
@@ -576,5 +578,7 @@ tmux attach-session -t "$SESSION_NAME"
 
 # Save session on detach for persistence across reboots
 if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+  log "Saving session for persistence..."
   "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
+  log "Session saved to $TIDE_CONF_DIR/tmux/resurrect/"
 fi
