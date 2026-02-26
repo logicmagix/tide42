@@ -460,6 +460,10 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     fi
   fi
   if tmux attach-session -t "$SESSION_NAME"; then
+    # Save session on detach for persistence across reboots
+    if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+      "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
+    fi
     exit 0
   else
     log "Error: Failed to attach to session '$SESSION_NAME'. Try 'tmux kill-session -t $SESSION_NAME'."
@@ -511,6 +515,10 @@ if [ -n "$RESURRECT_SAVE" ]; then
   tmux bind-key -n C-M-v resize-pane -x 75%
 
   tmux attach-session -t "$SESSION_NAME"
+  # Save session on detach for persistence across reboots
+  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
+  fi
   exit 0
 fi
 
@@ -566,3 +574,8 @@ tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_
 # === Attach to the session ===
 
 tmux attach-session -t "$SESSION_NAME"
+
+# Save session on detach for persistence across reboots
+if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+  "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
+fi
