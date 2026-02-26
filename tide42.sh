@@ -188,18 +188,7 @@ bind-key -n C-M-x resize-pane -x 30%
 bind-key -n C-M-c resize-pane -x 60%
 bind-key -n C-M-v resize-pane -x 75%
 
-# Session persistence
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @continuum-restore 'on'
-set -g @continuum-save-interval '5'
 set-environment -g NVIM_APPNAME tide42
-set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
-set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
-
-# Initialize TPM (must be last)
-run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
       log "Applied 88-color config with pane border settings."
       ;;
@@ -452,18 +441,7 @@ bind-key -n C-M-x resize-pane -x 30%
 bind-key -n C-M-c resize-pane -x 60%
 bind-key -n C-M-v resize-pane -x 75%
 
-# Session persistence
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @continuum-restore 'on'
-set -g @continuum-save-interval '5'
 set-environment -g NVIM_APPNAME tide42
-set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
-set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
-
-# Initialize TPM (must be last)
-run '$TIDE_CONF_DIR/tmux/plugins/tpm/tpm'
 EOF
 fi
 
@@ -479,17 +457,13 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   if [ -n "$FILENAME" ]; then
     if tmux list-panes -t "$SESSION_NAME":0.0 >/dev/null 2>&1; then
       tmux select-pane -t "$SESSION_NAME":0.0
-      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
+      tmux send-keys -t "$SESSION_NAME":0.0 C-c ":qall!" C-m "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
       log "Opened $FILENAME in left pane of existing session."
     else
       log "Warning: Left pane not available. Attaching without opening $FILENAME."
     fi
   fi
   if tmux attach-session -t "$SESSION_NAME"; then
-    # Save session on detach for persistence across reboots
-    if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-      "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
-    fi
     exit 0
   else
     log "Error: Failed to attach to session '$SESSION_NAME'. Try 'tmux kill-session -t $SESSION_NAME'."
@@ -497,82 +471,10 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   fi
 fi
 
-# === Check for resurrect saves (session persistence) ===
-
-RESURRECT_DIR="$TIDE_CONF_DIR/tmux/resurrect"
-RESURRECT_SAVE=""
-if [ -d "$RESURRECT_DIR" ]; then
-  RESURRECT_SAVE="$(ls -t "$RESURRECT_DIR"/tmux_resurrect_*.txt 2>/dev/null | head -1)"
-fi
-
-if [ -n "$RESURRECT_SAVE" ]; then
-  # Saved session found -- restore layout and commands from save file
-  log "Restoring previous session from $RESURRECT_SAVE..."
-
-  # Parse save file for pane directories and commands (tide42 session only)
-  PANE0_DIR=""
-  PANE1_DIR=""
-  PANE0_CMD=""
-  PANE1_CMD=""
-  while IFS=$'\t' read -r line_type session_name window_number window_active window_flags pane_index pane_title dir pane_active pane_command pane_full_command rest; do
-    [ "$line_type" = "pane" ] || continue
-    [ "$session_name" = "$SESSION_NAME" ] || continue
-    dir="${dir#:}"
-    pane_full_command="${pane_full_command#:}"
-    if [ "$pane_index" = "0" ]; then
-      PANE0_DIR="$dir"
-      PANE0_CMD="$pane_full_command"
-    elif [ "$pane_index" = "1" ]; then
-      PANE1_DIR="$dir"
-      PANE1_CMD="$pane_full_command"
-    fi
-  done < "$RESURRECT_SAVE"
-
-  # Start fresh session with saved layout
-  tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME" ${PANE0_DIR:+-c "$PANE0_DIR"}
-  tmux source-file "$TMUX_CONF"
-  tmux split-window -h ${PANE1_DIR:+-c "$PANE1_DIR"}
-
-  # Restore pane sizing
-  tmux resize-pane -t "$SESSION_NAME":0.0 -R 46
-  tmux select-pane -t "$SESSION_NAME":0.0
-
-  # Restore commands in panes (TIDE42_RESTORE=1 triggers buffer list restore in tide42.vim)
-  if [ -n "$PANE0_CMD" ] && [[ "$PANE0_CMD" == nvim* ]]; then
-    tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 $PANE0_CMD" C-m
-  else
-    tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
-  fi
-  if [ -n "$PANE1_CMD" ] && [[ "$PANE1_CMD" == nvim* ]]; then
-    tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 $PANE1_CMD" C-m
-  else
-    tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 TIDE42_RESTORE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
-  fi
-
-  log "Session restored."
-  tmux attach-session -t "$SESSION_NAME"
-  # Save session on detach for persistence across reboots
-  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-    log "Saving session for persistence..."
-    "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
-    log "Session saved to $TIDE_CONF_DIR/tmux/resurrect/"
-  fi
-  exit 0
-fi
-
-# === Start fresh tmux session ===
+# === Start new tmux session ===
 
 tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
 tmux source-file "$TMUX_CONF"
-
-# Bootstrap persistence plugins if needed
-if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
-  git clone https://github.com/tmux-plugins/tmux-resurrect "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" 2>/dev/null
-fi
-if [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" ]; then
-  git clone https://github.com/tmux-plugins/tmux-continuum "$TIDE_CONF_DIR/tmux/plugins/tmux-continuum" 2>/dev/null
-fi
-
 tmux split-window -h
 
 # === Startup UI ===
@@ -583,22 +485,15 @@ tmux select-pane -t "$SESSION_NAME":0.0
 # === Open file in pane 0 ===
 
 if [ -n "$FILENAME" ]; then
-  tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\" \"$FILENAME\"" C-m
 else
-  tmux send-keys -t "$SESSION_NAME":0.0 "TIDE42_PANE=0 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+  tmux send-keys -t "$SESSION_NAME":0.0 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 fi
 
 # === Preload right pane 1 with nvim if desired ===
 
-tmux send-keys -t "$SESSION_NAME":0.1 "TIDE42_PANE=1 NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
+tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
 
 # === Attach to the session ===
 
 tmux attach-session -t "$SESSION_NAME"
-
-# Save session on detach for persistence across reboots
-if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" ] && tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-  log "Saving session for persistence..."
-  "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/save.sh" quiet 2>/dev/null || true
-  log "Session saved to $TIDE_CONF_DIR/tmux/resurrect/"
-fi

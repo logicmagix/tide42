@@ -462,11 +462,6 @@ function! ForceQuitAndKillTmux() abort
       execute "quitall!"
       return
     endif
-    " Clear resurrect saves so session won't auto-restore
-    let l:resurrect_dir = expand('~/.config/tide42/tmux/resurrect')
-    if isdirectory(l:resurrect_dir)
-      call system('rm -rf ' . shellescape(l:resurrect_dir))
-    endif
     silent !tmux list-panes -s -F '\#P' | xargs -I {} tmux send-keys -t {} 'exit' C-m 2>/tmp/tmux_kill_session.log
     silent !tmux kill-session -t $(tmux display-message -p '\#S') 2>>/tmp/tmux_kill_session.log
     sleep 100m
@@ -926,70 +921,3 @@ function! Grid(...) abort
     echo "GRID | Grid On " . dr . ", cols every " . dc
 endfunction
 endif
-
-" ── BUFFER PERSISTENCE ────────────────────────────────────────────────
-" Save/restore open file buffers across sessions for tide42 persistence
-" Requires TIDE42_PANE env var (set by tide42.sh) to identify which pane
-
-function! s:SaveBufferList() abort
-  let l:pane = $TIDE42_PANE
-  if empty(l:pane)
-    return
-  endif
-  let l:buffile = g:tide42_config_dir . '/nvim_buffers_' . l:pane . '.txt'
-  let l:files = []
-  for l:bnr in range(1, bufnr('$'))
-    if buflisted(l:bnr) && getbufvar(l:bnr, '&buftype') ==# '' && bufname(l:bnr) !=# '' && bufname(l:bnr) !~# 'NERD'
-      call add(l:files, fnamemodify(bufname(l:bnr), ':p'))
-    endif
-  endfor
-  if !empty(l:files)
-    call writefile(l:files, l:buffile)
-  endif
-endfunction
-
-function! s:RestoreBufferList() abort
-  if empty($TIDE42_RESTORE)
-    return
-  endif
-  let l:pane = $TIDE42_PANE
-  if empty(l:pane)
-    return
-  endif
-  let l:buffile = g:tide42_config_dir . '/nvim_buffers_' . l:pane . '.txt'
-  if !filereadable(l:buffile)
-    return
-  endif
-  let l:files = readfile(l:buffile)
-  if empty(l:files)
-    return
-  endif
-  " Find editor window (non-terminal, non-NERDTree)
-  let l:editor_win = 0
-  for w in range(1, winnr('$'))
-    let l:buf = winbufnr(w)
-    if getbufvar(l:buf, '&buftype') == '' && bufname(l:buf) !~# 'NERD'
-      let l:editor_win = w
-      break
-    endif
-  endfor
-  if l:editor_win == 0
-    return
-  endif
-  let l:save_win = winnr()
-  execute l:editor_win . 'wincmd w'
-  for f in l:files
-    if filereadable(f)
-      execute 'edit ' . fnameescape(f)
-    endif
-  endfor
-  execute l:save_win . 'wincmd w'
-endfunction
-
-augroup Tide42BufferPersistence
-  autocmd!
-  autocmd BufRead * call s:SaveBufferList()
-  autocmd BufDelete * call s:SaveBufferList()
-  autocmd VimLeavePre * call s:SaveBufferList()
-  autocmd VimEnter * call timer_start(800, {tid -> s:RestoreBufferList()})
-augroup END
