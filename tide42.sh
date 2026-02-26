@@ -50,10 +50,16 @@ fi
 
 # === Define pane border settings in tmux.conf ===
 
+BORDER_COLOR_FILE="$TIDE_CONF_DIR/border_color"
+ACTIVE_BORDER_COLOR="brightred"
+if [ -f "$BORDER_COLOR_FILE" ]; then
+  ACTIVE_BORDER_COLOR="$(cat "$BORDER_COLOR_FILE")"
+fi
+
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
-set -g pane-active-border-style fg=brightred
+set -g pane-active-border-style fg=$ACTIVE_BORDER_COLOR
 set -g pane-border-format "#{pane_index} "
 set -g pane-border-style "fg=black,bg=default,dim"
 set -g pane-border-lines heavy
@@ -195,6 +201,8 @@ EOF
         exit 0
       fi
       BORDER_COLOR="$1"
+      mkdir -p "$TIDE_CONF_DIR"
+      echo "$BORDER_COLOR" > "$BORDER_COLOR_FILE"
       PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
 set -g pane-border-style fg=black
@@ -204,7 +212,7 @@ set -g pane-border-style "fg=black,bg=default,dim"
 set -g pane-border-lines heavy
 EOF
 )
-      log "Active pane border color set to '$BORDER_COLOR'."
+      log "Active pane border color set to '$BORDER_COLOR' (saved)."
       ;;
 
     --colorscheme|-cs)
@@ -450,14 +458,59 @@ if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
     exit 1
   fi
 fi
-# === Start new tmux session ===
+
+# === Check for resurrect saves (session persistence) ===
+
+RESURRECT_DIR="$TIDE_CONF_DIR/tmux/resurrect"
+RESURRECT_SAVE=""
+if [ -d "$RESURRECT_DIR" ]; then
+  RESURRECT_SAVE="$(ls -t "$RESURRECT_DIR"/tmux_resurrect_*.txt 2>/dev/null | head -1)"
+fi
+
+if [ -n "$RESURRECT_SAVE" ]; then
+  # Saved session found -- start tmux server and let continuum restore it
+  log "Restoring previous session..."
+  tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
+  tmux source-file "$TMUX_CONF"
+
+  # Bootstrap TPM plugins inside the session if needed
+  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ] && [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
+    tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" 2>/dev/null
+  fi
+
+  # Trigger resurrect restore
+  if [ -x "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/restore.sh" ]; then
+    tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect/scripts/restore.sh"
+  fi
+
+  # Set keybindings for restored session
+  tmux unbind C-b
+  tmux set-option -g prefix C-q
+  tmux bind-key h select-pane -L
+  tmux bind-key j select-pane -D
+  tmux bind-key k select-pane -U
+  tmux bind-key l select-pane -R
+  tmux set-window-option -g mode-keys vi
+  tmux bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
+  tmux bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+  tmux bind-key -n C-M-s resize-pane -x 50%
+  tmux bind-key -n C-M-z resize-pane -x 25%
+  tmux bind-key -n C-M-x resize-pane -x 30%
+  tmux bind-key -n C-M-c resize-pane -x 60%
+  tmux bind-key -n C-M-v resize-pane -x 75%
+
+  tmux attach-session -t "$SESSION_NAME"
+  exit 0
+fi
+
+# === Start fresh tmux session ===
 
 tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
 tmux source-file "$TMUX_CONF"
 
-# Bootstrap TPM plugins (runs in background to avoid blocking startup)
-if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ]; then
-  "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" >/dev/null 2>&1 &
+# Bootstrap TPM plugins inside the session if needed
+if [ -x "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" ] && [ ! -d "$TIDE_CONF_DIR/tmux/plugins/tmux-resurrect" ]; then
+  tmux run-shell "$TIDE_CONF_DIR/tmux/plugins/tpm/bin/install_plugins" 2>/dev/null
 fi
 
 tmux split-window -h
