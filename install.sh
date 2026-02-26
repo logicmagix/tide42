@@ -514,6 +514,7 @@ set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @continuum-restore 'on'
 set -g @continuum-save-interval '5'
+set-environment -g NVIM_APPNAME tide42
 set-environment -g TMUX_PLUGIN_MANAGER_PATH '$TIDE_CONF_DIR/tmux/plugins/'
 set -g @resurrect-dir '$TIDE_CONF_DIR/tmux/resurrect'
 
