@@ -217,13 +217,6 @@ endif
 if !exists(':EnlargedWindow')
   command! EnlargedWindow call s:EnlargeWindow()
 endif
-if !exists(':ResetWindowsMaxEditor')
-  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
-endif
-if !exists(':ResetWindowsDefault')
-  command! ResetWindowsDefault call s:ResetWindowSizes(0)
-endif
-
 " ── KEYMAPS ────────────────────────────────────────────────────────────
 " Ensure global <LeftMouse> mapping is removed to avoid conflicts
 silent! unmap <LeftMouse>
@@ -396,8 +389,6 @@ function! s:ResetUI() abort
     execute 'source ' . g:tide42_config_dir . '/tide42.vim'
     " Re-run VimEnter autocommands to recreate UI
     doautocmd VimEnter
-    " Reset window sizes to default
-    call s:ResetWindowSizes(0)
     echom "tide42 UI reset: Wiped all buffers, sourced config, and restored default layout"
   catch
     echom "Error resetting UI: " . v:exception
