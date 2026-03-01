@@ -110,19 +110,16 @@ PKG_IPY="python3-ipython"
 PKG_CURL="curl"
 PKG_GIT="git"
 PKG_RG="ripgrep"
-PKG_FONTS="fonts-powerline"
 case "$PKG_MANAGER" in
   pacman)
     PKG_NCURSES="ncurses"
     PKG_PIP="python-pip"
     PKG_IPY="ipython"
-    PKG_FONTS="powerline-fonts"
     ;;
   brew)
     PKG_NCURSES="ncurses"
     PKG_PIP=""
     PKG_IPY="ipython"
-    PKG_FONTS=""
     ;;
   emerge)
     PKG_TMUX="app-misc/tmux"
@@ -134,7 +131,6 @@ case "$PKG_MANAGER" in
     PKG_CURL="net-misc/curl"
     PKG_GIT="dev-vcs/git"
     PKG_RG="sys-apps/ripgrep"
-    PKG_FONTS="" # Powerline fonts not in main repo, handle separately
     ;;
 esac
 if [ "$PKG_MANAGER" = "brew" ]; then
@@ -348,56 +344,6 @@ if [ "$PKG_MANAGER" != "emerge" ] && ! command -v ipython3 &> /dev/null; then
   sudo apt update
   sudo apt install -y python3-ipython || echo "Warning: apt install failed. You may need to install IPython manually."
 fi
-
-# === Ensure IPython is available ===
-ensure_ipython() {
-  echo "[tide42] Ensuring IPython is available..."
-  if command -v ipython &> /dev/null; then
-    echo "[tide42] 'ipython' is available."
-    return 0
-  elif command -v ipython3 &> /dev/null; then
-    echo "[tide42] 'ipython3' is available. Creating symlink for 'ipython'..."
-    sudo ln -sf "$(which ipython3)" /usr/local/bin/ipython
-    if command -v ipython &> /dev/null; then
-      echo "[tide42] Symlink created successfully."
-      return 0
-    else
-      echo "[tide42] Warning: Failed to create 'ipython' symlink."
-    fi
-  fi
-  if command -v conda &> /dev/null; then
-    echo "[tide42] Conda detected. Installing IPython via conda..."
-    if conda install -y ipython; then
-      echo "[tide42] IPython installed via conda."
-    else
-      echo "[tide42] Warning: Conda install failed. Check your environment."
-    fi
-  elif [ "$PKG_MANAGER" = "emerge" ]; then
-    echo "[tide42] Attempting to install ipython via emerge..."
-    if sudo emerge -a dev-python/ipython; then
-      echo "[tide42] IPython installed via emerge."
-    else
-      echo "[tide42] Warning: emerge install failed. Check USE flags or try installing dev-python/ipython manually."
-    fi
-  else
-    echo "[tide42] Attempting to install ipython3 via apt..."
-    sudo apt update
-    if sudo apt install -y python3-ipython; then
-      echo "[tide42] IPython installed via apt."
-    else
-      echo "[tide42] Warning: apt install failed. You may need to install IPython manually."
-    fi
-  fi
-  if ! command -v ipython &> /dev/null && ! command -v ipython3 &> /dev/null; then
-    echo "[tide42] Warning: No 'ipython' or 'ipython3' detected. tide42 may not function properly."
-  elif command -v ipython3 &> /dev/null && ! command -v ipython &> /dev/null; then
-    echo "[tide42] Creating symlink for 'ipython' -> 'ipython3'..."
-    sudo ln -sf "$(which ipython3)" /usr/local/bin/ipython
-    if ! command -v ipython &> /dev/null; then
-      echo "[tide42] Warning: Failed to create 'ipython' symlink."
-    fi
-  fi
-}
 
 # === Install man page ===
 MANPAGE_SOURCE="$SCRIPT_DIR/tide42.1"

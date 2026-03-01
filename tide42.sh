@@ -33,7 +33,6 @@ IS_LOW_COLOR=false
 IS_QUIET=false
 FILENAME=""
 COLOR_FLAG_PROVIDED=false
-UPDATE_PROCESSED=false
 SESSION_NAME="tide42"
 TIDE_CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tide42"
 TIDE_CONF_FILE="$TIDE_CONF_DIR/tide42.vim"
@@ -423,7 +422,6 @@ EOF
       ;;
     
     --update)
-      UPDATE_PROCESSED=true
       log "Checking for updates from GitHub..."
       SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
       SCRIPT_DIR="$(dirname "$SCRIPT_PATH")"
@@ -514,13 +512,6 @@ EOF
   esac
   shift
 done
-
-# === Exit if --update or --colorscheme was processed ===
-
-if [ "$UPDATE_PROCESSED" = true ]; then
-  log "Update process completed, exiting."
-  exit 0
-fi
 
 # === Apply environment variables ===
 

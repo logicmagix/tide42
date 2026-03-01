@@ -166,20 +166,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
--- Existing conditional buffer cycling
-function _G.conditional_bufferline_cycle(direction)
-    local buftype = vim.api.nvim_buf_get_option(0, 'buftype')
-    if buftype == '' then
-        if direction == 'next' then
-            vim.cmd('BufferLineCycleNext')
-        elseif direction == 'prev' then
-            vim.cmd('BufferLineCyclePrev')
-        end
-    else
-        vim.notify("Buffer cycling is only allowed in file editor buffers", vim.log.levels.INFO)
-    end
-end
-
 require('gitsigns').setup {
     signs = {
         add          = { text = '│' },
@@ -244,8 +230,6 @@ silent! unmap <LeftMouse>
 
 " Key mappings for buffer cycling
 nnoremap <leader>j :cd ~ \| NERDTreeExplore<CR>
-nnoremap <silent> <TAB> :lua _G.conditional_bufferline_cycle('next')<CR>
-nnoremap <silent> <S-TAB> :lua _G.conditional_bufferline_cycle('prev')<CR>
 nnoremap <leader>t :enew<CR>
 nnoremap <silent> <leader>q :ResetUI<CR>
 nnoremap <silent> <TAB> :BufferLineCycleNext<CR>
@@ -275,13 +259,9 @@ inoremap jk <Esc>
 tnoremap jk <C-\><C-n>
 command! Hs split
 command! Q call ForceQuitAndKillTmux()
-command! BD lua vim.api.nvim_buf_delete(0, { force = true })
 autocmd FileType nerdtree nnoremap <buffer> <leader>w :wincmd l \| :Telescope buffers<CR>
 
 " ── SESSION INIT  ──────────────────────────────────────────────────────
-let shell_path = $SHELL
-let shell_name = fnamemodify(shell_path, ':t')
-autocmd VimEnter * echom "Detected shell: " . shell_name
 autocmd! VimEnter *
 autocmd VimEnter * NERDTree $HOME
 autocmd VimEnter * vertical resize 1
@@ -403,36 +383,6 @@ nnoremap <silent> <leader>bd :BD<CR>
 " ── RESET UI ───────────────────────────────────────────────────────────
 if !exists(':ResetUI')
   command! ResetUI call s:ResetUI()
-if !exists(':MaximizeTerminalBuffer')
-  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
-endif
-if !exists(':MaximizeIPythonBuffer')
-  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
-endif
-if !exists(':EnlargedWindow')
-  command! EnlargedWindow call s:EnlargeWindow()
-endif
-if !exists(':ResetWindowsMaxEditor')
-  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
-endif
-if !exists(':ResetWindowsDefault')
-  command! ResetWindowsDefault call s:ResetWindowSizes(0)
-endif
-if !exists(':MaximizeTerminalBuffer')
-  command! MaximizeTerminalBuffer call s:MaximizeTerminalBuffer()
-endif
-if !exists(':MaximizeIPythonBuffer')
-  command! MaximizeIPythonBuffer call MaximizeIPythonBuffer()
-endif
-if !exists(':EnlargedWindow')
-  command! EnlargeWindow call s:EnlargeWindow()
-endif
-if !exists(':ResetWindowsMaxEditor')
-  command! ResetWindowsMaxEditor call s:ResetWindowSizes(1)
-endif
-if !exists(':ResetWindowsDefault')
-  command! ResetWindowsDefault call s:ResetWindowSizes(0)
-endif
 
 function! s:ResetUI() abort
   try
@@ -485,7 +435,6 @@ function! ForceQuitAndKillTmux() abort
 endfunction
 
 " ── PREVENT REPEAT CALLS ───────────────────────────────────────────────
-let s:is_running = 0
 let s:last_run = 0
 let s:debounce_ms = 500
 
@@ -502,8 +451,6 @@ function! SendToIPython() abort
     normal! gv
     normal! y
     echom "SendToIPython: Yanked " . (line("'>") - line("'<") + 1) . " lines"
-    let yanked_text = substitute(@", '\n\+$', '', '')
-    let current_win = winnr()
     let ipython_win = 0
     for w in range(1, winnr('$'))
       if getbufvar(winbufnr(w), '&buftype') == 'terminal' && bufname(winbufnr(w)) =~ 'ipython'
@@ -563,8 +510,6 @@ function! SendToTermiC() abort
     normal! gv
     normal! y
     echom "SendToTermiC: Yanked " . (line("'>") - line("'<") + 1) . " lines"
-    let yanked_text = substitute(@", '\n\+$', '', '')
-    let current_win = winnr()
     let termic_win = 0
     for w in range(1, winnr('$'))
       if getbufvar(winbufnr(w), '&buftype') == 'terminal' && bufname(winbufnr(w)) =~ 'termic'
