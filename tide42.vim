@@ -356,6 +356,7 @@ autocmd VimEnter * terminal
 execute 'autocmd VimEnter * resize ' . terminal_resize
 autocmd VimEnter * wincmd j
 autocmd VimEnter * wincmd l
+autocmd VimEnter * silent! call writefile([], '/tmp/tide42_ready')
 
 " ── TIDE42 FUNCTIONS ───────────────────────────────────────────────────
 
