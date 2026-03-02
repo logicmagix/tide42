@@ -587,8 +587,6 @@ fi
 
 # === Start new tmux session ===
 
-rm -f /tmp/tide42_ready
-
 tmux -f "$TMUX_CONF" new-session -d -s "$SESSION_NAME"
 tmux source-file "$TMUX_CONF"
 tmux split-window -h
@@ -609,58 +607,6 @@ fi
 # === Preload right pane 1 with nvim if desired ===
 
 tmux send-keys -t "$SESSION_NAME":0.1 "NVIM_APPNAME=tide42 nvim -u \"$TIDE_CONF_FILE\"" C-m
-
-# === Splash screen popup ===
-
-TIDE42_SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-CASTLE_FILE="$TIDE42_SRC_DIR/Extras/CASTLE.txt"
-
-SPLASH_FILE=$(mktemp /tmp/tide42_splash_XXXXXX)
-{
-  [ -f "$CASTLE_FILE" ] && cat "$CASTLE_FILE" && echo ""
-  cat << 'TIDE42LOGO'
-        ████████╗██╗██████╗ ███████╗██╗  ██╗██████╗
-        ╚══██╔══╝██║██╔══██╗██╔════╝██║  ██║╚════██╗
-           ██║   ██║██║  ██║█████╗  ███████║ █████╔╝
-           ██║   ██║██║  ██║██╔══╝  ╚════██║██╔═══╝
-           ██║   ██║██████╔╝███████╗     ██║███████╗
-           ╚═╝   ╚═╝╚═════╝ ╚══════╝     ╚═╝╚══════╝
-
-          Terminal Integrated Developer Environment
-                            -42-
-
-                         Loading...
-TIDE42LOGO
-} > "$SPLASH_FILE"
-
-SPLASH_SCRIPT=$(mktemp /tmp/tide42_ss_XXXXXX.sh)
-chmod +x "$SPLASH_SCRIPT"
-cat << SCRIPTEOF > "$SPLASH_SCRIPT"
-#!/bin/sh
-tmux set-hook -u -t $SESSION_NAME client-attached 2>/dev/null
-clear
-COLS=\$(tput cols 2>/dev/null || echo 80)
-ROWS=\$(tput lines 2>/dev/null || echo 24)
-ART_H=\$(wc -l < $SPLASH_FILE)
-ART_W=\$(awk '{ if (length > max) max = length } END { print max+0 }' $SPLASH_FILE)
-V_PAD=\$(( (ROWS - ART_H) / 2 ))
-H_PAD=\$(( (COLS - ART_W) / 2 ))
-[ "\$V_PAD" -lt 0 ] && V_PAD=0
-[ "\$H_PAD" -lt 0 ] && H_PAD=0
-PAD=\$(printf '%*s' "\$H_PAD" '')
-i=0; while [ \$i -lt \$V_PAD ]; do printf '\n'; i=\$((i+1)); done
-while IFS= read -r line; do printf '%s%s\n' "\$PAD" "\$line"; done < $SPLASH_FILE
-i=0
-while [ \$i -lt 20 ]; do
-  [ -f /tmp/tide42_ready ] && break
-  sleep 0.25
-  i=\$((i+1))
-done
-rm -f /tmp/tide42_ready $SPLASH_FILE $SPLASH_SCRIPT
-SCRIPTEOF
-
-tmux set-hook -t "$SESSION_NAME" client-attached \
-  "display-popup -w 100% -h 100% -E $SPLASH_SCRIPT"
 
 # === Attach to the session ===
 
