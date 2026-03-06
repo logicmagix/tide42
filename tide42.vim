@@ -38,7 +38,7 @@ endif
 if !empty($TIDE42_SEPARATOR_COLOR)
   execute 'highlight WinSeparator guifg=' . $TIDE42_SEPARATOR_COLOR . ' guibg=NONE'
 endif
-set mouse=nvi
+set mouse=a
 set laststatus=2
 set winminheight=1
 set shell=/bin/bash
@@ -55,24 +55,57 @@ let NERDTreeLimitedSyntax=0
 
 " ── PLUGINS ────────────────────────────────────────────────────────────
 call plug#begin('~/.local/share/tide42/plugged')
-Plug 'preservim/nerdtree'  " File explorer tree
-Plug 'tpope/vim-surround'  " Easily change surrounding characters (quotes, brackets, tags, etc.)
-Plug 'tpope/vim-commentary'  " Toggle comments on lines or visual selections
-Plug 'vim-airline/vim-airline' " Customizable status/tabline
+Plug 'preservim/nerdtree'                            " File explorer tree
+Plug 'tpope/vim-surround'                            " Easily change surrounding characters (quotes, brackets, tags, etc.)
+Plug 'tpope/vim-commentary'                          " Toggle comments on lines or visual selections
+Plug 'vim-airline/vim-airline'                       " Customizable status/tabline
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " Fuzzy finder core binary (requires install step)
-Plug 'junegunn/fzf.vim'  " Vim/Neovim integration for fzf
-Plug 'nvim-lua/plenary.nvim'  " Lua utility functions for many Neovim plugins
-Plug 'nvim-telescope/telescope.nvim'  " Extendable fuzzy finder for files, grep, buffers, etc.
-Plug 'MunifTanjim/nui.nvim'  " UI component library for Neovim (used by some plugins)
-Plug 'jackMort/ChatGPT.nvim'  " ChatGPT integration inside Neovim
-Plug 'brenoprata10/nvim-highlight-colors'  " Highlight color codes with a swatch
-Plug 'nvim-tree/nvim-web-devicons'  " Adds filetype icons to plugins like NERDTree, Telescope, Bufferline
-Plug 'akinsho/bufferline.nvim', { 'tag': '*' }  "Tab cycle with close buttons and icons
-Plug 'lewis6991/gitsigns.nvim'  " Git diff signs + hunk actions
+Plug 'junegunn/fzf.vim'                              " Vim/Neovim integration for fzf
+Plug 'nvim-lua/plenary.nvim'                         " Lua utility functions for many Neovim plugins
+Plug 'nvim-telescope/telescope.nvim'                 " Extendable fuzzy finder for files, grep, buffers, etc.
+Plug 'MunifTanjim/nui.nvim'                          " UI component library for Neovim (used by some plugins)
+Plug 'jackMort/ChatGPT.nvim'                         " ChatGPT integration inside Neovim
+Plug 'brenoprata10/nvim-highlight-colors'            " Highlight color codes with a swatch
+Plug 'nvim-tree/nvim-web-devicons'                   " Adds filetype icons to plugins like NERDTree, Telescope, Bufferline
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }       " Tab cycle with close buttons and icons
+Plug 'lewis6991/gitsigns.nvim'                       " Git diff signs + hunk actions
+Plug 'neovim/nvim-lspconfig'                         " LSP cofiguration
+Plug 'williamboman/mason.nvim'                       " Auto-install LSP servers
+Plug 'williamboman/mason-lspconfig.nvim'             " Bridge mason <-> lspconfig
+Plug 'hrsh7th/nvim-cmp'                              " Completion engine
+Plug 'hrsh7th/cmp-nvim-lsp'                          " LSP source for nvim-cmp
+Plug 'hrsh7th/cmp-buffer'                            " Buffer words source
+
 call plug#end()
 
 " ── PLUGIN CONFIGURATION ───────────────────────────────────────────────
 lua << EOF
+
+require("mason").setup()
+require("mason-lspconfig").setup({
+    ensure_installed = { "pyright", "clangd" },
+})
+
+local lspconfig = require('lspconfig')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+lspconfig.pyright.setup({ capabilities = capabilities, single_file_support = true })
+lspconfig.clangd.setup({ capabilities = capabilities, single_file_support = true })
+
+local cmp = require('cmp')
+cmp.setup({
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'buffer' },
+    },
+    mapping = cmp.mapping.preset.insert({
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<CR>'] = cmp.mapping.confirm({select = true }),
+        ['<C-j>'] = cmp.mapping.select_next_item(),
+        ['<C-k>'] = cmp.mapping.select_prev_item(),
+    }),
+})
+
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",
   openai_params = {

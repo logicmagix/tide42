@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.3] - 2026-03-06
+### Added
+- LSP support via nvim-lspconfig with Mason auto-install for pyright (Python) and clangd (C/C++)
+- Autocompletion engine via nvim-cmp with LSP and buffer word sources
+- New plugins: nvim-lspconfig, mason.nvim, mason-lspconfig.nvim, nvim-cmp, cmp-nvim-lsp, cmp-buffer
+- Completion keybindings: Ctrl+Space (trigger), Enter (confirm), Ctrl+j/k (navigate)
+- Bufferline diagnostics powered by nvim_lsp
+- Splash screen displayed during tmux and nvim buffer initialization
+
+### Removed
+- Dead code: unused ResetWindowSizes command and conditional_bufferline_cycle function
+- Duplicate command definitions and redundant variable declarations
+
 ## [1.2.2] - 2025-08-14
 ### Added
 - Seperate Highlight augroup and Grid Styling blocks from tide42.vim in colorscheme.vim

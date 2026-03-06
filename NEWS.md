@@ -1,5 +1,13 @@
 # Tide42 NEWS:
 
+# 03.06.26
+- LSP support added via nvim-lspconfig with Mason for automatic server installation (pyright for Python, clangd for C/C++)
+- Autocompletion engine added via nvim-cmp with LSP and buffer word sources
+- New completion keybindings: Ctrl+Space (trigger completion), Enter (confirm), Ctrl+j/Ctrl+k (navigate completion menu)
+- Bufferline diagnostics now powered by nvim_lsp
+- Cleaned up dead and redundant code (removed unused ResetWindowSizes, conditional_bufferline_cycle, duplicate command definitions)
+- Added splash screen during tmux and nvim buffer initialization
+
 # 02.26.26
 - --separator-color (-sc) flag to set the Neovim window separator color (persists across sessions)
 - --separator-width (-sw) flag to set the Neovim window separator width: thick, double, medium, or thin

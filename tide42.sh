@@ -85,6 +85,7 @@ fi
 
 PANE_BORDER_CONFIG=$(cat <<EOF
 # Unfocused pane border
+set -g mouse on
 set -g pane-border-style fg=black
 set -g pane-active-border-style fg=$ACTIVE_BORDER_COLOR
 set -g pane-border-format "#{pane_index} "
