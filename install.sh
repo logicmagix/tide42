@@ -110,16 +110,25 @@ PKG_IPY="python3-ipython"
 PKG_CURL="curl"
 PKG_GIT="git"
 PKG_RG="ripgrep"
+PKG_NODE="nodejs"
+PKG_NPM="npm"
+PKG_CLANGD="clangd"
 case "$PKG_MANAGER" in
   pacman)
     PKG_NCURSES="ncurses"
     PKG_PIP="python-pip"
     PKG_IPY="ipython"
+    PKG_NODE="nodejs"
+    PKG_NPM="npm"
+    PKG_CLANGD="clang"
     ;;
   brew)
     PKG_NCURSES="ncurses"
     PKG_PIP=""
     PKG_IPY="ipython"
+    PKG_NODE="node"
+    PKG_NPM=""
+    PKG_CLANGD="llvm"
     ;;
   emerge)
     PKG_TMUX="app-misc/tmux"
@@ -131,6 +140,9 @@ case "$PKG_MANAGER" in
     PKG_CURL="net-misc/curl"
     PKG_GIT="dev-vcs/git"
     PKG_RG="sys-apps/ripgrep"
+    PKG_NODE="net-libs/nodejs"
+    PKG_NPM=""
+    PKG_CLANGD="sys-devel/clang"
     ;;
 esac
 if [ "$PKG_MANAGER" = "brew" ]; then
@@ -163,11 +175,14 @@ pkg_already_installed() {
     curl|net-misc/curl)           command -v curl >/dev/null 2>&1 ;;
     git|dev-vcs/git)              command -v git >/dev/null 2>&1 ;;
     ripgrep|sys-apps/ripgrep)     command -v rg >/dev/null 2>&1 ;;
+    nodejs|node|net-libs/nodejs)  command -v node >/dev/null 2>&1 ;;
+    npm)                          command -v npm >/dev/null 2>&1 ;;
+    clangd|clang|llvm|sys-devel/clang) command -v clangd >/dev/null 2>&1 ;;
     *)                            return 1 ;;
   esac
 }
 
-ALL_PKGS="$PKG_TMUX $PKG_NCURSES $PKG_NVIM $PKG_PY3 $PKG_PIP $PKG_IPY $PKG_CURL $PKG_GIT $PKG_RG"
+ALL_PKGS="$PKG_TMUX $PKG_NCURSES $PKG_NVIM $PKG_PY3 $PKG_PIP $PKG_IPY $PKG_CURL $PKG_GIT $PKG_RG $PKG_NODE $PKG_NPM $PKG_CLANGD"
 PKG_LIST=""
 for p in $ALL_PKGS; do
   [ -z "$p" ] && continue

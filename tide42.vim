@@ -83,7 +83,7 @@ lua << EOF
 
 require("mason").setup()
 require("mason-lspconfig").setup({
-    ensure_installed = { "pyright", "clangd" },
+    ensure_installed = { "pyright" },
 })
 
 local lspconfig = require('lspconfig')
@@ -91,6 +91,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 lspconfig.pyright.setup({ capabilities = capabilities, single_file_support = true })
 lspconfig.clangd.setup({ capabilities = capabilities, single_file_support = true })
+-- Note: clangd is installed via system package manager (not Mason) for ARM64 compatibility.
 
 local cmp = require('cmp')
 cmp.setup({
