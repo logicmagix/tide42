@@ -94,7 +94,13 @@ lspconfig.clangd.setup({ capabilities = capabilities, single_file_support = true
 -- Note: clangd is installed via system package manager (not Mason) for ARM64 compatibility.
 
 local cmp = require('cmp')
+
+_G.cmp_enabled = false
+
 cmp.setup({
+    enabled = function()
+        return _G.cmp_enabled
+    end,
     sources = {
         { name = 'nvim_lsp' },
         { name = 'buffer' },
@@ -106,6 +112,11 @@ cmp.setup({
         ['<C-k>'] = cmp.mapping.select_prev_item(),
     }),
 })
+
+vim.keymap.set('n', '<leader>a', function()
+    _G.cmp_enabled = not _G.cmp_enabled
+    vim.notify('Autocomplete ' .. (_G.cmp_enabled and 'ON' or 'OFF'))
+end, { desc = 'Toggle autocomplete' })
 
 require("chatgpt").setup({
   api_key_cmd = "echo $OPENAI_API_KEY",

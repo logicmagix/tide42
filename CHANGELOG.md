@@ -1,17 +1,43 @@
 # Changelog
 
-## [1.2.3] - 2026-03-06
+## [1.3.0] - 2026-03-23
 ### Added
 - LSP support via nvim-lspconfig with Mason auto-install for pyright (Python) and clangd (C/C++)
 - Autocompletion engine via nvim-cmp with LSP and buffer word sources
 - New plugins: nvim-lspconfig, mason.nvim, mason-lspconfig.nvim, nvim-cmp, cmp-nvim-lsp, cmp-buffer
 - Completion keybindings: Ctrl+Space (trigger), Enter (confirm), Ctrl+j/k (navigate)
+- Toggle autocomplete on/off with \a (off by default; Ctrl+Space still triggers completion manually)
 - Bufferline diagnostics powered by nvim_lsp
-- Splash screen displayed during tmux and nvim buffer initialization
+- Splash screen during tmux and nvim buffer initialization
+- --separator-color (-sc) flag to set Neovim window separator color (persists across sessions)
+- --separator-width (-sw) flag to set Neovim window separator width: thick, double, medium, or thin
+- --border-width (-bw) flag to set tmux pane border width: thick, double, medium, or thin
+- --border-color (-bc) flag to set active tmux pane border color
+- --gui flag: desktop launcher auto-detects default terminal emulator
+- --check-update added to --help menu
+- Full block separator characters for Neovim window borders (default: thick)
+- Heavy pane border lines for better visibility between tmux panes
+- IPython binary auto-detection (ipython or ipython3)
+- ARM architecture dependencies added to installer
+- install.sh prompts before updating package manager and installing dependencies
+- install.sh skips already-installed packages (avoids unnecessary recompilation on Gentoo)
+
+### Changed
+- tmux.conf regenerated on every install and launch to ensure config updates take effect
+- TMUX_CONF now points to ~/.config/tide42/tmux.conf
+- --colorscheme (-cs) now sets the colorscheme and launches tide42 instead of exiting
+- --low-color simplified to write directly without backup logic
+- Default config block simplified to single existence check
+- Quieter man page install (mandb -q)
+
+### Fixed
+- Gray/darkgray color names corrected to match expected brightness
+- Man page: added missing keybindings (\j, \c, \v), removed duplicate \n entry, fixed empty OPTIONS section
 
 ### Removed
 - Dead code: unused ResetWindowSizes command and conditional_bufferline_cycle function
 - Duplicate command definitions and redundant variable declarations
+- Mouse support block (already included in default config write)
 
 ## [1.2.2] - 2025-08-14
 ### Added

@@ -37,6 +37,9 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 
 ## Latest News
 
+# 03.23.26
+- Toggle autocomplete on/off with \a (off by default; Ctrl+Space still triggers completion manually)
+
 # 03.06.26
 - LSP support via nvim-lspconfig with Mason auto-install for pyright (Python) and clangd (C/C++)
 - Autocompletion engine via nvim-cmp with LSP and buffer word sources
@@ -158,6 +161,7 @@ Nvim based command `:Q` = Force-quit the program (reset for new session)
 `Enter` = Confirm selected completion
 `Ctrl+j` = Select next completion item
 `Ctrl+k` = Select previous completion item
+`\a` = Toggle autocomplete on/off
 
 ## Gitsigns (Git hunk navigation & actions)
 `[c]` = Jump to previous Git hunk  
