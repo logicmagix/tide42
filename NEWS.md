@@ -1,7 +1,7 @@
 # Tide42 NEWS:
 
 # 03.23.26
-- Toggle autocomplete on/off with \a (off by default; Ctrl+Space still triggers completion manually)
+- Toggle autocomplete on/off with \a (off by default)
 
 # 03.06.26
 - LSP support added via nvim-lspconfig with Mason for automatic server installation (pyright for Python, clangd for C/C++)

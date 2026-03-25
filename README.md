@@ -38,7 +38,7 @@ This project reflects that same spirit: a terminal IDE that encourages curiosity
 ## Latest News
 
 # 03.23.26
-- Toggle autocomplete on/off with \a (off by default; Ctrl+Space still triggers completion manually)
+- Toggle autocomplete on/off with \a (off by default)
 
 # 03.06.26
 - LSP support via nvim-lspconfig with Mason auto-install for pyright (Python) and clangd (C/C++)
