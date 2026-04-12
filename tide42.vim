@@ -39,6 +39,9 @@ if !empty($TIDE42_SEPARATOR_COLOR)
   execute 'highlight WinSeparator guifg=' . $TIDE42_SEPARATOR_COLOR . ' guibg=NONE'
 endif
 set mouse=a
+set tabstop=4
+set shiftwidth=4
+set expandtab
 set laststatus=2
 set winminheight=1
 set shell=/bin/bash

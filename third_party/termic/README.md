@@ -119,3 +119,8 @@ To remove TermiC system wide:
 sudo rm -f /bin/termic
 sudo rm -f /bin/termic++
 ```
+
+## tide42 Patches
+The copy of TermiC bundled with tide42 includes the following fixes:
+- **Glob expansion bug**: Quoted `$fullPrompt` in an `echo` command to prevent bash from expanding `*` (multiplication, pointer declarations) as a file glob in `/tmp`. This caused compilation errors when defining functions that use `*`.
+- **sed insertion bug**: Replaced the `sed` insert command used to place function definitions before `int main()` with `head`/`tail` file splitting. The `sed` `i` command interpreted `}` in C code as a sed command terminator, breaking any function definition containing closing braces.

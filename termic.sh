@@ -100,9 +100,8 @@ while true;do
 			echo "$fullPrompt"$addSemicolon > $sourceFile.tmp
 			cat $sourceFile >> $sourceFile.tmp
 		elif $addOutsideMain;then
-			fullPrompt=`printf "%s" "$fullPrompt" | sed -e 's/[&\\]/\\\&/g'`
-			fullPrompt=`echo $fullPrompt`
-			sed "/^int main() {/i$fullPrompt$addSemicolon" $sourceFile > $sourceFile.tmp
+			mainLine=$(grep -n "^int main() {" "$sourceFile" | cut -d: -f1)
+			{ head -n $((mainLine-1)) "$sourceFile"; echo "$fullPrompt$addSemicolon"; tail -n +$mainLine "$sourceFile"; } > "$sourceFile.tmp"
 		else
 			cp $sourceFile $sourceFile.tmp
 			echo "$fullPrompt$addSemicolon" >> $sourceFile.tmp

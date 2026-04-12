@@ -1,5 +1,10 @@
 # Tide42 NEWS:
 
+# 04.12.26
+- Fixed TermiC glob expansion bug: `*` in function bodies was expanded by bash as a file glob in /tmp
+- Fixed TermiC sed insertion bug: `}` in function definitions was interpreted as a sed command terminator
+- Replaced sed-based code insertion with head/tail for reliable function definition handling
+
 # 03.23.26
 - Toggle autocomplete on/off with \a (off by default)
 

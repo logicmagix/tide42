@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.1] - 2026-04-12
+### Fixed
+- TermiC: Quoted `$fullPrompt` variable to prevent bash glob expansion of `*` in /tmp
+- TermiC: Replaced `sed` insert with `head`/`tail` to fix `}` being parsed as a sed command terminator
+
 ## [1.3.0] - 2026-03-23
 ### Added
 - LSP support via nvim-lspconfig with Mason auto-install for pyright (Python) and clangd (C/C++)
