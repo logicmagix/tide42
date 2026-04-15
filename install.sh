@@ -365,14 +365,18 @@ MANPAGE_SOURCE="$SCRIPT_DIR/tide42.1"
 MANPAGE_TARGET="/usr/share/man/man1/tide42.1.gz"
 if [ -f "$MANPAGE_SOURCE" ]; then
     echo "[tide42] Compressing man page..."
-    if gzip -f -c "$MANPAGE_SOURCE" > tide42.1.gz; then
+    TMP_MANPAGE_GZ="$(mktemp --suffix=.gz)"
+    trap 'rm -f "$TMP_MANPAGE_GZ"' EXIT
+    if gzip -n -f -c "$MANPAGE_SOURCE" > "$TMP_MANPAGE_GZ"; then
         echo "[tide42] Installing man page to $MANPAGE_TARGET..."
-        sudo cp tide42.1.gz "$MANPAGE_TARGET"
+        sudo cp "$TMP_MANPAGE_GZ" "$MANPAGE_TARGET"
         sudo mandb -q /usr/share/man
         echo "[tide42] Man page installed. Try: man tide42"
     else
         echo "[tide42] Error: Failed to compress man page."
     fi
+    rm -f "$TMP_MANPAGE_GZ"
+    trap - EXIT
 else
     echo "[tide42] Warning: tide42.1 not found. Skipping man page install."
 fi
