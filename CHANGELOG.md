@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.2] - 2026-04-15
+### Fixed
+- Pyright LSP install failure on fresh systems: pinned `mason.nvim` to `v1.11.0` and `mason-lspconfig.nvim` to `v1.32.0` (v2.0 changed `ensure_installed` semantics and broke first-launch server installation)
+
 ## [1.3.1] - 2026-04-12
 ### Fixed
 - TermiC: Quoted `$fullPrompt` variable to prevent bash glob expansion of `*` in /tmp

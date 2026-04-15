@@ -1,5 +1,8 @@
 # Tide42 NEWS:
 
+# 04.15.26
+- Fixed pyright LSP install failure on fresh systems: pinned mason.nvim to v1.11.0 and mason-lspconfig.nvim to v1.32.0 (v2.0 changed `ensure_installed` semantics and broke first-launch server installation)
+
 # 04.12.26
 - Fixed TermiC glob expansion bug: `*` in function bodies was expanded by bash as a file glob in /tmp
 - Fixed TermiC sed insertion bug: `}` in function definitions was interpreted as a sed command terminator
