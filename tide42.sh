@@ -21,7 +21,6 @@
 # === Initialize ===
 
 set -e
-echo "[tide42] Running..."
 VERSION_PATH="$(dirname "$0")/VERSION"
 TIDE_VERSION="unknown"
 if [ -f "$VERSION_PATH" ]; then
@@ -29,6 +28,7 @@ if [ -f "$VERSION_PATH" ]; then
 fi
 GIT_BRANCH=$(git -C "$(dirname "$0")" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 TIDE_VERSION="$TIDE_VERSION ($GIT_BRANCH)"
+echo "[tide42] v$TIDE_VERSION starting (TERM=${TERM:-unset})..."
 IS_LOW_COLOR=false
 IS_QUIET=false
 FILENAME=""
@@ -525,14 +525,13 @@ else
   export TERM="xterm-256color"
   export COLORTERM=truecolor
   unset NVIM_NO_COLOR
-  log "Setting default 256 colors."
 fi
 
 # === Write default tmux.conf only if no color flag provided ===
 
 if [ "$COLOR_FLAG_PROVIDED" = false ]; then
   mkdir -p "$(dirname "$TMUX_CONF")"
-  log "Writing default tide42 tmux config."
+  [ -f "$TMUX_CONF" ] || log "Generating default tide42 tmux config at $TMUX_CONF."
   cat <<EOF > "$TMUX_CONF"
 # tide42: Default 256-color scheme
 set -g default-terminal "tmux-256color"

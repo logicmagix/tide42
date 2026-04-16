@@ -484,7 +484,16 @@ EOF
 # === Install Neovim plugins with isolated setup ===
 
 echo "Installing Neovim plugins for tide42..."
-NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" +PlugInstall +qall
+NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless +'PlugInstall --sync' +qall
+
+# Second pass: Mason installs LSP servers asynchronously, so wait for pyright
+# to finish before exiting. Without this, a fresh install prints a warning
+# until the user manually re-runs :PlugInstall.
+echo "[tide42] Waiting for Mason to install pyright (up to 60s)..."
+NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless \
+  +'lua vim.wait(60000, function() local ok, r = pcall(require, "mason-registry"); return ok and r.is_installed("pyright") end, 500); vim.cmd("qall!")' \
+  || echo "[tide42] Warning: pyright did not finish installing. Run :MasonInstall pyright inside tide42 if needed."
+
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
 echo "[tide42] Share feedback: github.com/logicmagix/tide42/discussions"
 echo "[tide42] Bugs or ideas? DM @logicmagix on X or email logicmagix@protonmail.com"
