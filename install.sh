@@ -11,6 +11,20 @@ if [[ ! "$response" =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
+# === Warn if not a git repo (e.g. downloaded as ZIP) ===
+SCRIPT_DIR_EARLY="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if ! git -C "$SCRIPT_DIR_EARLY" rev-parse --is-inside-work-tree &>/dev/null; then
+  echo "[tide42] Warning: This does not appear to be a git repository."
+  echo "[tide42] Self-update will not work without git history."
+  echo "[tide42] For full functionality, clone instead:"
+  echo "[tide42]   git clone https://github.com/logicmagix/tide42.git"
+  read -p "[tide42] Continue anyway? (y/N): " git_response
+  if [[ ! "$git_response" =~ ^[Yy]$ ]]; then
+    echo "[tide42] Installation aborted."
+    exit 1
+  fi
+fi
+
 echo "[+] Installing Tide42..."
 
 # === Legacy xtide86 alias ===
