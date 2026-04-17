@@ -82,13 +82,16 @@ call plug#end()
 " ── PLUGIN CONFIGURATION ───────────────────────────────────────────────
 lua << EOF
 
-local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- pyright and clangd are installed by install.sh via npm and the system
--- package manager respectively; lspconfig finds them on $PATH.
-lspconfig.pyright.setup({ capabilities = capabilities, single_file_support = true })
-lspconfig.clangd.setup({ capabilities = capabilities, single_file_support = true })
+-- package manager respectively; nvim-lspconfig's bundled lsp/*.lua specs
+-- provide cmd/filetypes/root_markers defaults. vim.lsp.config merges our
+-- cmp capabilities over those defaults; vim.lsp.enable starts the servers
+-- on matching filetypes. Requires Neovim 0.11+.
+vim.lsp.config('pyright', { capabilities = capabilities })
+vim.lsp.config('clangd', { capabilities = capabilities })
+vim.lsp.enable({ 'pyright', 'clangd' })
 
 local cmp = require('cmp')
 
