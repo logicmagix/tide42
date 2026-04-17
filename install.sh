@@ -166,7 +166,9 @@ elif [ "$PKG_MANAGER" = "emerge" ]; then
   echo "[tide42] Checking for guru overlay for ripgrep..."
   if ! eselect repository list | grep -q guru; then
     echo "[tide42] Adding guru overlay for ripgrep..."
-    sudo eselect repository enable guru
+    sudo eselect repository enable guru || {
+      echo "[tide42] Warning: Failed to enable guru overlay. ripgrep may not be available."
+    }
     sudo emerge --sync guru || {
       echo "[tide42] Warning: Failed to sync guru overlay. ripgrep may not be available."
     }
@@ -367,11 +369,11 @@ if ! sudo chmod 755 /usr/local/bin/tide42 /usr/local/bin/termic; then
   exit 1
 fi
 
-# === Try apt install for system-wide fallback (skip for Gentoo) ===
-if [ "$PKG_MANAGER" != "emerge" ] && ! command -v ipython3 &> /dev/null; then
-  echo "Attempting to install ipython3 via apt..."
-  sudo apt update
-  sudo apt install -y python3-ipython || echo "Warning: apt install failed. You may need to install IPython manually."
+# === Try apt install for IPython fallback (Debian/Ubuntu only) ===
+if [ "$PKG_MANAGER" = "apt" ] && ! command -v ipython3 >/dev/null 2>&1 && ! command -v ipython >/dev/null 2>&1; then
+  echo "[tide42] Attempting to install ipython3 via apt..."
+  sudo apt update || echo "[tide42] Warning: apt update failed; continuing."
+  sudo apt install -y python3-ipython || echo "[tide42] Warning: ipython3 install failed. Install manually for IPython support."
 fi
 
 # === Install man page ===
@@ -383,11 +385,16 @@ if [ -f "$MANPAGE_SOURCE" ]; then
     trap 'rm -f "$TMP_MANPAGE_GZ"' EXIT
     if gzip -n -f -c "$MANPAGE_SOURCE" > "$TMP_MANPAGE_GZ"; then
         echo "[tide42] Installing man page to $MANPAGE_TARGET..."
-        sudo cp "$TMP_MANPAGE_GZ" "$MANPAGE_TARGET"
-        sudo mandb -q /usr/share/man
-        echo "[tide42] Man page installed. Try: man tide42"
+        if sudo mkdir -p "$(dirname "$MANPAGE_TARGET")" && sudo cp "$TMP_MANPAGE_GZ" "$MANPAGE_TARGET"; then
+          if command -v mandb >/dev/null 2>&1; then
+            sudo mandb -q /usr/share/man || echo "[tide42] Warning: mandb refresh failed; 'man tide42' may not work until the cache updates."
+          fi
+          echo "[tide42] Man page installed. Try: man tide42"
+        else
+          echo "[tide42] Warning: Failed to install man page; skipping."
+        fi
     else
-        echo "[tide42] Error: Failed to compress man page."
+        echo "[tide42] Warning: Failed to compress man page; skipping."
     fi
     rm -f "$TMP_MANPAGE_GZ"
     trap - EXIT
@@ -413,7 +420,7 @@ if [ "$GLOBAL_INSTALL" = true ]; then
   sudo update-desktop-database /usr/share/applications || true
 else
   echo "Installing user-local .desktop launcher..."
-  if [ -n "$DISPLAY" ] || [ -n "$WAYLAND_DISPLAY" ]; then
+  if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
     echo "[tide42] GUI detected, installing launcher..."
     if [ -f "$HOME/.local/share/applications" ]; then
       rm -f "$HOME/.local/share/applications"
@@ -438,7 +445,7 @@ fi
 TMUX_CONF="$TIDE_CONF_DIR/tmux.conf"
 {
   DEFAULT_TERMINAL="xterm-256color"
-  if [ -n "$TERM" ] && [ "$TERM" != "xterm" ] && [ "$TERM" != "linux" ]; then
+  if [ -n "${TERM:-}" ] && [ "${TERM:-}" != "xterm" ] && [ "${TERM:-}" != "linux" ]; then
     DEFAULT_TERMINAL="$TERM"
   else
     if command -v gnome-terminal > /dev/null; then
@@ -484,7 +491,9 @@ EOF
 # === Install Neovim plugins with isolated setup ===
 
 echo "Installing Neovim plugins for tide42..."
-NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless +'PlugInstall --sync' +qall
+NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless +'PlugInstall --sync' +qall || {
+  echo "[tide42] Warning: plugin install may not have completed. Run ':PlugInstall' inside tide42 if features are missing."
+}
 
 # === Install pyright Python LSP ===
 # Installed system-wide via npm rather than Mason so there are no async
