@@ -486,13 +486,26 @@ EOF
 echo "Installing Neovim plugins for tide42..."
 NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless +'PlugInstall --sync' +qall
 
-# Second pass: Mason installs LSP servers asynchronously, so wait for pyright
-# to finish before exiting. Without this, a fresh install prints a warning
-# until the user manually re-runs :PlugInstall.
-echo "[tide42] Waiting for Mason to install pyright (up to 60s)..."
-NVIM_APPNAME=tide42 nvim -u "$TIDE_CONF_FILE" --headless \
-  +'lua vim.wait(60000, function() local ok, r = pcall(require, "mason-registry"); return ok and r.is_installed("pyright") end, 500); vim.cmd("qall!")' \
-  || echo "[tide42] Warning: pyright did not finish installing. Run :MasonInstall pyright inside tide42 if needed."
+# === Install pyright Python LSP ===
+# Installed system-wide via npm rather than Mason so there are no async
+# install prompts or race conditions on slow networks. clangd is installed
+# the same way (via the system package manager above).
+if command -v pyright-langserver >/dev/null 2>&1; then
+  echo "[tide42] pyright already installed, skipping."
+elif ! command -v npm >/dev/null 2>&1; then
+  echo "[tide42] Warning: npm not found; skipping pyright install."
+  echo "[tide42] Install manually for Python LSP: 'npm install -g pyright' or 'pip install pyright'"
+else
+  echo "[tide42] Installing pyright via npm..."
+  if npm install -g pyright >/dev/null 2>&1; then
+    echo "[tide42] pyright installed."
+  elif sudo npm install -g pyright; then
+    echo "[tide42] pyright installed (with sudo)."
+  else
+    echo "[tide42] Warning: pyright install failed."
+    echo "[tide42] Install manually for Python LSP: 'npm install -g pyright' or 'pip install pyright'"
+  fi
+fi
 
 echo "[tide42] Installed! Launch with 'tide42' or from the app menu."
 echo "[tide42] Share feedback: github.com/logicmagix/tide42/discussions"

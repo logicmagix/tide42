@@ -56,24 +56,11 @@ else
   echo "[tide42] ~/.config/tide42 not found. Skipping."
 fi
 
-# === Prompt user to remove the repository directory ===
-echo "[tide42] Repository directory: $SCRIPT_DIR"
-read -p "[tide42] WOULD YOU LIKE TO REMOVE THE REPOSITORY DIRECTORY? ($SCRIPT_DIR)? [y/N]: " response
-if [[ "$response" =~ ^[Yy]$ ]]; then
-  echo "[tide42] Removing repository directory $SCRIPT_DIR..."
-  if [ -d "$SCRIPT_DIR" ]; then
-    rm -rf "$SCRIPT_DIR" || {
-      echo "[tide42] Error: Failed to remove $SCRIPT_DIR. Check permissions."
-      exit 1
-    }
-    echo "[tide42] Removed $SCRIPT_DIR."
-  else
-    echo "[tide42] Repository directory $SCRIPT_DIR not found. Skipping."
-  fi
-else
-  echo "[tide42] Keeping repository directory $SCRIPT_DIR."
-fi
+# === Leave the repository directory alone ===
+# Removing the repo from here is too easy to misclick. If you want it gone,
+# delete it yourself with a path you've typed deliberately.
+echo "[tide42] Repository directory left in place: $SCRIPT_DIR"
+echo "[tide42] To remove it, run: rm -rf \"$SCRIPT_DIR\""
 
 echo "[tide42] Uninstallation complete."
-echo "[tide42] If you removed the repository directory, this script is now deleted."
 echo "[tide42] Thank you for trying tide42! Share feedback: github.com/logicmagix/tide42/discussions"

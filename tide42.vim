@@ -73,8 +73,6 @@ Plug 'nvim-tree/nvim-web-devicons'                   " Adds filetype icons to pl
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }       " Tab cycle with close buttons and icons
 Plug 'lewis6991/gitsigns.nvim'                       " Git diff signs + hunk actions
 Plug 'neovim/nvim-lspconfig'                         " LSP cofiguration
-Plug 'williamboman/mason.nvim', { 'tag': 'v1.11.0' } " Auto-install LSP servers (v1 pinned; v2 breaks ensure_installed)
-Plug 'williamboman/mason-lspconfig.nvim', { 'tag': 'v1.32.0' } " Bridge mason <-> lspconfig (v1 pinned)
 Plug 'hrsh7th/nvim-cmp'                              " Completion engine
 Plug 'hrsh7th/cmp-nvim-lsp'                          " LSP source for nvim-cmp
 Plug 'hrsh7th/cmp-buffer'                            " Buffer words source
@@ -84,17 +82,13 @@ call plug#end()
 " ── PLUGIN CONFIGURATION ───────────────────────────────────────────────
 lua << EOF
 
-require("mason").setup()
-require("mason-lspconfig").setup({
-    ensure_installed = { "pyright" },
-})
-
 local lspconfig = require('lspconfig')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+-- pyright and clangd are installed by install.sh via npm and the system
+-- package manager respectively; lspconfig finds them on $PATH.
 lspconfig.pyright.setup({ capabilities = capabilities, single_file_support = true })
 lspconfig.clangd.setup({ capabilities = capabilities, single_file_support = true })
--- Note: clangd is installed via system package manager (not Mason) for ARM64 compatibility.
 
 local cmp = require('cmp')
 
