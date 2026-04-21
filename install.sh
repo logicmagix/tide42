@@ -306,7 +306,7 @@ augroup WindowLineNumbers
 augroup END
 set list
 " Without space marker
-set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,
+" set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,
 " With space marker
 "set listchars=tab:>-,eol:♦,trail:.,extends:>,precedes:<,space:‧
 " Medieval Set:
