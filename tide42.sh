@@ -208,8 +208,8 @@ bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key l select-pane -R
 set-window-option -g mode-keys vi
-bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
-bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+bind-key -n C-M-a select-pane -t 0 \; resize-pane -R 999
+bind-key -n C-M-d select-pane -t 1 \; resize-pane -L 999
 bind-key -n C-M-s resize-pane -x 50%
 bind-key -n C-M-z resize-pane -x 25%
 bind-key -n C-M-x resize-pane -x 30%
@@ -547,8 +547,8 @@ bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key l select-pane -R
 set-window-option -g mode-keys vi
-bind-key -n C-M-a resize-pane -R 999 \; select-pane -t 1
-bind-key -n C-M-d resize-pane -L 999 \; select-pane -t 0
+bind-key -n C-M-a select-pane -t 0 \; resize-pane -R 999
+bind-key -n C-M-d select-pane -t 1 \; resize-pane -L 999
 bind-key -n C-M-s resize-pane -x 50%
 bind-key -n C-M-z resize-pane -x 25%
 bind-key -n C-M-x resize-pane -x 30%
