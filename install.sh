@@ -385,7 +385,7 @@ if [ -f "$MANPAGE_SOURCE" ]; then
     trap 'rm -f "$TMP_MANPAGE_GZ"' EXIT
     if gzip -n -f -c "$MANPAGE_SOURCE" > "$TMP_MANPAGE_GZ"; then
         echo "[tide42] Installing man page to $MANPAGE_TARGET..."
-        if sudo mkdir -p "$(dirname "$MANPAGE_TARGET")" && sudo cp "$TMP_MANPAGE_GZ" "$MANPAGE_TARGET"; then
+        if sudo mkdir -p "$(dirname "$MANPAGE_TARGET")" && sudo install -m 644 "$TMP_MANPAGE_GZ" "$MANPAGE_TARGET"; then
           if command -v mandb >/dev/null 2>&1; then
             sudo mandb -q /usr/share/man || echo "[tide42] Warning: mandb refresh failed; 'man tide42' may not work until the cache updates."
           fi

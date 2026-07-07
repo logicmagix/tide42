@@ -82,7 +82,16 @@ call plug#end()
 " ── PLUGIN CONFIGURATION ───────────────────────────────────────────────
 lua << EOF
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- On a fresh `:PlugInstall` this config is sourced before the plugins are
+-- cloned onto the runtimepath, so every require() below would throw
+-- 'module not found'. Bail out early until the plugins actually exist; the
+-- next launch (post-install) runs the full configuration normally.
+local ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+if not ok then
+  return
+end
+
+local capabilities = cmp_nvim_lsp.default_capabilities()
 
 -- pyright and clangd are installed by install.sh via npm and the system
 -- package manager respectively; nvim-lspconfig's bundled lsp/*.lua specs
