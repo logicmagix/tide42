@@ -98,8 +98,19 @@ local capabilities = cmp_nvim_lsp.default_capabilities()
 -- provide cmd/filetypes/root_markers defaults. vim.lsp.config merges our
 -- cmp capabilities over those defaults; vim.lsp.enable starts the servers
 -- on matching filetypes. Requires Neovim 0.11+.
-vim.lsp.config('pyright', { capabilities = capabilities })
-vim.lsp.config('clangd', { capabilities = capabilities })
+-- root_markers overrides: nvim 0.11.2+ treats a flat root_markers list as
+-- priority-ordered, so a stray setup.py (or compile_flags.txt) far up the
+-- tree outranks a nearby .git and the LSP roots itself in a giant directory
+-- (pyright then indexes it: 100% CPU, unbounded memory). A single nested
+-- list means equal priority: the marker nearest the file wins.
+vim.lsp.config('pyright', {
+  capabilities = capabilities,
+  root_markers = { { 'pyrightconfig.json', 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', 'Pipfile', '.git' } },
+})
+vim.lsp.config('clangd', {
+  capabilities = capabilities,
+  root_markers = { { '.clangd', '.clang-tidy', '.clang-format', 'compile_commands.json', 'compile_flags.txt', 'configure.ac', '.git' } },
+})
 vim.lsp.enable({ 'pyright', 'clangd' })
 
 local cmp = require('cmp')
